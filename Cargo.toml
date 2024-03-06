@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 log = "0.4.21"
+color-string = "0.1.6"

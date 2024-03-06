@@ -1,1 +1,2 @@
-mod regedit;
+pub mod regedit;
+pub mod common;

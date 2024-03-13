@@ -1,18 +1,18 @@
 use color_string::Font::*;
-use color_string::{cs, fonts, pcs, wcs, wf, Colored, FontTool};
+use color_string::pcs;
 
 pub fn info(text: &str) {
     pcs!(Cyan => "➜ "; RBold, Blue => "Info: "; Blue => text);
 }
 
 pub fn success(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Green => "Success: "; Green => text);
+    pcs!(Cyan => "➜ "; RBold, Green => "Done: "; Green => text);
 }
 
 pub fn err(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Red => "Success: "; Red => text);
+    pcs!(Cyan => "➜ "; RBold, Red => "Fail: "; Red => text);
 }
 
 pub fn warn(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Yellow => "Success: "; Yellow => text);
+    pcs!(Cyan => "➜ "; RBold, Yellow => "Warn: "; Yellow => text);
 }

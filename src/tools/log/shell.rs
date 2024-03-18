@@ -19,12 +19,21 @@ pub fn warn(text: &str) {
 
 // 脚本输出
 pub fn script_log(text: &str) {
-    pcs!(Green => "➜ "; RBold, Grey => "Script output: "; Grey => text);
+    pcs!(Purple => "➜ "; RBold, Purple => "Script output: "; Purple => text);
 }
 
 pub fn script_err(text: &str) {
-    pcs!(Red => "➜ "; RBold, Red => "Script Error: "; Red => text);
+    pcs!(Purple => "➜ "; RBold, Purple => "Script Error: "; Red => text);
 }
+
+// 流输出
+// pub fn flow_log(text: &str) {
+//     pcs!(Cyan => "➜ "; RBold, Cyan => "Script output: "; Cyan => text);
+// }
+//
+// pub fn flow_err(text: &str) {
+//     pcs!(Cyan => "➜ "; RBold, Cyan => "Script Error: "; Red => text);
+// }
 
 // // 流程引擎输出
 // pub fn flow_log(text: &str){

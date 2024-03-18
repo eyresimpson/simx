@@ -1,23 +1,22 @@
+// 脚本引擎核心
 use std::fs;
 use std::path::Path;
 
+use crate::core::exec::script::py::exec_python_script;
+use crate::core::exec::script::sh::exec_shell_script;
 use crate::tools::log::shell::warn;
 
-// 脚本引擎核心
-
-
 // 执行脚本
-pub fn exec_script(path: &str) {
-    check_script_type(path);
-    let path = Path::new(path);
+pub fn exec_script(path_str: &str) {
+    let path = Path::new(path_str);
     if let Some(extension) = path.extension() {
         match extension.to_str().unwrap().to_lowercase().as_str() {
-            "py" => println!("Python script:"),
-            "sh" => println!("Shell script: "),
+            "py" => exec_python_script(path),
+            "sh" => exec_shell_script(path),
             "bat" => println!("Batch script: "),
             "ps1" => println!("PowerShell script: "),
             "cmd" => println!("Command script: "),
-            _ => println!("Other file type: "),
+            _ => return,
         }
     } else {
         // 不解析其他任何后缀名的文件
@@ -27,7 +26,7 @@ pub fn exec_script(path: &str) {
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
-    let path = "./scripts/";
+    let path = "./default/scripts";
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹
     if Path::new(path).is_dir() {
@@ -38,11 +37,7 @@ pub fn load_and_exec_default_script() {
     }
 }
 
-pub fn check_script_type(path: &str) {
-    // 获取文件后缀名
-    // println!("{}", path);
-}
-
+// 遍历指定文件夹并执行
 fn traverse_folder(folder_path: &str) {
     if let Ok(entries) = fs::read_dir(folder_path) {
         for entry in entries {

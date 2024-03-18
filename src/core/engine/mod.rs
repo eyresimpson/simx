@@ -3,3 +3,4 @@ mod flow;
 mod env;
 mod watcher;
 mod script;
+pub mod config;

@@ -1,0 +1,120 @@
+# simx 核心配置
+
+# 引擎配置
+
+[engine]
+# 自动启动（作为系统服务注册）
+autorun = false
+# 最大线程数
+max-thread = 50
+# 最大内存占用(MB)
+max-mem = 2048
+# 最高cpu资源（%）
+max-cpu = 50
+# 远程脚本
+# 是否允许simx 加载远程的脚本文件，可能因为恶意脚本出现不安全的情况
+remote-script = false
+# 开启用户认证
+# 用户界面（ui）需要根据密码或密钥链接到此服务
+user-auth = true
+# 保留版本数量
+stored-version = 3
+# 系统自动更新（主动请求更新服务器）
+auto-update = false
+# simx 更新服务器地址，为空会请求默认服务器
+update-addr = ""
+# simx 更新服务器端口，为空会请求默认服务器
+update-port = 20083
+# simx 更新通道
+update-channel = "stable"
+# 在启动时运行默认脚本
+run-default-script = true
+# 在启动时运行默认流
+run-default-flow = false
+# 是否启动Http 监听
+enable-http-linster = false
+
+[net]
+# 是否启动http 监听
+http-enable-listener = false
+# http 监听端口
+http-port = 9898
+# 是否启动Socket 监听
+socket-enable-listener = false
+# 是否启动cron监听
+cron-enable-listener = false
+
+[security]
+# 初步校验子key
+pass-key = "noah123"
+# 宿主私钥
+private-key = "./auth/private.key"
+passwd1 = "A8C*8c-Pc5bY4ynl232Cb9z8iD.X"
+passwd2 = "ANcI-c,msmjj2h34v5z9v5rt2a53"
+
+
+# python 2 配置
+[python2]
+# 如果为false，系统将忽略所有python 2的脚本
+enable = false
+# 名称不能修改
+name = "python2"
+# 如果在系统环境变量中，可以直接填写
+path = "python"
+# 是否自动安装依赖（bate）
+#auto-dependency = false
+# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
+safe-mode = true
+
+# python 3 配置
+[python3]
+# 如果为false，系统将忽略所有python 2的脚本
+enable = true
+# 名称不能修改
+name = "python3"
+# 如果在系统环境变量中，可以直接填写
+path = "python3"
+# 是否自动安装依赖（bate）
+#auto-dependency = false
+# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
+safe-mode = true
+
+# shell 配置
+[shell]
+# 如果为false，系统将忽略所有sh的脚本
+enable = true
+# 名称不能修改
+name = "shell"
+# 是否在macos下运行
+enable-macos = true
+# 是否在linux环境下运行
+enable-linux = true
+# 允许以root权限运行（不安全）
+# 允许脚本尝试请求root权限
+root = false
+# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
+safe-mode = true
+
+# powershell 配置
+[powershell]
+# 如果为false，系统将忽略所有ps1的脚本
+enable = true
+# 名称不能修改
+name = "powershell"
+# 允许以管理员权限运行（不安全）
+# 会尝试请求root权限
+admin = false
+# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
+safe-mode = true
+
+# cmd 配置（包括bat）
+[cmd]
+# 如果为false，系统将忽略所有bat/cmd的脚本
+enable = true
+# 名称不能修改
+name = "cmd"
+# 允许以管理员权限运行（不安全）
+# 会尝试请求root权限
+admin = false
+# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
+safe-mode = true

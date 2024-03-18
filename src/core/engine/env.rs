@@ -8,14 +8,12 @@ pub fn check() -> bool {
     // 如果操作系统版本检查不通过，会在控制台显示一个警告
     get_system_version();
 
+    // 检查python版本
+    // 首先检查配置文件中是否有具体配置，如果有则直接使用配置文件中的内容，如果没有再去找系统默认的配置
+    check_python_env();
+
     success("Check Workspace Done.");
     return true;
 }
 
-// 加载配置文件
-pub fn load_configuration() {
-    // 优先级：运行目录配置 > 其他配置
-    info("Engine Loading Configuration...");
-    // 加载配置
-    success("Engine Loading Configuration Done.");
-}
+pub fn check_python_env() {}

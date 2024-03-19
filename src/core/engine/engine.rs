@@ -1,12 +1,12 @@
 use crate::conf::simx::get_config;
-// 引擎核心
+use crate::core::db::connection::db_init;
 use crate::core::engine::env::check;
 use crate::core::engine::flow::load_and_exec_default_flow;
 use crate::core::engine::script::load_and_exec_default_script;
-use crate::core::engine::watcher::{start_cron_watcher, start_net_watcher};
+use crate::core::engine::watcher::start_net_watcher;
 use crate::tools::log::shell::{err, info, success, warn};
 
-// 运行引擎
+// 引擎核心
 pub fn run() {
     info("Engine Starting...");
     // 检查工作环境（当前目录）
@@ -17,34 +17,33 @@ pub fn run() {
     // 尝试加载运行配置
     let conf = get_config();
 
+    // 尝试初始化数据库
+    let dbr = db_init();
+    if dbr.is_err() {
+        err("System Error: ");
+        err("Check Your Db Conf!");
+    }
 
     success("Engine has started.");
-    // 判断是否运行默认脚本
+    // 默认脚本
     if conf.get("engine").unwrap().get("run-default-script").unwrap().as_bool().unwrap() {
         // 尝试加载默认脚本
         info("Default script running...");
         load_and_exec_default_script();
         success("Run default script done.");
     }
-    // 判断是否运行默认流
+    // 默认流
     if conf.get("engine").unwrap().get("run-default-flow").unwrap().as_bool().unwrap() {
         // 尝试加载默认流
         info("Default flow running...");
         load_and_exec_default_flow();
         success("Run default flow done.");
     }
-
-
+    // 网络监听
     if conf.get("net").unwrap().get("http-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");
         // 尝试调起网络监听器（异步）
         start_net_watcher();
-    }
-
-    if conf.get("net").unwrap().get("cron-enable-listener").unwrap().as_bool().unwrap() {
-        info("Attempt to enable cron server...");
-        // 尝试调起网络监听器（异步）
-        start_cron_watcher();
     }
 
 

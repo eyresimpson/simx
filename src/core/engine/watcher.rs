@@ -6,6 +6,3 @@ pub fn start_net_watcher() {
     start_http_watcher();
 }
 
-pub fn start_cron_watcher() {
-    info("Engine Cron Services Starting...");
-}

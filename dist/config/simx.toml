@@ -41,8 +41,15 @@ http-enable-listener = false
 http-port = 9898
 # 是否启动Socket 监听
 socket-enable-listener = false
-# 是否启动cron监听
-cron-enable-listener = false
+
+# 系统数据库配置，默认使用内置的sqlite
+[db]
+# 启用默认数据库
+# 可以指定其他的数据库，但必须有一个可调用的数据库存在，否则系统无法正常启动
+db-default-enable = true
+# 数据文件位置（不建议修改）
+db-default-files = "./db/simx.db"
+
 
 [security]
 # 初步校验子key

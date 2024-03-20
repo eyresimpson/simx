@@ -60,29 +60,20 @@ passwd1 = "A8C*8c-Pc5bY4ynl232Cb9z8iD.X"
 passwd2 = "ANcI-c,msmjj2h34v5z9v5rt2a53"
 
 
-# python 2 配置
-[python2]
-# 如果为false，系统将忽略所有python 2的脚本
-enable = false
-# 名称不能修改
-name = "python2"
-# 如果在系统环境变量中，可以直接填写
-path = "python"
-# 是否自动安装依赖（bate）
-#auto-dependency = false
-# 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
-safe-mode = true
-
-# python 3 配置
-[python3]
-# 如果为false，系统将忽略所有python 2的脚本
+# python 配置
+[python]
+# 如果为false，系统将忽略所有的python脚本
 enable = true
 # 名称不能修改
-name = "python3"
+name = "python"
+# 启用（默认不再支持py2的脚本）
+python2-enable = false
+python3-enable = true
 # 如果在系统环境变量中，可以直接填写
-path = "python3"
+python2-path = "python"
+python3-path = "python3"
 # 是否自动安装依赖（bate）
-#auto-dependency = false
+auto-dependency = false
 # 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改
 safe-mode = true
 
@@ -93,7 +84,7 @@ enable = true
 # 名称不能修改
 name = "shell"
 # 是否在macos下运行
-enable-macos = true
+enable-macos = false
 # 是否在linux环境下运行
 enable-linux = true
 # 允许以root权限运行（不安全）

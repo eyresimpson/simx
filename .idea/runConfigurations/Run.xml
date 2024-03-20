@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run simx" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+  <configuration default="false" name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
     <option name="command" value="run --package simx --bin simx" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/dist" />
     <envs />

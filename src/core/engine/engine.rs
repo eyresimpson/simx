@@ -10,19 +10,24 @@ use crate::tools::log::shell::{err, info, success, warn};
 pub fn run() {
     info("Engine Starting...");
     // 检查工作环境（当前目录）
-    if !check() {
-        warn("Cannot success run check with local");
-        err("Check runtime env failed, check your env!");
+    match check() {
+        Ok(..) => warn("Cannot success run check with local"),
+        (_) => err("Check runtime env failed, check your env!")
+        // warn("Cannot success run check with local");
+        // err("Check runtime env failed, check your env!");
     }
     // 尝试加载运行配置
     let conf = get_config();
 
+    info("System Database Init...");
     // 尝试初始化数据库
+    // 其实目前数据库可有可无，系统复杂度还不至于全部走数据库，后续流程上了再考虑深入
     if db_init().is_err() {
         err("System Error: ");
         err("Check Your Db Conf!");
     }
 
+    success("System Database Load succeed.");
     success("Engine has started.");
 
     // 默认脚本

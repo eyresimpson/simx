@@ -31,8 +31,6 @@ update-channel = "stable"
 run-default-script = true
 # 在启动时运行默认流
 run-default-flow = false
-# 是否启动Http 监听
-enable-http-linster = false
 
 [net]
 # 是否启动http 监听
@@ -71,7 +69,7 @@ python2-enable = false
 python3-enable = true
 # 如果在系统环境变量中，可以直接填写
 python2-path = "python"
-python3-path = "python3"
+python3-path = "python"
 # 是否自动安装依赖（bate）
 auto-dependency = false
 # 安全模式，禁止操作非工作目录下的文件，禁止对操作系统进行修改

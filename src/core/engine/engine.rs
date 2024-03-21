@@ -1,5 +1,5 @@
 use crate::conf::simx::get_config;
-use crate::core::db::dbm::db_init;
+use crate::core::db::controller::db_init;
 use crate::core::engine::env::check;
 use crate::core::engine::flow::load_and_exec_default_flow;
 use crate::core::engine::script::load_and_exec_default_script;

@@ -13,11 +13,11 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
 }
 
 // 根据名称查询环境配置
-pub fn queryEnvByName() {}
-
-// 根据ID查询环境配置
-pub fn queryEnvById() {}
-
-// 查询所有的环境配置
-pub fn queryAllEnv() {}
+// pub fn queryEnvByName() {}
+//
+// // 根据ID查询环境配置
+// pub fn queryEnvById() {}
+//
+// // 查询所有的环境配置
+// pub fn queryAllEnv() {}
 

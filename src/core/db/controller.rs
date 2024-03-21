@@ -17,4 +17,4 @@ pub fn db_init() -> Result<()> {
     Ok(())
 }
 
-pub fn db_reload() {}
+// pub fn db_reload() {}

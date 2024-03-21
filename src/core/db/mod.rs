@@ -1,2 +1,2 @@
-pub mod dbm;
+pub mod controller;
 mod interface;

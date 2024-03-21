@@ -36,7 +36,7 @@ enable-http-linster = false
 
 [net]
 # 是否启动http 监听
-http-enable-listener = false
+http-enable-listener = true
 # http 监听端口
 http-port = 9898
 # 是否启动Socket 监听

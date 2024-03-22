@@ -31,6 +31,8 @@ update-channel = "stable"
 run-default-script = true
 # 在启动时运行默认流
 run-default-flow = false
+# 控制台输出样式(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
+console-log-style = false
 
 [net]
 # 是否启动http 监听

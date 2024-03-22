@@ -12,9 +12,7 @@ pub fn run() {
     // 检查工作环境（当前目录）
     match check() {
         Ok(..) => warn("Cannot success run check with local"),
-        (_) => err("Check runtime env failed, check your env!")
-        // warn("Cannot success run check with local");
-        // err("Check runtime env failed, check your env!");
+        _ => err("Check runtime env failed, check your env!")
     }
     // 尝试加载运行配置
     let conf = get_config();

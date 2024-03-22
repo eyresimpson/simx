@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="noah@192.168.2.21:20" type="ssh/sftp" uuid="3ff88680-366a-41f3-8ea0-9cbaae6e83ac">
+        <config>
+          <option name="projectRootOnTarget" value="/home/noah/code/simx" />
+          <option name="serverName" value="noah@192.168.2.22:22 password" />
+        </config>
+        <ContributedStateBase type="RsLanguageRuntime">
+          <config />
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

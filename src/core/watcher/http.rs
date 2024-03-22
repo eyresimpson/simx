@@ -1,10 +1,12 @@
 use std::net::TcpListener;
 use std::thread;
 use crate::conf::simx::get_config;
+use crate::core::handler::default::handle_client;
 
 use crate::tools::log::shell::{err, success};
 
 pub fn start_http_watcher() {
+    
     let conf = get_config();
     // 获取监听地址
     let addr = conf.get("net").unwrap().get("http-listener-address").unwrap().as_str().unwrap();
@@ -18,7 +20,7 @@ pub fn start_http_watcher() {
         match stream {
             Ok(stream) => {
                 thread::spawn(|| {
-                    crate::tools::net::http::handle_client(stream);
+                    handle_client(stream);
                 });
             }
             Err(e) => {

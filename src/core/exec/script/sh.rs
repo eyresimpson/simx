@@ -30,5 +30,7 @@ pub fn exec_shell_script(path: &Path) {
         if &*String::from_utf8_lossy(&output.stderr) != "" {
             script_err(&*String::from_utf8_lossy(&output.stderr).trim());
         }
+    }else {
+        info("Incompatible operating system, skip")
     }
 }

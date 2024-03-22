@@ -11,7 +11,7 @@ pub fn run() {
     info("Engine Starting...");
     // 检查工作环境（当前目录）
     match check() {
-        Ok(..) => warn("Cannot success run check with local"),
+        Ok(..) => success("Run check done."),
         _ => err("Check runtime env failed, check your env!")
     }
     // 尝试加载运行配置

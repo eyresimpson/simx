@@ -6,7 +6,6 @@ pub fn handle_client(mut stream: TcpStream) {
     stream.read(&mut buffer).unwrap();
     let request = String::from_utf8_lossy(&buffer[..]);
 
-    // Check if it's a GET or POST request
     if request.starts_with("GET") {
         println!("GET Request:");
     } else if request.starts_with("POST") {

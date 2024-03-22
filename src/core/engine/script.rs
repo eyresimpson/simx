@@ -1,6 +1,7 @@
 // 脚本引擎核心
 use std::fs;
 use std::path::Path;
+use crate::core::exec::script::bat::exec_bat_script;
 
 use crate::core::exec::script::py::exec_python_script;
 use crate::core::exec::script::sh::exec_shell_script;
@@ -45,7 +46,7 @@ pub fn exec_script(path: &Path) {
         match extension.to_str().unwrap().to_lowercase().as_str() {
             "py" => exec_python_script(path),
             "sh" => exec_shell_script(path),
-            "bat" => println!("Batch script"),
+            "bat" => exec_bat_script(path),
             "ps1" => println!("PowerShell script"),
             "cmd" => println!("Command script"),
             "sql" => println!("SQL script"),

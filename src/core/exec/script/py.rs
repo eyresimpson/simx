@@ -5,7 +5,6 @@ use crate::conf::simx::get_config;
 use crate::tools::log::shell::{err, info, script_err, script_log, warn};
 
 pub fn exec_python_script(path: &Path) {
-    println!("sss: {:?}", path);
     let conf = get_config();
     let python = conf.get("python");
     if !python.unwrap().get("enable").unwrap().as_bool().unwrap() {

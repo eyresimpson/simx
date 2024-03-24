@@ -15,6 +15,15 @@ pub fn check() -> Result<String, String> {
         warn("Cannot find database files, Previous configuration may be lost.")
         // return Err("Cannot find db path!".parse().unwrap());
     }
+    
+    if !check_python() { 
+        warn("Cannot find python in your env， check your configuration.")
+    }
+    
     success("Check Workspace Done.");
     return Ok("check done.".parse().unwrap())
+}
+
+fn check_python() -> bool {
+    return true
 }

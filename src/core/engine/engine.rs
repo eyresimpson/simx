@@ -49,7 +49,7 @@ pub async fn run() {
     }
 
     // 网络监听
-    if conf.get("net").unwrap().get("http-enable-listener").unwrap().as_bool().unwrap() {
+    if conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");
         // 尝试调起网络监听器（阻塞）
         start_net_watcher().await;

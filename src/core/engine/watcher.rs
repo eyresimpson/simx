@@ -10,11 +10,11 @@ pub async fn start_net_watcher() {
     info("Engine Net Services Starting...");
     let conf = get_config();
     // 获取监听地址
-    let addr = conf.get("net").unwrap().get("http-listener-address").unwrap().as_str().unwrap();
+    let addr = conf.get("net").unwrap().get("rest-listener-address").unwrap().as_str().unwrap();
     // 获取监听端口
-    let port = conf.get("net").unwrap().get("http-listener-port").unwrap().as_integer().unwrap();
-    let workers = conf.get("net").unwrap().get("http-listener-worker").unwrap().as_integer().unwrap();
-    let tmp_path = conf.get("net").unwrap().get("http-listener-temp-path").unwrap().as_str().unwrap();
+    let port = conf.get("net").unwrap().get("rest-listener-port").unwrap().as_integer().unwrap();
+    let workers = conf.get("net").unwrap().get("rest-listener-worker").unwrap().as_integer().unwrap();
+    let tmp_path = conf.get("net").unwrap().get("rest-listener-temp-path").unwrap().as_str().unwrap();
     let config = Config {
         profile: Default::default(),
         port: port as u16,

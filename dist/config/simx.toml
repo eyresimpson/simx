@@ -41,14 +41,15 @@ auto-check-env = true
 [net]
 # 是否启动http 监听
 # 如果没有启用，系统将在运行完默认流程和脚本后自动退出，除非开启了socket的监听
-http-enable-listener = true
+rest-enable-listener = true
 # 监听地址
-http-listener-address = "127.0.0.1"
-# http 监听端口
-http-listener-port = 9898
+rest-listener-address = "127.0.0.1"
+# 监听端口
+rest-listener-port = 9898
 # 工作线程数，数量越多，理论性能越高，占用资源越多
-http-listener-worker = 5
-http-listener-temp-path = "tmp/web"
+rest-listener-worker = 5
+# http temp临时目录所在位置
+rest-listener-temp-path = "tmp/web"
 
 # 是否启动Socket 监听
 socket-enable-listener = false

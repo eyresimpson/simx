@@ -1,7 +1,6 @@
 # simx 核心配置
 
 # 引擎配置
-
 [engine]
 # 自动启动（作为系统服务注册）
 autorun = false
@@ -35,19 +34,25 @@ run-default-flow = false
 console-log-style = true
 
 [env]
-# 自动检查环境有效性，例如Python会检查本地的python命令是否有效
+# 自动检查环境有效性，例如simx会检查本地的python命令是否有效
 # 仅在启动时检查，可能耗费一定时间
 auto-check-env = true
 
 [net]
 # 是否启动http 监听
+# 如果没有启用，系统将在运行完默认流程和脚本后自动退出，除非开启了socket的监听
 http-enable-listener = true
 # 监听地址
 http-listener-address = "127.0.0.1"
 # http 监听端口
 http-listener-port = 9898
+# 工作线程数，数量越多，理论性能越高，占用资源越多
+http-listener-worker = 5
+http-listener-temp-path = "tmp/web"
+
 # 是否启动Socket 监听
 socket-enable-listener = false
+
 
 # 系统数据库配置，默认使用内置的sqlite
 [db]

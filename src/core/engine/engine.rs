@@ -7,7 +7,7 @@ use crate::core::engine::watcher::start_net_watcher;
 use crate::tools::log::shell::{err, info, success, warn};
 
 // 引擎核心
-pub fn run() {
+pub async fn run() {
     info("Engine Starting...");
     // 检查工作环境（当前目录）
     match check() {
@@ -51,8 +51,8 @@ pub fn run() {
     // 网络监听
     if conf.get("net").unwrap().get("http-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");
-        // 尝试调起网络监听器（同步阻塞）
-        start_net_watcher();
+        // 尝试调起网络监听器（阻塞）
+        start_net_watcher().await;
     } else {
         warn("Service listening disable, The engine will not be maintained");
     }

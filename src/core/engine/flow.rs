@@ -16,7 +16,7 @@ pub fn load_and_exec_default_flow() {
         // 遍历文件夹下的所有内容
         exec_flow();
     } else {
-        warn("No default flow found, Skip...")
+        warn("No init flow found, Skip...")
     }
     exec_flow();
 }

@@ -32,21 +32,21 @@ pub async fn run() {
     success("Engine has started.");
 
     // 默认脚本
-    if conf.get("engine").unwrap().get("run-default-script").unwrap().as_bool().unwrap() {
+    if conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {
         info("Default script running...");
         load_and_exec_default_script();
-        success("Run default script done.");
+        success("Run init script done.");
     } else {
-        info("Skip default script running.");
+        info("Skip init script running.");
     }
 
     // 默认流
-    if conf.get("engine").unwrap().get("run-default-flow").unwrap().as_bool().unwrap() {
+    if conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
         info("Default flow running...");
         load_and_exec_default_flow();
-        success("Run default flow done.");
+        success("Run init flow done.");
     } else {
-        info("Skip default flow running.");
+        info("Skip init flow running.");
     }
 
     // 网络监听

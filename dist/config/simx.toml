@@ -27,9 +27,9 @@ update-port = 20083
 # simx 更新通道
 update-channel = "stable"
 # 在启动时运行默认脚本
-run-default-script = true
+run-init-script = true
 # 在启动时运行默认流
-run-default-flow = false
+run-init-flow = false
 # 控制台输出样式(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
 console-log-style = true
 

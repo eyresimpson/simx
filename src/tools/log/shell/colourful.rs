@@ -3,28 +3,28 @@ use color_string::Font::*;
 use color_string::pcs;
 
 pub fn info(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Blue => "Info: "; Blue => text);
+    pcs!(Blue => "➜ "; Blue => text);
 }
 
 pub fn success(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Green => "Done: "; Green => text);
+    pcs!(Green => "➜ "; Green => text);
 }
 
 pub fn err(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Red => "Fail: "; Red => text);
+    pcs!(Red => "➜ "; Red => text);
 }
 
 pub fn warn(text: &str) {
-    pcs!(Cyan => "➜ "; RBold, Yellow => "Warn: "; Yellow => text);
+    pcs!(Yellow => "➜ "; Yellow => text);
 }
 
 // 脚本输出
 pub fn script_log(text: &str) {
-    pcs!(Purple => "➜ "; RBold, Purple => "Script output: "; Purple => text);
+    pcs!(Purple => "➜ "; Purple => text);
 }
 
 pub fn script_err(text: &str) {
-    pcs!(Purple => "➜ "; RBold, Purple => "Script error: "; Red => text);
+    pcs!(Purple => "➜ "; Red => text);
 }
 
 // 流输出

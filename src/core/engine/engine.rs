@@ -6,31 +6,33 @@ use crate::core::engine::script::load_and_exec_default_script;
 use crate::core::engine::watcher::start_net_watcher;
 use crate::tools::log::shell::{err, info, success, warn};
 
-// 引擎核心
+/// 引擎核心
 pub async fn run() {
     info("Engine Starting...");
+
     // 检查工作环境（当前目录）
-    match check() {
-        Ok(..) => success("Run check done."),
-        _ => err("Check runtime env failed, check your env!")
+    if let Err(_) = check() {
+        err("Check runtime env failed, check your env!");
+    } else {
+        success("Run check done.");
     }
+
     // 尝试加载运行配置
     let conf = get_config();
 
-    info("System Database Init...");
     // 尝试初始化数据库
     // 其实目前数据库可有可无，系统复杂度还不至于全部走数据库，后续流程上了再考虑深入
+    info("System Database Init...");
     if db_init().is_err() {
-        err("System Error: ");
-        err("Check Your Db Conf!");
+        err("System Error: Check Your Db Conf!");
+    } else {
+        success("System Database Load succeed.");
     }
 
-    success("System Database Load succeed.");
     success("Engine has started.");
 
     // 默认脚本
     if conf.get("engine").unwrap().get("run-default-script").unwrap().as_bool().unwrap() {
-        // 尝试加载默认脚本
         info("Default script running...");
         load_and_exec_default_script();
         success("Run default script done.");
@@ -39,13 +41,12 @@ pub async fn run() {
     }
 
     // 默认流
-    if conf.get("engine").unwrap().get("run-default-datatime").unwrap().as_bool().unwrap() {
-        // 尝试加载默认流
-        info("Default datatime running...");
+    if conf.get("engine").unwrap().get("run-default-flow").unwrap().as_bool().unwrap() {
+        info("Default flow running...");
         load_and_exec_default_flow();
-        success("Run default datatime done.");
+        success("Run default flow done.");
     } else {
-        info("Skip default datatime running.");
+        info("Skip default flow running.");
     }
 
     // 网络监听
@@ -56,7 +57,6 @@ pub async fn run() {
     } else {
         warn("Service listening disable, The engine will not be maintained");
     }
-
 
     // 运行结束
     success("Engine run out.");

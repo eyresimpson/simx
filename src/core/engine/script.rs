@@ -1,12 +1,12 @@
 // 脚本引擎核心
 use std::fs;
 use std::path::Path;
-use crate::core::exec::script::bat::exec_bat_script;
-use crate::core::exec::script::ps1::exec_powershell_script;
+use crate::core::flow::exec::script::bat::exec_bat_script;
+use crate::core::flow::exec::script::ps1::exec_powershell_script;
 
-use crate::core::exec::script::py::exec_python_script;
-use crate::core::exec::script::sh::exec_shell_script;
-use crate::core::exec::script::sql::exec_sql_script;
+use crate::core::flow::exec::script::py::exec_python_script;
+use crate::core::flow::exec::script::sh::exec_shell_script;
+use crate::core::flow::exec::script::sql::exec_sql_script;
 use crate::tools::log::shell::warn;
 
 // 加载并执行默认脚本
@@ -23,7 +23,7 @@ pub fn load_and_exec_default_script() {
     }
 }
 
-// 遍历指定文件夹并执行
+// 遍历并执行指定目录下的所有脚本（包含子目录）
 fn traverse_folder(folder_path: &Path) {
     if let Ok(entries) = fs::read_dir(folder_path) {
         // 循环指定的目录
@@ -42,13 +42,13 @@ fn traverse_folder(folder_path: &Path) {
     }
 }
 
-// 执行脚本
+// 执行指定路径下的脚本
 pub fn exec_script(path: &Path) {
     if let Some(extension) = path.extension() {
         match extension.to_str().unwrap().to_lowercase().as_str() {
             "py" => exec_python_script(path),
             "sh" => exec_shell_script(path),
-            "bat"|"cmd" => exec_bat_script(path),
+            "bat" | "cmd" => exec_bat_script(path),
             "ps1" => exec_powershell_script(path),
             "sql" => exec_sql_script(path),
             // 目前拒绝处理其他脚本

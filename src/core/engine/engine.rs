@@ -39,13 +39,13 @@ pub async fn run() {
     }
 
     // 默认流
-    if conf.get("engine").unwrap().get("run-default-flow").unwrap().as_bool().unwrap() {
+    if conf.get("engine").unwrap().get("run-default-datatime").unwrap().as_bool().unwrap() {
         // 尝试加载默认流
-        info("Default flow running...");
+        info("Default datatime running...");
         load_and_exec_default_flow();
-        success("Run default flow done.");
+        success("Run default datatime done.");
     } else {
-        info("Skip default flow running.");
+        info("Skip default datatime running.");
     }
 
     // 网络监听

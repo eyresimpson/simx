@@ -5,7 +5,7 @@
 # 自动启动（作为系统服务注册）
 autorun = false
 # 最大线程数
-max-thread = 50
+max-thread = 100
 # 最大内存占用(MB)
 max-mem = 2048
 # 最高cpu资源（%）

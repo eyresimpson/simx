@@ -25,7 +25,7 @@ pub fn check() -> Result<String, String> {
         fs::create_dir("db").expect("Engine cannot fix workspace, Please check your env.");
     }
 
-    // 检查运行目录下是否有数据库目录（非必须，毕竟现在也没怎么用上）
+    // 检查运行目录下是否有缓存目录
     let db_path = Path::new("tmp").is_dir();
     if !db_path {
         info("Cannot find tmp dir, system will automatically rebuild this directory.");

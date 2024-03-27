@@ -8,7 +8,7 @@ use crate::tools::files::toml::load_conf;
 
 // 禁止直接操作静态配置
 static CONFIG: Lazy<Mutex<Value>> = Lazy::new(|| {
-    Mutex::new(load_conf(Path::new("config").join("simx.toml").as_path()).unwrap())
+    Mutex::new(load_conf(Path::new("conf").join("simx.toml").as_path()).unwrap())
 });
 
 

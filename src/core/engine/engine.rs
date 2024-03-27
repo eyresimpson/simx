@@ -1,6 +1,6 @@
 use crate::conf::simx::get_config;
 use crate::core::db::controller::db_init;
-use crate::core::engine::env::check;
+use crate::core::engine::workspace::check;
 use crate::core::engine::flow::load_and_exec_default_flow;
 use crate::core::engine::script::load_and_exec_default_script;
 use crate::core::engine::watcher::start_net_watcher;
@@ -12,7 +12,8 @@ pub async fn run() {
 
     // 检查工作环境（当前目录）
     if let Err(_) = check() {
-        err("Check runtime env failed, check your env!");
+        err("Check runtime env failed, Engine Shutdown.");
+        return;
     } else {
         success("Run check done.");
     }
@@ -31,7 +32,7 @@ pub async fn run() {
 
     success("Engine has started.");
 
-    // 默认脚本
+    // 初始化脚本
     if conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {
         info("Default script running...");
         load_and_exec_default_script();
@@ -40,7 +41,7 @@ pub async fn run() {
         info("Skip init script running.");
     }
 
-    // 默认流
+    // 初始流
     if conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
         info("Default flow running...");
         load_and_exec_default_flow();
@@ -49,7 +50,7 @@ pub async fn run() {
         info("Skip init flow running.");
     }
 
-    // 网络监听
+    // 系统监听
     if conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");
         // 尝试调起网络监听器（阻塞）

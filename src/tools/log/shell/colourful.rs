@@ -20,11 +20,11 @@ pub fn warn(text: &str) {
 
 // 脚本输出
 pub fn script_log(text: &str) {
-    pcs!(Purple => "➜ "; Purple => text);
+    pcs!(Purple => text);
 }
-
+// 面前临时将两者合二为一，不再关注其区别，都以Purple显示
 pub fn script_err(text: &str) {
-    pcs!(Purple => "➜ "; Red => text);
+    pcs!(Purple => text);
 }
 
 // 流输出

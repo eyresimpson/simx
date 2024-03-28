@@ -1,13 +1,13 @@
 // 脚本引擎核心
 use std::fs;
 use std::path::Path;
+
 use crate::core::flow::exec::script::bat::exec_bat_script;
 use crate::core::flow::exec::script::ps1::exec_powershell_script;
-
 use crate::core::flow::exec::script::py::exec_python_script;
 use crate::core::flow::exec::script::sh::exec_shell_script;
 use crate::core::flow::exec::script::sql::exec_sql_script;
-use crate::tools::log::shell::warn;
+use crate::tools::log::shell::info;
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
@@ -19,7 +19,7 @@ pub fn load_and_exec_default_script() {
         // 遍历文件夹下的所有内容
         traverse_folder(path);
     } else {
-        warn("No init scripts found, Skip...")
+        info("No init scripts found, Skip...")
     }
 }
 

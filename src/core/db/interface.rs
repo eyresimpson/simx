@@ -1,6 +1,7 @@
 use rusqlite::Connection;
 
-// 创建数据库连接
+// 初始化数据库
+// 后续可能放到某个文件中，都写代码里太复杂了
 pub fn init_base_db_struct() -> rusqlite::Result<()> {
     let conn = Connection::open("./db/simx.db")?;
 

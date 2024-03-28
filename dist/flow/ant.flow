@@ -1,0 +1,10 @@
+@engine > 0.1.0
+@exec-ant-opt
+
+let connect
+let dbr
+
+# 步骤1
+step-1:
+    connect = conn-db('127.0.0.1',3306)
+    

@@ -51,6 +51,7 @@ pub async fn start_net_watcher() {
     };
     // 挂载到simx
     // simx中包含所有操作相关内容
+    // 此处阻塞了系统的运行，如果后续需要修改，可以去掉 await
     build().configure(config.clone()).mount("/simx", routes![
         // 系统基础信息
         welcome_info,

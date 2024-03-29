@@ -5,3 +5,4 @@ pub mod exec;
 mod resolver;
 pub mod etalon;
 pub mod controller;
+mod entity;

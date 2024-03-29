@@ -1,5 +1,5 @@
 pub mod engine;
-mod flow;
+pub mod flow;
 mod workspace;
 mod watcher;
-mod script;
+pub mod script;

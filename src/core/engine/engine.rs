@@ -15,14 +15,13 @@ pub async fn run() {
         err("Check runtime env failed, Engine Shutdown.");
         return;
     } else {
-        success("Run check done.");
+        success("Workspace check done.");
     }
 
     // 尝试加载运行配置
     let conf = get_config();
 
     // 尝试初始化数据库
-    // 其实目前数据库可有可无，系统复杂度还不至于全部走数据库，后续流程上了再考虑深入
     info("System Database Init...");
     if db_init().is_err() {
         err("System Error: Check Your Db Conf!");

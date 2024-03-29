@@ -37,6 +37,7 @@ fn traverse_folder(folder_path: &Path) {
 pub fn exec_flow(path: &Path) {
     if let Some(extension) = path.extension() {
         match extension.to_str().unwrap().to_lowercase().as_str() {
+            // 目前首选支持flow/fl类的流程，其余都属于自定义的流类型
             "flow"|"fl" => exec_fl_flow(path),
             "json" => exec_json_flow(path),
             "xml" => exec_xml_flow(path),

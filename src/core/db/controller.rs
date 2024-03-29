@@ -12,6 +12,8 @@ pub fn db_init() -> Result<()> {
     let r = conn.execute("select 1 from simx_conf", ());
     if r.is_err() {
         warn("cannot find table, will init it.");
+        // 初始化数据表结构
+        // 后续这部分内容应该会移动到sql文件中，而不是内置在程序里，这样可能比较浪费内存空间，目前表还少，先这样用着
         let ir = init_base_db_struct();
         if ir.is_err() {
             err("cannot init system db struct, engine init failed!");
@@ -37,14 +39,18 @@ pub fn scan_load_local() -> std::result::Result<String, String> {
     traverse_folder(Path::new("flow"));
     // 加载插件信息
     traverse_folder(Path::new("ext"));
+    // 返回成功消息
     return Ok("Scan done.".to_string());
 }
 
 fn traverse_folder(folder_path: &Path) {
+    // 连接到数据库（获取到的信息需要写入到数据库中）
     let conn = Connection::open("./db/simx.db").unwrap();
+    // 判断给定的路径是否存在
     let path_exist = Path::new(folder_path).is_dir();
     if !path_exist {
         warn("folder not found, ignored err and rebuilt.");
+        // 不存在的话自动创建一下
         fs::create_dir(folder_path).expect("Cannot rebuild path.");
     }
     if let Ok(entries) = fs::read_dir(folder_path) {

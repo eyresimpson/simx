@@ -5,6 +5,7 @@ use rusqlite::Connection;
 pub fn init_base_db_struct() -> rusqlite::Result<()> {
     let conn = Connection::open("./db/simx.db")?;
 
+    // 创建脚本表
     conn.execute("create table simx_script
                     (
                         id  integer not null
@@ -18,6 +19,7 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
                 ", ()
     )?;
 
+    // 创建流程表
     conn.execute("create table simx_flow
                     (
                         id  integer not null
@@ -31,6 +33,7 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
                 ", ()
     )?;
 
+    // 创建插件表
     conn.execute("create table simx_ext
                     (
                         id  integer not null

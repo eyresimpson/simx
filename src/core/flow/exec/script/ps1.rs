@@ -7,6 +7,7 @@ pub fn exec_powershell_script(path: &Path){
     info(format!("Find powershell in path -> {:?}", path).as_str());
     // 获取操作系统类型
     let os = env::consts::OS;
+    // 仅windows 执行
     if os == "windows" {
         let output = Command::new("powershell")
             .arg("-File")

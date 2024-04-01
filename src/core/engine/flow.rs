@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::Path;
 
-use crate::core::flow::controller::interface::{exec_fl_flow, exec_json_flow, exec_toml_flow, exec_xml_flow};
+use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
 use crate::tools::log::shell::info;
 
 pub fn load_and_exec_default_flow() {
@@ -38,8 +38,8 @@ pub fn exec_flow(path: &Path) {
     if let Some(extension) = path.extension() {
         match extension.to_str().unwrap().to_lowercase().as_str() {
             // 目前首选支持flow/fl类的流程，其余都属于自定义的流类型
-            "flow"|"fl" => exec_fl_flow(path),
-            "json" => exec_json_flow(path),
+            // 目前其实flow也是json类型，但是后续flow可能会有加密之类的功能加上去
+            "flow" | "fl" | "json" => exec_fl_flow(path),
             "xml" => exec_xml_flow(path),
             "toml" => exec_toml_flow(path),
             // 目前拒绝处理其他类型的流程

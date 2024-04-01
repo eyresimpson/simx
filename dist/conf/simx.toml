@@ -7,7 +7,7 @@ autorun = false
 # 最大线程数
 max-thread = 100
 # 远程脚本
-# 是否允许simx 加载远程的脚本文件，可能因为恶意脚本出现不安全的情况
+# 是否允许simx加载远程的脚本文件，可能因为恶意脚本出现不安全的情况
 remote-script = false
 # 开启用户认证
 # 用户界面（ui）需要根据密码或密钥链接到此服务
@@ -25,9 +25,17 @@ update-channel = "stable"
 # 在启动时运行默认脚本
 run-init-script = true
 # 在启动时运行默认流
-run-init-flow = false
+run-init-flow = true
 # 控制台输出样式(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
 console-log-style = true
+
+# 流节点仓库
+[warehouse]
+url = "https://simx.tineaine.cn"
+port = 9999
+# 运行流程过程中，如果缺少依赖的节点，允许simx自动前往仓库拉取
+auto-pull = false
+
 
 [env]
 # 自动检查环境有效性，例如simx会检查本地的python命令是否有效

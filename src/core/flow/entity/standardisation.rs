@@ -1,6 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Flow {
     // 流名称
     pub(crate) flow_name: String,
@@ -8,54 +8,33 @@ pub struct Flow {
     pub(crate) update_date: String,
     // 创建日期
     pub(crate) create_date: String,
+    // 开发者
+    pub(crate) developer: String,
+    // 版本
+    pub(crate) version: String,
     // 环境要求
     pub(crate) env_req: Vec<Env>,
     // 流程步骤集
     pub(crate) steps: Vec<Step>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Step {
-    node: Node,
-    conf: NodeConf,
+    // 节点类型
+    mold: StepType,
+    // 节点处理器路径，引擎会根据这个路径找到对应的handler（exec、endpoint、origin）
+    // simx.exec.file.create
+    // remote.exec.cn.tineaine.tools.say
+    handler: String,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Node {
-    current: CurrentNode,
-    exec: NodeExec,
-    origin: NodeOrigin,
-    endpoint: NodeEndPoint,
-    runtime: Runtime,
+enum StepType {
+    ORIGIN,
+    ENDPOINT,
+    EXEC,
 }
 
-#[derive(Serialize, Deserialize)]
-pub enum CurrentNode {
-    Exec,
-    Origin,
-    Endpoint,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Runtime {
-    input: String,
-    output: String,
-    variable: Vec<String>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct NodeExec {}
-
-#[derive(Serialize, Deserialize)]
-pub struct NodeOrigin {}
-
-#[derive(Serialize, Deserialize)]
-pub struct NodeEndPoint {}
-
-#[derive(Serialize, Deserialize)]
-pub struct NodeConf {}
-
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Env {
     env_name: String,
     env_type: String,

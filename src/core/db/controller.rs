@@ -9,9 +9,15 @@ use crate::tools::log::shell::{err, warn};
 // 此方法用于初始化数据库（如果需要的话）
 pub fn db_init() -> Result<()> {
     let conn = Connection::open("./db/simx.db")?;
-    let r = conn.execute("select 1 from simx_conf", ());
-    if r.is_err() {
+    let exists = conn.query_row(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+        &[&"simx_script"],
+        |_| Ok(()),
+    );
+    // let r = conn.execute("select 1 from simx_script", ());
+    if exists.is_err() {
         warn("cannot find table, will init it.");
+        // warn(r.err().unwrap().to_string().as_str());
         // 初始化数据表结构
         // 后续这部分内容应该会移动到sql文件中，而不是内置在程序里，这样可能比较浪费内存空间，目前表还少，先这样用着
         let ir = init_base_db_struct();

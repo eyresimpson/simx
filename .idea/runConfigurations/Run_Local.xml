@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Local" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
     <target name="@@@LOCAL@@@" />
-    <option name="command" value="run --package simx --bin simx --release" />
+    <option name="command" value="run --package simx --bin simx" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/dist" />
     <envs />
     <option name="emulateTerminal" value="true" />

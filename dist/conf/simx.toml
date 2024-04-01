@@ -6,10 +6,6 @@
 autorun = false
 # 最大线程数
 max-thread = 100
-# 最大内存占用(MB)
-max-mem = 2048
-# 最高cpu资源（%）
-max-cpu = 50
 # 远程脚本
 # 是否允许simx 加载远程的脚本文件，可能因为恶意脚本出现不安全的情况
 remote-script = false

@@ -2,16 +2,17 @@
 use std::fs;
 use std::path::Path;
 
-use crate::core::flow::exec::script::bat::exec_bat_script;
-use crate::core::flow::exec::script::ps1::exec_powershell_script;
-use crate::core::flow::exec::script::py::exec_python_script;
-use crate::core::flow::exec::script::sh::exec_shell_script;
-use crate::core::flow::exec::script::sql::exec_sql_script;
+use crate::core::flow::handler::exec::script::bat::exec_bat_script;
+use crate::core::flow::handler::exec::script::ps1::exec_powershell_script;
+use crate::core::flow::handler::exec::script::py::exec_python_script;
+use crate::core::flow::handler::exec::script::sh::exec_shell_script;
+use crate::core::flow::handler::exec::script::sql::exec_sql_script;
 use crate::tools::log::shell::info;
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
-    let binding = Path::new("init").join("scripts");
+    // TODO: 将这个路径修改到配置文件中
+    let binding = Path::new("script").join("init");
     let path = binding.as_path();
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹

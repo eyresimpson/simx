@@ -1,12 +1,12 @@
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::simx::get_config;
+use crate::conf::simx::{get_config, get_env_conf};
 use crate::tools::log::shell::{info, script_err, script_log};
 
 pub fn exec_python_script(path: &Path) {
-    let conf = get_config();
-    let python = conf.get("python");
+    let env_conf = get_env_conf();
+    let python = env_conf.get("python");
     if !python.unwrap().get("enable").unwrap().as_bool().unwrap() {
         return;
     }

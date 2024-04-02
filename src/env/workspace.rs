@@ -1,13 +1,13 @@
 use std::fs;
 use std::path::Path;
 use toml::Value;
-use crate::conf::simx::get_config;
+use crate::conf::simx::{get_config, get_env_conf};
 use crate::tools::log::shell::{err, info, success, warn};
 
 /// 环境检查
 pub fn check() -> Result<String, String> {
     // 尝试加载运行配置
-    let conf = get_config();
+    let env_conf = get_env_conf();
     info("Check Workspace...");
     // 检查运行目录下是否有配置文件夹
     // 这个配置是必需的，一旦找不到，立即报错退出
@@ -35,7 +35,7 @@ pub fn check() -> Result<String, String> {
     }
 
     // 检查是否有 Python 环境
-    if !check_python(conf.clone()) {
+    if !check_python(env_conf.clone()) {
         warn("Cannot find python in your env, check your configuration.");
     }
 

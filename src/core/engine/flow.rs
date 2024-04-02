@@ -7,9 +7,10 @@ use crate::tools::log::shell::info;
 pub fn load_and_exec_default_flow() {
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹
-    if Path::new("init").join("flow").is_dir() {
+    // TODO: 将这个路径修改到配置文件中
+    if Path::new("flow").join("init").is_dir() {
         // 遍历文件夹下的所有内容
-        traverse_folder(Path::new("init").join("flow").as_path());
+        traverse_folder(Path::new("flow").join("init").as_path());
     } else {
         info("No init flow found, Skip...")
     }

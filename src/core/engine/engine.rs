@@ -1,4 +1,4 @@
-use crate::conf::simx::get_config;
+use crate::conf::simx::{get_config, get_net_conf};
 use crate::core::db::controller::db_init;
 use crate::core::engine::flow::load_and_exec_default_flow;
 use crate::core::engine::script::load_and_exec_default_script;
@@ -10,6 +10,7 @@ pub async fn run() {
     info("Engine Starting...");
     // 尝试加载运行配置
     let conf = get_config();
+    let net_conf = get_net_conf();
 
     // 尝试检查并初始化数据库
     info("System Database checking...");
@@ -40,7 +41,7 @@ pub async fn run() {
     }
 
     // 系统监听
-    if conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
+    if net_conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");
         // 尝试调起网络监听器（阻塞）
         start_net_watcher().await;

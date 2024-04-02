@@ -8,7 +8,7 @@ pub fn exec_fl_flow(path: &Path) {
     let flow = resolver_flow(path);
     // 执行流
     exec_standardisation_flow(flow);
-    info(path.to_str().unwrap())
+    // info(path.to_str().unwrap())
 }
 
 // 执行toml流
@@ -17,9 +17,9 @@ pub fn exec_toml_flow(path: &Path) {
 }
 
 // 执行json流
-pub fn exec_json_flow(path: &Path) {
-    info(path.to_str().unwrap())
-}
+// pub fn exec_json_flow(path: &Path) {
+//     info(path.to_str().unwrap())
+// }
 
 // 执行xml流
 pub fn exec_xml_flow(path: &Path) {

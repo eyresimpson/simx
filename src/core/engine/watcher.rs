@@ -1,7 +1,7 @@
 use rocket::{build, Config};
 use rocket::config::LogLevel;
 
-use crate::conf::simx::get_config;
+use crate::conf::simx::{get_config, get_net_conf};
 use crate::core::handler::common::welcome_info;
 use crate::core::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
 use crate::core::handler::version::{handle_version_current, handle_version_latest, handle_version_list};
@@ -9,23 +9,24 @@ use crate::tools::log::shell::info;
 
 pub async fn start_net_watcher() {
     info("Engine Net Services Starting...");
-    let conf = get_config();
+    let net_conf = get_net_conf();
+    let engine_conf = get_config();
     // 获取监听地址
-    let addr = conf.get("net").unwrap()
+    let addr = net_conf.get("net").unwrap()
         .get("rest-listener-address").unwrap().as_str().unwrap();
     // 获取监听端口
-    let port = conf.get("net").unwrap()
+    let port = net_conf.get("net").unwrap()
         .get("rest-listener-port").unwrap().as_integer().unwrap();
     // 获取工作线程数
-    let workers = conf.get("net").unwrap()
+    let workers = net_conf.get("net").unwrap()
         .get("rest-listener-worker").unwrap().as_integer().unwrap();
     // 获取临时文件夹
-    let temp_dir = conf.get("net").unwrap()
+    let temp_dir = net_conf.get("net").unwrap()
         .get("rest-listener-temp-path").unwrap().as_str().unwrap();
-    let cli_colors = conf.get("engine").unwrap()
+    let cli_colors = engine_conf.get("engine").unwrap()
         .get("console-log-style").unwrap().as_bool().unwrap();
     // 最大线程，按照引擎最大线程的一半
-    let max_thread = conf.get("engine").unwrap()
+    let max_thread = engine_conf.get("engine").unwrap()
         .get("max-thread").unwrap().as_integer().unwrap() / 2;
     // http 配置
     let config = Config {

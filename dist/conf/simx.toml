@@ -7,7 +7,7 @@ autorun = false
 # 最大线程数，默认为 100
 max-thread = 100
 # 在启动时运行默认脚本，默认为false
-run-init-script = true
+run-init-script = false
 # 在启动时运行默认流，默认为false
 run-init-flow = true
 # 控制台输出样式，默认为true(部分Linux系统下可能无法显示彩色字符，将其关掉即可)

@@ -1,6 +1,7 @@
 use crate::conf::simx::{get_config, get_net_conf};
 use crate::core::db::controller::db_init;
 use crate::core::engine::flow::load_and_exec_default_flow;
+use crate::core::engine::init::init;
 use crate::core::engine::script::load_and_exec_default_script;
 use crate::core::engine::watcher::start_net_watcher;
 use crate::tools::log::shell::{err, info, success, warn};
@@ -20,26 +21,12 @@ pub async fn run() {
         success("System database checked successfully.");
     }
 
+
+    // 执行系统初始化事件
+    // 包括环境检查和运行初始化脚本和初始化流
+    init();
+    // 系统启动完成
     success("Engine has started.");
-
-    // 初始化脚本
-    if conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {
-        info("Default script running...");
-        load_and_exec_default_script();
-        success("Run init script done.");
-    } else {
-        info("Skip init script running.");
-    }
-
-    // 初始流
-    if conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
-        info("Default flow running...");
-        load_and_exec_default_flow();
-        success("Run init flow done.");
-    } else {
-        info("Skip init flow running.");
-    }
-
     // 系统监听
     if net_conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
         info("Attempt to enable service listening...");

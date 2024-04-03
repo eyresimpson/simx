@@ -1,16 +1,19 @@
 use std::fs;
 use std::path::Path;
+
 use toml::Value;
-use crate::conf::simx::{get_config, get_env_conf};
+
+use crate::conf::simx::get_env_conf;
 use crate::tools::log::shell::{err, info, success, warn};
 
 /// 环境检查
-pub fn check() -> Result<String, String> {
+pub fn env_check() -> Result<String, String> {
     // 尝试加载运行配置
     let env_conf = get_env_conf();
-    info("Check Workspace...");
+
     // 检查运行目录下是否有配置文件夹
     // 这个配置是必需的，一旦找不到，立即报错退出
+    info("Check Workspace...");
     let config_path = Path::new("conf").is_dir();
     if !config_path {
         err("Cannot find simx main config path, please check simx workspace.");
@@ -40,11 +43,12 @@ pub fn check() -> Result<String, String> {
     }
 
     success("Check Workspace Done.");
-    Ok("check done.".to_string())
+    // Ok("check done.".to_string())
+    return Err("aaaa".to_string());
 }
 
 fn check_python(conf: Value) -> bool {
-    let current_python  = conf.get("python").unwrap().get("path").unwrap().as_str().unwrap();
+    let current_python = conf.get("python").unwrap().get("path").unwrap().as_str().unwrap();
     // 注意！ Windows 10/11即使没有安装，也不会报错（因为微软不知道怎么想得，如果未安装居然会默认打开应用商店...）
     std::process::Command::new(current_python).arg("--version").output().is_ok()
 }

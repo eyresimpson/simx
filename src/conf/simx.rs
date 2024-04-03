@@ -21,7 +21,7 @@ static ENV_CONFIG: Lazy<Mutex<Value>> = Lazy::new(|| {
 
 
 // 获取配置
-pub fn get_config() -> Value {
+pub fn get_engine_config() -> Value {
     CONFIG.lock().unwrap().clone()
 }
 

@@ -2,12 +2,12 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::simx::get_config;
+use crate::conf::simx::get_engine_config;
 use crate::tools::log::shell::{info, script_err, script_log, warn};
 
 pub fn exec_shell_script(path: &Path) {
     info(format!("Find Shell in path -> {:?}", path).as_str());
-    let conf = get_config();
+    let conf = get_engine_config();
     // 获取操作系统类型
     let os = env::consts::OS;
     if os == "linux" || os == "macos" {

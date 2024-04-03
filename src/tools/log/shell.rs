@@ -2,7 +2,7 @@ mod basic;
 mod colourful;
 
 
-use crate::conf::simx::get_config;
+use crate::conf::simx::get_engine_config;
 use colourful::info as c_info;
 use basic::info as b_info;
 use colourful::err as c_err;
@@ -16,7 +16,7 @@ use basic::script_log as b_script_log;
 use colourful::script_err as c_script_err;
 use basic::script_err as b_script_err;
 fn show_colourful() -> bool {
-    let conf = get_config();
+    let conf = get_engine_config();
     return conf.get("engine").unwrap().get("console-log-style").unwrap().as_bool().unwrap();
 }
 

@@ -1,16 +1,24 @@
 use rocket::{build, Config};
 use rocket::config::LogLevel;
 
-use crate::conf::simx::{get_config, get_net_conf};
+use crate::conf::simx::{get_engine_config, get_net_conf};
 use crate::core::handler::common::welcome_info;
 use crate::core::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
 use crate::core::handler::version::{handle_version_current, handle_version_latest, handle_version_list};
-use crate::tools::log::shell::info;
+use crate::tools::log::shell::{info, warn};
 
 pub async fn start_net_watcher() {
+    let net_conf = get_net_conf();
+
+    // 系统监听
+    if !net_conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
+        warn("Service listening disable, The engine will not be maintained");
+        return;
+    }
+    // info("Attempt to enable service listening...");
     info("Engine Net Services Starting...");
     let net_conf = get_net_conf();
-    let engine_conf = get_config();
+    let engine_conf = get_engine_config();
     // 获取监听地址
     let addr = net_conf.get("net").unwrap()
         .get("rest-listener-address").unwrap().as_str().unwrap();

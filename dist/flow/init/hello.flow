@@ -18,13 +18,20 @@
     {
       "mold": "ORIGIN",
       "handler": "simx.origin.file.json",
-      "data": {},
-      "steps": []
+      "attr": {},
+      "steps": [
+        {
+          "opt": "load_file",
+          "attr": {
+            "path": "data/test.json"
+          }
+        }
+      ]
     },
     {
       "mold": "EXEC",
       "handler": "simx.exec.file.json",
-      "data": {
+      "attr": {
         "hello": "Morning!"
       },
       "steps": []
@@ -32,7 +39,7 @@
     {
       "mold": "ENDPOINT",
       "handler": "simx.endpoint.file.json",
-      "data": {
+      "attr": {
         "test": "Func"
       },
       "steps": []

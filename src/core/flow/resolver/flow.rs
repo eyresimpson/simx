@@ -16,7 +16,7 @@ pub fn resolver_flow(path: &Path) -> Flow {
         err("Cannot resolver flow file, please check your flow file.");
     }
     let flow: Flow = ret.unwrap();
-    // err(flow.clone().create_date.as_str());
+
     return flow;
 }
 

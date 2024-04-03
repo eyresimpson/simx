@@ -13,7 +13,7 @@ pub fn exec_standardisation_flow(flow: Flow) {
     // 流程节点执行
     for node in flow.nodes {
         // 将执行的结果保存到流对象中
-        data = dispatch(node.handler,node.mold, data, node.data);
+        data = dispatch(node.handler,node.mold, data, node.attr);
     }
     success(format!("flow {{ {} }} has be exec success.", flow.flow_name).as_str());
 }

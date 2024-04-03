@@ -14,25 +14,28 @@
       "env_type": "1.8.0"
     }
   ],
-  "steps": [
+  "nodes": [
     {
-      "mold": "EXEC",
-      "handler": "simx.exec.file.create",
-      "data": {}
+      "mold": "ORIGIN",
+      "handler": "simx.origin.file.json",
+      "data": {},
+      "steps": []
     },
     {
       "mold": "EXEC",
-      "handler": "simx.exec.file.ls",
+      "handler": "simx.exec.file.json",
       "data": {
         "hello": "Morning!"
-      }
+      },
+      "steps": []
     },
     {
-      "mold": "EXEC",
-      "handler": "simx.exec.file.find",
+      "mold": "ENDPOINT",
+      "handler": "simx.endpoint.file.json",
       "data": {
         "test": "Func"
-      }
+      },
+      "steps": []
     }
   ]
 }

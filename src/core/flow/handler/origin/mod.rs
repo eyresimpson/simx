@@ -1,6 +1,4 @@
-mod file;
-mod mysql;
-mod oracle;
-mod sqlserver;
-mod network;
 pub mod interface;
+mod origin_database;
+mod origin_file;
+mod origin_network;

@@ -11,9 +11,9 @@ pub fn exec_standardisation_flow(flow: Flow) {
     let mut data: HashMap<String, String> = Default::default();
     data.insert("flow_step".parse().unwrap(), "0".parse().unwrap());
     // 流程节点执行
-    for step in flow.steps {
+    for node in flow.nodes {
         // 将执行的结果保存到流对象中
-        data = dispatch(step.handler,step.mold, data, step.data);
+        data = dispatch(node.handler,node.mold, data, node.data);
     }
     success(format!("flow {{ {} }} has be exec success.", flow.flow_name).as_str());
 }

@@ -14,7 +14,6 @@ pub fn resolver_flow(path: &Path) -> Flow {
     let ret = serde_json::from_str(&flow_str);
     if ret.is_err() {
         err("Cannot resolver flow file, please check your flow file.");
-        // return
     }
     let flow: Flow = ret.unwrap();
     // err(flow.clone().create_date.as_str());

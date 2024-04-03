@@ -43,8 +43,8 @@ pub fn env_check() -> Result<String, String> {
     }
 
     success("Check Workspace Done.");
-    // Ok("check done.".to_string())
-    return Err("aaaa".to_string());
+    Ok("check done.".to_string())
+    // return Err("aaaa".to_string());
 }
 
 fn check_python(conf: Value) -> bool {

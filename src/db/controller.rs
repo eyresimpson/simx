@@ -3,7 +3,7 @@ use std::path::Path;
 
 use rusqlite::{Connection, Result};
 
-use crate::core::db::interface::init_base_db_struct;
+use crate::db::interface::init_base_db_struct;
 use crate::tools::log::shell::{err, warn};
 
 // 此方法用于初始化数据库（如果需要的话）

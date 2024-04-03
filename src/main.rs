@@ -9,6 +9,8 @@ use crate::tools::log::shell::info;
 mod tools;
 mod core;
 mod conf;
+mod net;
+mod db;
 
 #[tokio::main]
 async fn main() {

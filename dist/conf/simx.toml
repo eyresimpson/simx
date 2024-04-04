@@ -10,6 +10,16 @@ max-thread = 100
 run-init-script = false
 # 在启动时运行默认流，默认为false
 run-init-flow = true
+# 扫描的流程目录
+flow-path = "flow"
+# 扫描的脚本目录
+script-path = "script"
+# 扫描的插件目录
+ext-path = "ext"
+# 系统日志目录
+log-path = "logs"
+# 系统数据库目录
+db-path = "db"
 # 控制台输出样式，默认为true(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
 console-log-style = true
 

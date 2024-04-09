@@ -1,13 +1,18 @@
 use std::path::Path;
 use std::process::Command;
 
+use crate::conf::runtime::get_runtime_conf;
 use crate::conf::toml::get_env_conf;
-use crate::core::common::log::shell::{info, script_err, script_log};
+use crate::core::common::log::shell::{info, script_err, script_log, warn};
 
 pub fn exec_python_script(path: &Path) {
     let env_conf = get_env_conf();
     let python = env_conf.get("python");
     if !python.unwrap().get("enable").unwrap().as_bool().unwrap() {
+        return;
+    }
+    if get_runtime_conf("env_python_status").unwrap().eq("not-find") {
+        warn("Skip python script exec, cannot find python env.");
         return;
     }
     // 文件名

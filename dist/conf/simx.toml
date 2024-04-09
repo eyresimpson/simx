@@ -7,7 +7,7 @@ autorun = false
 # 最大线程数，默认为 100
 max-thread = 100
 # 在启动时运行默认脚本，默认为false
-run-init-script = false
+run-init-script = true
 # 在启动时运行默认流，默认为false
 run-init-flow = true
 # 扫描的流程目录

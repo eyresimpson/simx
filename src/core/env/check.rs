@@ -3,6 +3,7 @@ use std::path::Path;
 
 use toml::Value;
 
+use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_env_conf;
 use crate::core::common::log::shell::{err, info, success, warn};
 
@@ -40,11 +41,13 @@ pub fn env_check() -> Result<String, String> {
     // 检查是否有 Python 环境
     if !check_python(env_conf.clone()) {
         warn("Cannot find python in your env, check your configuration.");
+        set_runtime_conf("env_python_status", "not-find");
+    } else {
+        set_runtime_conf("env_python_status", "python3")
     }
 
     success("Check Workspace Done.");
     Ok("check done.".to_string())
-    // return Err("aaaa".to_string());
 }
 
 fn check_python(conf: Value) -> bool {

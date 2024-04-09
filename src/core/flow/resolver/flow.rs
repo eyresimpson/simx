@@ -2,8 +2,8 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
+use crate::core::common::log::shell::err;
 use crate::core::flow::entity::standardisation::Flow;
-use crate::tools::log::shell::err;
 
 pub fn resolver_flow(path: &Path) -> Flow {
     // 尝试读取流文件

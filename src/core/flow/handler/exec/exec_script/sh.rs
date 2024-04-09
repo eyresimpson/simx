@@ -2,8 +2,8 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::simx::get_engine_config;
-use crate::tools::log::shell::{info, script_err, script_log, warn};
+use crate::conf::toml::get_engine_config;
+use crate::core::common::log::shell::{info, script_err, script_log, warn};
 
 pub fn exec_shell_script(path: &Path) {
     info(format!("Find Shell in path -> {:?}", path).as_str());

@@ -1,20 +1,22 @@
+use basic::err as b_err;
+use basic::info as b_info;
+use basic::script_err as b_script_err;
+use basic::script_log as b_script_log;
+use basic::success as b_success;
+use basic::warn as b_warn;
+use colourful::err as c_err;
+use colourful::info as c_info;
+use colourful::script_err as c_script_err;
+use colourful::script_log as c_script_log;
+use colourful::success as c_success;
+use colourful::warn as c_warn;
+
+use crate::conf::toml::get_engine_config;
+
 mod basic;
 mod colourful;
 
 
-use crate::conf::simx::get_engine_config;
-use colourful::info as c_info;
-use basic::info as b_info;
-use colourful::err as c_err;
-use basic::err as b_err;
-use colourful::warn as c_warn;
-use basic::warn as b_warn;
-use colourful::success as c_success;
-use basic::success as b_success;
-use colourful::script_log as c_script_log;
-use basic::script_log as b_script_log;
-use colourful::script_err as c_script_err;
-use basic::script_err as b_script_err;
 fn show_colourful() -> bool {
     let conf = get_engine_config();
     return conf.get("engine").unwrap().get("console-log-style").unwrap().as_bool().unwrap();

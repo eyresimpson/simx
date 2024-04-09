@@ -1,8 +1,8 @@
 use std::fs;
 use std::path::Path;
 
+use crate::core::common::log::shell::info;
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
-use crate::tools::log::shell::info;
 
 pub fn load_and_exec_default_flow() {
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件

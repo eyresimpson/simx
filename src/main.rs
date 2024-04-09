@@ -3,10 +3,9 @@ extern crate rocket;
 
 use rocket::tokio;
 
+use crate::core::common::log::shell::info;
 use crate::core::engine::engine::run;
-use crate::tools::log::shell::info;
 
-mod tools;
 mod core;
 mod conf;
 mod net;

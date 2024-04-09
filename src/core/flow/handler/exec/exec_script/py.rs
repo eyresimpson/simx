@@ -1,8 +1,8 @@
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::simx::get_env_conf;
-use crate::tools::log::shell::{info, script_err, script_log};
+use crate::conf::toml::get_env_conf;
+use crate::core::common::log::shell::{info, script_err, script_log};
 
 pub fn exec_python_script(path: &Path) {
     let env_conf = get_env_conf();

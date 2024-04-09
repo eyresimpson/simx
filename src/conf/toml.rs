@@ -1,10 +1,10 @@
+use std::fs::File;
+use std::io::Read;
 use std::path::Path;
 use std::sync::Mutex;
 
 use once_cell::sync::Lazy;
 use toml::Value;
-
-use crate::tools::files::toml::load_conf;
 
 // 禁止直接操作静态配置
 // TODO：需要在此处天街一些判断机制，如果未成功加载正常报错
@@ -36,3 +36,11 @@ pub fn get_env_conf() -> Value {
     ENV_CONFIG.lock().unwrap().clone()
 }
 
+// 加载配置文件
+pub fn load_conf(file_path: &Path) -> Result<Value, Box<dyn std::error::Error>> {
+    let mut file = File::open(file_path).unwrap();
+    let mut toml_str = String::new();
+    file.read_to_string(&mut toml_str)?;
+    let toml = toml_str.parse::<Value>().unwrap();
+    Ok(toml)
+}

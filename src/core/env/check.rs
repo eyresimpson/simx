@@ -3,8 +3,8 @@ use std::path::Path;
 
 use toml::Value;
 
-use crate::conf::simx::get_env_conf;
-use crate::tools::log::shell::{err, info, success, warn};
+use crate::conf::toml::get_env_conf;
+use crate::core::common::log::shell::{err, info, success, warn};
 
 /// 环境检查
 pub fn env_check() -> Result<String, String> {

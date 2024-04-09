@@ -1,4 +1,3 @@
-
 use color_string::Font::*;
 use color_string::pcs;
 

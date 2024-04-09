@@ -2,7 +2,7 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::tools::log::shell::{info, script_err, script_log};
+use crate::core::common::log::shell::{info, script_err, script_log};
 
 pub fn exec_bat_script(path: &Path) {
     info(format!("Find bat in path -> {:?}", path).as_str());

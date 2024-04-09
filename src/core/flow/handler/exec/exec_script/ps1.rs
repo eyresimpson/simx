@@ -1,7 +1,8 @@
 use std::env;
 use std::path::Path;
 use std::process::Command;
-use crate::tools::log::shell::{info, script_err, script_log};
+
+use crate::core::common::log::shell::{info, script_err, script_log};
 
 pub fn exec_powershell_script(path: &Path){
     info(format!("Find powershell in path -> {:?}", path).as_str());

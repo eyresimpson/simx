@@ -24,26 +24,27 @@ pub async fn start_net_watcher() {
         .get("rest-listener-address").unwrap().as_str().unwrap();
     // 获取监听端口
     let port = net_conf.get("net").unwrap()
-        .get("rest-listener-port").unwrap().as_integer().unwrap();
+        .get("rest-listener-port").unwrap().as_integer().unwrap() as u16;
     // 获取工作线程数
     let workers = net_conf.get("net").unwrap()
-        .get("rest-listener-worker").unwrap().as_integer().unwrap();
+        .get("rest-listener-worker").unwrap().as_integer().unwrap() as usize;
     // 获取临时文件夹
     let temp_dir = net_conf.get("net").unwrap()
         .get("rest-listener-temp-path").unwrap().as_str().unwrap();
     let cli_colors = engine_conf.get("engine").unwrap()
         .get("console-log-style").unwrap().as_bool().unwrap();
     // 最大线程，按照引擎最大线程的一半
-    let max_thread = engine_conf.get("engine").unwrap()
-        .get("max-thread").unwrap().as_integer().unwrap() / 2;
+    let max_blocking = (engine_conf.get("engine").unwrap()
+        .get("max-thread").unwrap().as_integer().unwrap() / 2) as usize;
     // http 配置
     let config = Config {
         profile: Default::default(),
         // 绑定的端口
-        port: port as u16,
+        port,
         // 工作线程数
-        workers: workers as usize,
-        max_blocking: max_thread as usize,
+        workers,
+        // 最大线程
+        max_blocking,
         ident: Default::default(),
         ip_header: None,
         // 监听地址

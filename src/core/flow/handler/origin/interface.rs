@@ -4,5 +4,7 @@ use crate::core::common::log::shell::info;
 
 pub fn handle_origin(handler_str: String, data: HashMap<String, String>, args: HashMap<String, String>) -> HashMap<String, String> {
     info(format!("handle: {:?}, {:?}", handler_str, args).as_str());
+    // 尝试根据名称解析出要使用的方法（动态）
+
     return data;
 }

@@ -17,11 +17,11 @@
   "nodes": [
     {
       "mold": "ORIGIN",
-      "handler": "simx.origin.file.json",
+      "handler": "simx.origin.file.plain",
       "attr": {},
       "steps": [
         {
-          "opt": "load_file",
+          "opt": "file_reader",
           "attr": {
             "path": "data/test.json"
           }

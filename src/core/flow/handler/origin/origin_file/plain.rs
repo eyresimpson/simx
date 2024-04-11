@@ -1,8 +1,9 @@
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 
-pub fn handle_origin_file_plain(){
-
+pub fn handle_origin_file_plain(handler_str: String, data: HashMap<String, String>, args: HashMap<String, String>){
+    // file_reader("".to_string());
 }
 
 // 此方法仅会触发一次，不是一个持续性的任务

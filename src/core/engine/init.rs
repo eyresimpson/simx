@@ -1,8 +1,8 @@
 use crate::conf::toml::get_engine_config;
 use crate::core::common::log::shell::{info, success};
 use crate::core::env::check::env_check;
-use crate::core::flow::handler::exec::exec_script::interface::load_and_exec_default_script;
 use crate::core::flow::interface::load_and_exec_default_flow;
+use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
 
 pub fn engine_init() -> Result<String, String> {

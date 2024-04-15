@@ -30,11 +30,18 @@
     },
     {
       "mold": "EXEC",
-      "handler": "simx.exec.file.json",
+      "handler": "simx.exec.system.shell",
       "attr": {
         "hello": "Morning!"
       },
-      "steps": []
+      "steps": [
+        {
+          "func": "println",
+          "attr": {
+            "text": "hello world"
+          }
+        }
+      ]
     },
     {
       "mold": "ENDPOINT",

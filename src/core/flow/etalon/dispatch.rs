@@ -9,9 +9,9 @@ use crate::core::flow::handler::origin::interface::handle_origin;
 // 调度器
 // 需要传入标准的handler路径字符串和参数列表，并返回统一传回对象
 pub fn dispatch(handler_str: String, handler_type: NodeType, data: HashMap<String, String>, args: HashMap<String, String>, steps: Vec<Step>) -> HashMap<String, String> {
-
+    info("[ Node Exec Start ]");
     // 打印提示信息
-    info(format!("handler_str: {}, input: {:?}, args: {:?}", handler_str, data, args).as_str());
+    info(format!("Node Input -> handler: {}, data: {:?}, args: {:?}", handler_str, data, args).as_str());
 
     // 全局流程数据对象
     let mut data: HashMap<String, String> = data;
@@ -23,6 +23,7 @@ pub fn dispatch(handler_str: String, handler_type: NodeType, data: HashMap<Strin
         NodeType::EXEC => { data = handle_exec(handler_str, data, args, steps) }
     }
 
-    data.insert("test".parse().unwrap(), "aaa".parse().unwrap());
+    info(format!("Node Output -> data: {:?}", data).as_str());
+    info("[ Node Exec End ]");
     return data;
 }

@@ -1,5 +1,5 @@
-pub mod flow;
+mod flow;
 mod xml;
 mod json;
 mod toml;
-mod interface;
+pub mod interface;

@@ -46,10 +46,32 @@
     {
       "mold": "ENDPOINT",
       "handler": "simx.endpoint.file.json",
+      "attr": {},
+      "steps": [
+        {
+          "func": "writer",
+          "attr": {
+            "path": "conf/simx.txt",
+            "content": "Hello World",
+            "type": "default"
+          }
+        }
+      ]
+    },
+    {
+      "mold": "EXEC",
+      "handler": "simx.exec.system.shell",
       "attr": {
-        "test": "Func"
+        "hello": "Morning!"
       },
-      "steps": []
+      "steps": [
+        {
+          "func": "println",
+          "attr": {
+            "text": "good yet"
+          }
+        }
+      ]
     }
   ]
 }

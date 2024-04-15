@@ -4,10 +4,10 @@ use crate::core::common::log::shell::warn;
 use crate::core::flow::entity::standardisation::Step;
 use crate::core::flow::handler::exec::exec_system::shell::handle_exec_system_shell;
 
-pub fn handle_exec(handler_str: String, mut flow_data: HashMap<String, String>, node_args: HashMap<String, String>, steps: Vec<Step>) -> HashMap<String, String> {
+pub fn handle_exec(_handler_str: String, mut flow_data: HashMap<String, String>, _node_args: HashMap<String, String>, steps: Vec<Step>) -> HashMap<String, String> {
     for step in steps {
         match step.func.as_str() {
-            "shell" => {
+            "println" => {
                 flow_data = handle_exec_system_shell(flow_data.clone(), step.attr);
             }
 

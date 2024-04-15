@@ -40,7 +40,7 @@ pub struct Step {
     // 节点处理器操作名，引擎会根据这个路径找到对应的handler中的方法
     // simx.exec.file.create
     // remote.exec.cn.tineaine.tools.say
-    pub(crate) opt: String,
+    pub(crate) func: String,
     // 操作参数
     pub(crate) attr: HashMap<String, String>,
 }

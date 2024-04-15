@@ -1,9 +1,9 @@
 {
   "version": "1",
-  "flow_name": "good",
+  "flow_name": "first-flow",
   "update_date": "2024-04-01",
   "create_date": "2024-04-01",
-  "developer": "Tineaine",
+  "developer": "Tine aine",
   "env_req": [
     {
       "env_name": "engine",
@@ -21,9 +21,9 @@
       "attr": {},
       "steps": [
         {
-          "opt": "file_reader",
+          "func": "file_reader",
           "attr": {
-            "path": "data/test.json"
+            "path": "conf/simx.toml"
           }
         }
       ]

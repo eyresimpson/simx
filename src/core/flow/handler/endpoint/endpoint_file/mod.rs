@@ -1,1 +1,2 @@
-pub mod plain;
+mod plain;
+pub mod interface;

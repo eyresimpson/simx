@@ -10,7 +10,7 @@ pub fn handle_endpoint_file_plain(data: HashMap<String, String>, args: HashMap<S
 fn file_writer(data: HashMap<String, String>, args: HashMap<String, String>) -> HashMap<String, String> {
     let file_path = args.get("path").unwrap();
     let file_content = args.get("content").unwrap();
-    let writer_type = args.get("type").unwrap();
+    // let writer_type = args.get("type").unwrap();
 
     // if File:: {  }
     let mut file = File::open(file_path);

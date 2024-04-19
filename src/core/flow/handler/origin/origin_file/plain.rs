@@ -15,9 +15,6 @@ fn file_reader(data: HashMap<String, String>, args: HashMap<String, String>) -> 
     let mut file = read_file_ret.unwrap();
     let mut toml_str = String::new();
     file.read_to_string(&mut toml_str).unwrap();
-    ret.insert("file_reader_result".parse().unwrap(), toml_str);
+    ret.insert("text".parse().unwrap(), toml_str);
     return ret;
 }
-
-// 此方法会持续监听文件变化，文件变动后触发流
-// fn file_listener() {}

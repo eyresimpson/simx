@@ -9,10 +9,14 @@ pub fn handle_endpoint_file_plain(data: HashMap<String, String>, args: HashMap<S
 
 fn file_writer(data: HashMap<String, String>, args: HashMap<String, String>) -> HashMap<String, String> {
     let file_path = args.get("path").unwrap();
-    let file_content = args.get("content").unwrap();
-    // let writer_type = args.get("type").unwrap();
+    let mut file_content = String::new();
+    // 优先属性，其次是流内容中的 text 项
+    if args.contains_key("content") {
+        file_content = args.get("content").unwrap().to_string();
+    } else {
+        file_content = data.get("text").unwrap().to_string();
+    }
 
-    // if File:: {  }
     let mut file = File::open(file_path);
     if file.is_err() {
         warn("Cannot find specified file, will create it.");

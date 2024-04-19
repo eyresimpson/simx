@@ -23,7 +23,7 @@
         {
           "func": "file_reader",
           "attr": {
-            "path": "conf/simx.toml"
+            "path": "auth/private.key"
           }
         }
       ]
@@ -52,7 +52,6 @@
           "func": "writer",
           "attr": {
             "path": "conf/simx.txt",
-            "content": "Hello World",
             "type": "default"
           }
         }

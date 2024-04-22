@@ -1,4 +1,3 @@
-workspace = { members = ["src/core/flow/handler/endpoint/endpoint_network"] }
 [package]
 name = "simx"
 version = "0.1.0"

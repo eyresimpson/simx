@@ -23,5 +23,6 @@ pub async fn run() {
     start_net_watcher().await;
 
     // 运行结束
+    // 如果是用户手动结束进程，不会执行到这里（某些系统可能会执行）
     success("Engine run out.");
 }

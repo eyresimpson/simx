@@ -31,9 +31,7 @@
     {
       "mold": "EXEC",
       "handler": "simx.exec.system.shell",
-      "attr": {
-        "hello": "Morning!"
-      },
+      "attr": {},
       "steps": [
         {
           "func": "println",
@@ -60,14 +58,12 @@
     {
       "mold": "EXEC",
       "handler": "simx.exec.system.shell",
-      "attr": {
-        "hello": "Morning!"
-      },
+      "attr": {},
       "steps": [
         {
           "func": "println",
           "attr": {
-            "text": "good yet"
+            "text": "run success"
           }
         }
       ]

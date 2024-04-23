@@ -1,4 +1,4 @@
-use std::any::Any;
+use std::collections::HashMap;
 
 use serde_derive::{Deserialize, Serialize};
 
@@ -10,7 +10,7 @@ pub struct Expression {
     // 表达式类型
     pub(crate) expression_type: ExpressionType,
     // 表达式结果
-    pub(crate) expression_result: dyn Any,
+    pub(crate) expression_result: HashMap<String, ()>,
 }
 
 // 表达式类型

@@ -7,7 +7,7 @@ pub fn resolve_said_expression(expression_str: &str, expression_type: &str) -> B
     let mut expression = Expression {
         expression_str: expression_str.to_string(),
         expression_type: ExpressionType::STR,
-        expression_result: (),
+        expression_result: Default::default(),
     };
     match expression_type {
         "str" => { expression.expression_type = ExpressionType::STR }

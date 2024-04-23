@@ -23,25 +23,11 @@ pub struct Flow {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Node {
-    // 节点类型
-    pub(crate) mold: NodeType,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler（exec、endpoint、origin）
     // simx.exec.file.json
     // rems.cn.tineaine.exec.file.json
     pub(crate) handler: String,
     // 当前节点所附带的数据，node中的每个opt中都可以访问
-    pub(crate) attr: HashMap<String, String>,
-    // 流程步骤集
-    pub(crate) steps: Vec<Step>,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Step {
-    // 节点处理器操作名，引擎会根据这个路径找到对应的handler中的方法
-    // simx.exec.file.create
-    // remote.exec.cn.tineaine.tools.say
-    pub(crate) func: String,
-    // 操作参数
     pub(crate) attr: HashMap<String, String>,
 }
 
@@ -58,8 +44,8 @@ pub struct Env {
     env_type: String,
 }
 
-// // 标准参数
-// #[derive(Serialize, Deserialize, Clone, Debug)]
-// pub struct Data {
-//     pub(crate) data: HashMap<String, String>,
-// }
+// 标准参数
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Data {
+    pub(crate) data: HashMap<String, String>,
+}

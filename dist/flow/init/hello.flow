@@ -1,7 +1,7 @@
 {
   "version": "1",
   "flow_name": "first-flow",
-  "update_date": "2024-04-01",
+  "update_date": "2024-04-23",
   "create_date": "2024-04-01",
   "developer": "Tine aine",
   "env_req": [
@@ -16,57 +16,23 @@
   ],
   "nodes": [
     {
-      "mold": "ORIGIN",
-      "handler": "simx.origin.file.plain",
-      "attr": {},
-      "steps": [
-        {
-          "func": "file_reader",
-          "attr": {
-            "path": "auth/private.key"
-          }
-        }
-      ]
+      "handler": "simx.origin.file.plain.file_reader",
+      "attr": {
+        "path": "auth/private.key"
+      }
     },
     {
-      "mold": "EXEC",
-      "handler": "simx.exec.system.shell",
-      "attr": {},
-      "steps": [
-        {
-          "func": "println",
-          "attr": {
-            "text": "hello world"
-          }
-        }
-      ]
+      "handler": "simx.exec.system.shell.println",
+      "attr": {
+        "text": "hello world"
+      }
     },
     {
-      "mold": "ENDPOINT",
-      "handler": "simx.endpoint.file.json",
-      "attr": {},
-      "steps": [
-        {
-          "func": "writer",
-          "attr": {
-            "path": "conf/simx.txt",
-            "type": "default"
-          }
-        }
-      ]
-    },
-    {
-      "mold": "EXEC",
-      "handler": "simx.exec.system.shell",
-      "attr": {},
-      "steps": [
-        {
-          "func": "println",
-          "attr": {
-            "text": "run success"
-          }
-        }
-      ]
+      "handler": "simx.endpoint.file.json.writer",
+      "attr": {
+        "path": "conf/simx.txt",
+        "type": "default"
+      }
     }
   ]
 }

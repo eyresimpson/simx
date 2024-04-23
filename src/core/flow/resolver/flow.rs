@@ -15,7 +15,7 @@ pub fn resolver_flow(path: &Path) -> Flow {
     if ret.is_err() {
         err("Cannot resolver flow file, please check your flow file.");
     }
-    let flow: Flow = ret.unwrap();
+    let flow = ret.unwrap();
 
     return flow;
 }

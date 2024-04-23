@@ -1,5 +1,5 @@
 mod resolver;
-pub mod etalon;
+pub mod exec;
 pub mod controller;
 mod entity;
 pub(crate) mod handler;

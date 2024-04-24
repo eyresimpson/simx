@@ -1,4 +1,4 @@
 mod json;
 mod plain;
 mod xml;
-mod interface;
+pub mod interface;

@@ -1,19 +1,13 @@
 use crate::core::common::log::shell::warn;
 use crate::core::flow::entity::standardisation::{Data, Node};
-use crate::core::flow::handler::files::plain::handle_file_plain;
+use crate::core::flow::handler::os::shell::handle_os_shell;
 
-pub fn handle_file(node: Node, flow_data: &mut Data) {
+pub fn handle_os(node: Node, flow_data: &mut Data) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[2] {
-        "plain" => {
-            // 普通文本
-            handle_file_plain(node, flow_data);
-        }
-        "json" => {
-            // Json文件
-        }
-        "xml" => {
-            // XML文件
+        "shell" => {
+            // 控制台操作
+            handle_os_shell(node, flow_data);
         }
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[2]).as_str());

@@ -17,7 +17,7 @@ pub fn exec_standardisation_flow(flow: Flow) {
         // TODO： 这个后续也许应该加一个runtime的对象记录，而不是全都放在这里
         node.attr.insert("node_index".parse().unwrap(), i.to_string());
         // 将执行的结果保存到流对象中
-        exec_node(node, &data);
+        exec_node(node, &mut data);
     }
     success(format!("flow {{ {} }} has be exec success.", flow.flow_name).as_str());
 }

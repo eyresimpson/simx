@@ -8,7 +8,7 @@ use crate::core::flow::handler::interface::handler;
 // Node 调度
 // Node 需要对应的Handler执行
 // 需要传入标准的handler路径字符串和参数列表，并返回统一传回对象
-pub fn exec_node(node: Node, data: &Data) {
+pub fn exec_node(node: Node, data: &mut Data) {
     info("[ Node Exec Start ]");
 
     // 打印提示信息

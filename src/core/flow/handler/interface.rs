@@ -1,42 +1,35 @@
-use std::collections::HashMap;
 use crate::core::common::log::shell::warn;
 use crate::core::flow::entity::standardisation::{Data, Node};
+use crate::core::flow::handler::db::interface::handle_db;
+use crate::core::flow::handler::files::interface::handle_file;
+use crate::core::flow::handler::net::interface::handle_net;
+use crate::core::flow::handler::os::interface::handle_os;
 
-
-pub fn handler(node: Node, flow_data: &Data) {
+pub fn handler(node: Node, flow_data: &mut Data) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {
-        // 如果是内置的handler
-        println!("-----> {:?}", handler_path[handler_path.len() - 1]);
+        // 这个地方后续改成动态调用方法
+        // TODO: 改成动态调用而不是通过match
         match handler_path[1] {
             "files" => {
-                // flow_data = handle_origin_file_plain(flow_data.clone(), step.attr);
+                handle_file(node, flow_data);
             }
-            "println" => {
-                // flow_data = handle_origin_file_plain(flow_data.clone(), step.attr);
+            "db" => {
+                handle_db(node, flow_data);
             }
-            "writer" => {
-                // flow_data = handle_origin_file_plain(flow_data.clone(), step.attr);
+            "net" => {
+                handle_net(node, flow_data);
+            }
+            "os" => {
+                handle_os(node, flow_data);
             }
 
             _ => {
-                warn("Engine cannot find handle function, Skip...");
+                warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[1]).as_str());
             }
         }
     } else {
         // 如果不是内置的handler
     }
-    // for step in steps {
-    //     match step.func.as_str() {
-    //         "file_reader" => {
-    //             // flow_data = handle_origin_file_plain(flow_data.clone(), step.attr);
-    //         }
-    //
-    //         _ => {
-    //             warn("Engine cannot find handle function, Skip...")
-    //         }
-    //     }
-    // }
-    return;
 }

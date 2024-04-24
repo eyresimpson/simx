@@ -16,19 +16,25 @@
   ],
   "nodes": [
     {
-      "handler": "simx.origin.file.plain.file_reader",
+      "handler": "simx.files.plain.reader",
       "attr": {
         "path": "auth/private.key"
       }
     },
     {
-      "handler": "simx.exec.system.shell.println",
+      "handler": "simx.os.shell.println",
       "attr": {
         "text": "hello world"
       }
     },
     {
-      "handler": "simx.endpoint.file.json.writer",
+      "handler": "simx.net.http.request_get",
+      "attr": {
+        "attr": "{\"aaa\":\"bbb\"}"
+      }
+    },
+    {
+      "handler": "simx.files.json.writer",
       "attr": {
         "path": "conf/simx.txt",
         "type": "default"

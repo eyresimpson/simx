@@ -1,3 +1,4 @@
+use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_engine_config;
 use crate::core::common::log::shell::{info, success};
 use crate::core::env::check::env_check;
@@ -6,7 +7,16 @@ use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
 
 pub fn engine_init() -> Result<String, String> {
+    // 系统引擎配置
     let engine_conf = get_engine_config();
+    // 从配置文件中初始化系统文件夹位置
+
+    set_runtime_conf("flow_path", engine_conf.get("engine").unwrap().get("flow-path").unwrap().as_str().unwrap());
+    set_runtime_conf("script_path", engine_conf.get("engine").unwrap().get("script-path").unwrap().as_str().unwrap());
+    set_runtime_conf("db_path", engine_conf.get("engine").unwrap().get("db-path").unwrap().as_str().unwrap());
+    set_runtime_conf("log_path", engine_conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap());
+    set_runtime_conf("ext_path", engine_conf.get("engine").unwrap().get("ext-path").unwrap().as_str().unwrap());
+
     // 检查工作环境（当前目录）
     let env_check_ret = env_check();
     // 判断环境检查是否通过

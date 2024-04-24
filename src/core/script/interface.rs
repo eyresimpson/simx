@@ -1,6 +1,7 @@
 // 脚本引擎核心
 use std::fs;
 use std::path::Path;
+use crate::conf::runtime::get_runtime_conf;
 
 use crate::core::common::log::shell::info;
 use crate::core::script::bat::exec_bat_script;
@@ -11,8 +12,9 @@ use crate::core::script::sql::exec_sql_script;
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
+    let script_path = get_runtime_conf("script_path").unwrap();
     // TODO: 将这个路径修改到配置文件中
-    let binding = Path::new("script").join("init");
+    let binding = Path::new(script_path.as_str()).join("init");
     let path = binding.as_path();
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹

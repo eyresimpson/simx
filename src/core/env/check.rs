@@ -38,6 +38,8 @@ pub fn env_check() -> Result<String, String> {
         fs::create_dir("tmp").expect("Engine cannot fix workspace, Please check your env.");
     }
 
+    
+
     // 检查是否有 Python 环境
     if !check_python(env_conf.clone()) {
         warn("Cannot find python in your env, check your configuration.");

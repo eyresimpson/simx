@@ -28,7 +28,7 @@ console-log-style = true
 # warn：仅显示
 # fail
 # none
-shell-log-level = "all"
+shell-log-level = "info"
 
 [update]
 # 保留版本数量，默认为 3

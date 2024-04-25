@@ -12,6 +12,7 @@ mod core;
 mod conf;
 mod net;
 mod db;
+mod tools;
 
 #[tokio::main]
 async fn main() {

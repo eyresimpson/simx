@@ -36,7 +36,7 @@
     {
       "handler": "simx.files.json.writer",
       "attr": {
-        "path": "conf/simx.txt",
+        "path": "example/simx.txt",
         "type": "default"
       }
     }

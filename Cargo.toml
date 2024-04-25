@@ -28,3 +28,6 @@ log = "0.4.21"
 lazy_static = "1.4.0"
 # 用于获取时间
 chrono = "0.4.38"
+# 用于发起请求（Get/Post等）
+reqwest = { version = "0.10", features = ["json"] }
+

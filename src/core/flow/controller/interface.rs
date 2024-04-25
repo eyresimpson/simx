@@ -5,11 +5,11 @@ use crate::core::flow::exec::flow::exec_standardisation_flow;
 use crate::core::flow::resolver::interface::flow_resolver;
 
 // 这个东西其实就是Json（目前来说），后续可能会进行一些加密的操作
-pub fn exec_fl_flow(path: &Path) {
+pub async fn exec_fl_flow(path: &Path) {
     // 解析文件为标准流
     let flow = flow_resolver(path);
     // 执行流
-    exec_standardisation_flow(flow);
+    exec_standardisation_flow(flow).await;
     // info(path.to_str().unwrap())
 }
 

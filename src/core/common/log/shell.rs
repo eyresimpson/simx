@@ -113,17 +113,3 @@ pub fn script_err(text: &str) {
         b_script_err(text);
     }
 }
-
-// 流输出
-// pub fn flow_log(text: &str) {
-//     pcs!(Cyan => "➜ "; RBold, Cyan => "Script output: "; Cyan => text);
-// }
-//
-// pub fn flow_err(text: &str) {
-//     pcs!(Cyan => "➜ "; RBold, Cyan => "Script Error: "; Red => text);
-// }
-
-// // 流程引擎输出
-// pub fn flow_log(text: &str){
-//     pcs!(Green => "➜ "; RBold, RBlue => "Exec: "; RBlue => text);
-// }

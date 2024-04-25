@@ -24,7 +24,6 @@ pub fn handler(node: Node, flow_data: &mut Data) {
             "os" => {
                 handle_os(node, flow_data);
             }
-
             _ => {
                 warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[1]).as_str());
             }

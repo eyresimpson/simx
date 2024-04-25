@@ -1,0 +1,19 @@
+{
+  "project_name": "Transfer",
+  "author": "Noah Jones",
+  "create_date": "2024-04-25 10:55:50",
+  "modify_date": "2024-04-25 11:00:00",
+  "version": "1.0.0",
+  "engine": "1.0.0",
+  "require": [
+    "com.tineaine.simx",
+    "com.tineaine.proc"
+  ],
+  "flow_async": true,
+  "exception": "skip",
+  "flow": [
+    "flow/auth/user.flow",
+    "flow/auth/info.flow",
+    "flow/auth/dept.flow"
+  ]
+}

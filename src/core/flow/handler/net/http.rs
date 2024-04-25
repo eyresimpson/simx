@@ -28,7 +28,17 @@ pub fn handle_net_http(node: Node, flow_data: &mut Data) {
 }
 
 // 发起Get请求
-fn request_get(node: Node, flow_data: &Data) {}
+fn request_get(node: Node, flow_data: &Data) {
+    // 获取请求地址
+    let addr = node.attr.get("addr").unwrap();
+    // 获取请求端口
+    let port = node.attr.get("port").unwrap();
+    // 获取请求参数
+    let params = node.attr.get("params").unwrap();
+    // 获取请求头
+    let header = node.attr.get("header").unwrap();
+
+}
 
 // 发起Post请求
 fn request_post(node: Node, flow_data: &Data) {}

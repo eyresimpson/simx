@@ -1,3 +1,4 @@
+use crate::core::common::log::interface::debug;
 use crate::core::flow::expression::said::entity::{Expression, ExpressionType};
 use crate::core::flow::expression::said::resolve_bool::resolve_bool;
 use crate::core::flow::expression::said::resolve_num::resolve_num;
@@ -13,7 +14,7 @@ pub fn resolve(expression: Box<Expression>) -> Box<Expression> {
         ExpressionType::OPT => { resolve_opt(&expression) }
     }
 
-    println!("{:?}", expression);
+    debug(format!("{:?}", expression).as_str());
 
     return expression;
 }

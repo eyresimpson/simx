@@ -40,8 +40,8 @@ pub enum NodeType {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Env {
-    env_name: String,
-    env_type: String,
+    pub(crate) env_key: String,
+    pub(crate) env_val: String,
 }
 
 // 标准参数

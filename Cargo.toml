@@ -1,6 +1,6 @@
 [package]
 name = "simx"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [dependencies]
@@ -30,4 +30,5 @@ lazy_static = "1.4.0"
 chrono = "0.4.38"
 # 用于发起请求（Get/Post等）
 reqwest = { version = "0.10", features = ["json"] }
-
+# 异步处理
+futures = "0.3.30"

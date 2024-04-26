@@ -39,10 +39,10 @@ async fn request_get(node: Node, flow_data: &mut Data) {
     // let params = node.attr.get("params").unwrap();
     // // 获取请求头
     // let header = node.attr.get("header").unwrap();
-    let map = get("").await.unwrap();
-    let ret = to_string(&map).unwrap();
-    println!("===> {}", ret);
-    flow_data.data.insert("res".to_string(), ret);
+    // let map = get("").await.unwrap();
+    // let ret = to_string(&map).unwrap();
+    // println!("===> {}", ret);
+    // flow_data.data.insert("res".to_string(), ret);
 }
 
 // 发起Post请求

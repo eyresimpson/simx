@@ -6,7 +6,7 @@ use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
 
-pub fn engine_init() -> Result<String, String> {
+pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
     let engine_conf = get_engine_config();
     // 从配置文件中初始化系统文件夹位置
@@ -44,7 +44,7 @@ pub fn engine_init() -> Result<String, String> {
     // 初始流
     if engine_conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
         info("Default flow running...");
-        load_and_exec_default_flow();
+        load_and_exec_default_flow().await;
         success("Run init flow done.");
     } else {
         info("Skip init flow running.");

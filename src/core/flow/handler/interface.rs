@@ -1,5 +1,6 @@
 use crate::core::common::log::interface::warn;
 use crate::core::flow::entity::standardisation::{Data, Node};
+use crate::core::flow::handler::basic::interface::handle_basic;
 use crate::core::flow::handler::db::interface::handle_db;
 use crate::core::flow::handler::files::interface::handle_file;
 use crate::core::flow::handler::net::interface::handle_net;
@@ -23,6 +24,9 @@ pub async fn handler(node: Node, flow_data: &mut Data) {
             }
             "os" => {
                 handle_os(node, flow_data);
+            }
+            "basic" => {
+                handle_basic(node, flow_data);
             }
             _ => {
                 warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[1]).as_str());

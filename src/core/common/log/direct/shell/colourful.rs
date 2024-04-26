@@ -17,10 +17,15 @@ pub fn warn(text: &str) {
     pcs!(Yellow => "➜ "; Yellow => text);
 }
 
+pub fn debug(text: &str) {
+    pcs!(Cyan => "➜ "; Cyan => text);
+}
+
 // 脚本输出
 pub fn script_log(text: &str) {
     pcs!(Purple => text);
 }
+
 // 面前临时将两者合二为一，不再关注其区别，都以Purple显示
 pub fn script_err(text: &str) {
     pcs!(Purple => text);

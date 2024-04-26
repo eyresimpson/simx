@@ -1,4 +1,3 @@
-
 pub fn info(text: &str) {
     println!("➜ Info: {}", text);
 }
@@ -13,6 +12,10 @@ pub fn err(text: &str) {
 
 pub fn warn(text: &str) {
     println!("➜ Warn: {}", text);
+}
+
+pub fn debug(text: &str) {
+    println!("➜ Debug: {}", text);
 }
 
 // 脚本输出

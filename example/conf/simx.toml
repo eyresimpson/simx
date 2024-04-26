@@ -2,8 +2,6 @@
 
 # 引擎配置
 [engine]
-# 自动启动，默认为false（作为系统服务注册）
-autorun = false
 # 最大线程数，默认为 100
 max-thread = 100
 # 在启动时运行默认脚本，默认为false
@@ -25,10 +23,10 @@ console-log-style = true
 # 控制台日志等级
 # debug: 包含每个节点的输入、输入等信息，最详细，仅适用于开发环境
 # info：显示引擎正在进行的步骤和操作
-# warn：仅显示
-# fail
-# none
-shell-log-level = "info"
+# warn：仅显示警告信息，包括部分未正常配置的环境等
+# fail：仅显示报错信息
+# none：不显示控制台日志
+shell-log-level = "debug"
 
 [update]
 # 保留版本数量，默认为 3

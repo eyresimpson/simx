@@ -12,7 +12,7 @@ pub async fn exec_standardisation_flow(flow: Flow) {
     // 流程节点执行
     for mut node in flow.nodes {
         i = i + 1;
-        // TODO： 这个后续也许应该加一个runtime的对象记录，而不是全都放在这里
+        // 当前节点索引
         node.attr.insert("node_index".parse().unwrap(), i.to_string());
         // 将执行的结果保存到流对象中
         exec_node(node, &mut data).await;

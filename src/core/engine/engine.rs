@@ -1,4 +1,4 @@
-use crate::core::common::log::shell::{err, info, success};
+use crate::core::common::log::interface::{fail, info, success};
 use crate::core::engine::init::engine_init;
 use crate::core::engine::watcher::start_net_watcher;
 
@@ -12,7 +12,7 @@ pub async fn run() {
     // 包括运行初始化脚本和初始化流
     let init_ret = engine_init();
     if init_ret.is_err() {
-        err(init_ret.err().unwrap().as_str());
+        fail(init_ret.err().unwrap().as_str());
         return;
     }
 

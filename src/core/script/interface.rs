@@ -3,7 +3,7 @@ use std::fs;
 use std::path::Path;
 use crate::conf::runtime::get_runtime_conf;
 
-use crate::core::common::log::shell::info;
+use crate::core::common::log::interface::info;
 use crate::core::script::bat::exec_bat_script;
 use crate::core::script::ps1::exec_powershell_script;
 use crate::core::script::py::exec_python_script;

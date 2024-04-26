@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-use crate::core::common::log::shell::err;
+use crate::core::common::log::interface::fail;
 use crate::core::flow::entity::standardisation::Flow;
 
 pub fn resolver_flow(path: &Path) -> Flow {
@@ -13,7 +13,7 @@ pub fn resolver_flow(path: &Path) -> Flow {
     // 尝试解析流文件为统一流程对象
     let ret = serde_json::from_str(&flow_str);
     if ret.is_err() {
-        err("Cannot resolver flow file, please check your flow file.");
+        fail("Cannot resolver flow file, please check your flow file.");
     }
     let flow = ret.unwrap();
 

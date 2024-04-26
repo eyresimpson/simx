@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Read, Write};
 
-use crate::core::common::log::shell::{err, warn};
+use crate::core::common::log::interface::{fail, warn};
 use crate::core::flow::entity::standardisation::{Data, Node};
 
 pub fn handle_file_plain(node: Node, flow_data: &mut Data) {
@@ -53,7 +53,7 @@ fn writer(node: Node, flow_data: &mut Data) {
     }
     let ret = file.unwrap().write(file_content.as_ref());
     if ret.is_err() {
-        err("Cannot write content to file.");
-        err(ret.err().unwrap().to_string().as_str());
+        fail("Cannot write content to file.");
+        fail(ret.err().unwrap().to_string().as_str());
     }
 }

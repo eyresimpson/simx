@@ -5,7 +5,7 @@ use toml::Value;
 
 use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_env_conf;
-use crate::core::common::log::shell::{err, info, success, warn};
+use crate::core::common::log::interface::{fail, info, success, warn};
 
 /// 环境检查
 pub fn env_check() -> Result<String, String> {
@@ -17,7 +17,7 @@ pub fn env_check() -> Result<String, String> {
     info("Check Workspace...");
     let config_path = Path::new("conf").is_dir();
     if !config_path {
-        err("Cannot find simx main config path, please check simx workspace.");
+        fail("Cannot find simx main config path, please check simx workspace.");
         return Err("Cannot find config path!".to_string());
     }
 

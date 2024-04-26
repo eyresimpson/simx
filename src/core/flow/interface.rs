@@ -2,15 +2,14 @@ use std::fs;
 use std::path::Path;
 use crate::conf::runtime::get_runtime_conf;
 
-use crate::core::common::log::shell::info;
+use crate::core::common::log::interface::info;
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
 
 pub fn load_and_exec_default_flow() {
     let flow_path = get_runtime_conf("flow_path").unwrap();
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹
-    // TODO: 将这个路径修改到配置文件中
-    if Path::new("flow").join("init").is_dir() {
+    if Path::new(flow_path.as_str()).join("init").is_dir() {
         // 遍历文件夹下的所有内容
         traverse_folder(Path::new(flow_path.as_str()).join("init").as_path());
     } else {

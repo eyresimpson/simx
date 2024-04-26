@@ -1,6 +1,6 @@
 use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_engine_config;
-use crate::core::common::log::shell::{info, success};
+use crate::core::common::log::interface::{info, success};
 use crate::core::env::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;

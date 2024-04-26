@@ -2,7 +2,7 @@ use rocket::{build, Config};
 use rocket::config::LogLevel;
 
 use crate::conf::toml::{get_engine_config, get_net_conf};
-use crate::core::common::log::shell::{info, warn};
+use crate::core::common::log::interface::{info, warn};
 use crate::net::http::handler::common::welcome_info;
 use crate::net::http::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
 use crate::net::http::handler::version::{handle_version_current, handle_version_latest, handle_version_list};

@@ -2,7 +2,7 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::core::common::log::shell::{info, script_err, script_log};
+use crate::core::common::log::interface::{info, script_fail, script_log};
 
 pub fn exec_bat_script(path: &Path) {
     info(format!("Find bat in path -> {:?}", path).as_str());
@@ -19,7 +19,7 @@ pub fn exec_bat_script(path: &Path) {
             script_log(String::from_utf8_lossy(&output.stdout).trim());
         }
         if String::from_utf8_lossy(&output.stderr) != "" {
-            script_err(String::from_utf8_lossy(&output.stderr).trim());
+            script_fail(String::from_utf8_lossy(&output.stderr).trim());
         }
     }else {
         info("Incompatible operating system, skip")

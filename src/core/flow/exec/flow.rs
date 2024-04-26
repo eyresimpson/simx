@@ -1,4 +1,4 @@
-use crate::core::common::log::shell::{info, success};
+use crate::core::common::log::interface::{info, success};
 use crate::core::flow::entity::standardisation::{Data, Flow};
 use crate::core::flow::exec::node::exec_node;
 

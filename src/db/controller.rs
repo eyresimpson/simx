@@ -4,7 +4,7 @@ use std::path::Path;
 use rusqlite::{Connection, Result};
 use crate::conf::runtime::get_runtime_conf;
 
-use crate::core::common::log::shell::{err, warn};
+use crate::core::common::log::interface::{fail, warn};
 use crate::db::interface::init_base_db_struct;
 
 // 此方法用于初始化数据库（如果需要的话）
@@ -23,7 +23,7 @@ pub fn db_init() -> Result<()> {
         // 后续这部分内容应该会移动到sql文件中，而不是内置在程序里，这样可能比较浪费内存空间，目前表还少，先这样用着
         let ir = init_base_db_struct();
         if ir.is_err() {
-            err("cannot init system db struct, engine init failed!");
+            fail("cannot init system db struct, engine init failed!");
         }
         // 加载数据到数据库
         // 只有数据库文件不存在的时候才会去重新加载本地内容

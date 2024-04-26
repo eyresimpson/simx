@@ -1,5 +1,5 @@
 use serde_json::to_string;
-use crate::core::common::log::shell::warn;
+use crate::core::common::log::interface::warn;
 use crate::core::flow::entity::standardisation::{Data, Node};
 use crate::tools::http::get;
 
@@ -41,7 +41,7 @@ async fn request_get(node: Node, flow_data: &mut Data) {
     // let header = node.attr.get("header").unwrap();
     let map = get("").await.unwrap();
     let ret = to_string(&map).unwrap();
-    println!("teeerer {}", ret);
+    println!("===> {}", ret);
     flow_data.data.insert("res".to_string(), ret);
 }
 

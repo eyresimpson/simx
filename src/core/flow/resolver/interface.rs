@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::core::common::log::shell::warn;
+use crate::core::common::log::interface::warn;
 use crate::core::flow::entity::standardisation::Flow;
 use crate::core::flow::resolver::flow::resolver_flow;
 

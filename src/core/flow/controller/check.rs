@@ -11,6 +11,10 @@ pub fn check_require(flow: Flow) -> bool {
                 // 检查引擎版本是否匹配
                 check_engine(env.env_val.as_str())
             }
+            "java" => {
+                // 检查本地java版本
+                true
+            }
             _ => {
                 // 提示未知的检查项
                 warn("An unknown dependency was found while verifying an environment dependency.");

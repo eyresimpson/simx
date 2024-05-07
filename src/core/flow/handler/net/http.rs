@@ -1,7 +1,5 @@
-use serde_json::to_string;
 use crate::core::common::log::interface::warn;
 use crate::core::flow::entity::standardisation::{Data, Node};
-use crate::tools::http::get;
 
 pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -31,6 +29,7 @@ pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
 
 // 发起Get请求
 async fn request_get(node: Node, flow_data: &mut Data) {
+    println!("{:?},{:?}", node, flow_data)
     // 获取请求地址
     // let addr = node.attr.get("addr").unwrap();
     // // 获取请求端口
@@ -46,10 +45,16 @@ async fn request_get(node: Node, flow_data: &mut Data) {
 }
 
 // 发起Post请求
-fn request_post(node: Node, flow_data: &Data) {}
+fn request_post(node: Node, flow_data: &Data) {
+    println!("{:?},{:?}", node, flow_data)
+}
 
 // 发起Put请求
-fn request_put(node: Node, flow_data: &Data) {}
+fn request_put(node: Node, flow_data: &Data) {
+    println!("{:?},{:?}", node, flow_data)
+}
 
 // 发起Delete请求
-fn request_delete(node: Node, flow_data: &Data) {}
+fn request_delete(node: Node, flow_data: &Data) {
+    println!("{:?},{:?}", node, flow_data)
+}

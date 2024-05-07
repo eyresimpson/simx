@@ -19,13 +19,13 @@ pub fn debug(text: &str) {
 }
 
 // 脚本输出
-pub fn script_log(text: &str) {
-    println!("➜ Script output: {}", text);
-}
-
-pub fn script_err(text: &str) {
-    println!("➜ Script error: {}", text);
-}
+// pub fn script_log(text: &str) {
+//     println!("➜ Script output: {}", text);
+// }
+//
+// pub fn script_err(text: &str) {
+//     println!("➜ Script error: {}", text);
+// }
 
 // 流输出
 // pub fn flow_log(text: &str) {

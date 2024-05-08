@@ -29,7 +29,7 @@ pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
 
 // 发起Get请求
 async fn request_get(node: Node, flow_data: &mut Data) {
-    println!("{:?},{:?}", node, flow_data)
+    println!("handle http get: {:?},{:?}", node, flow_data)
     // 获取请求地址
     // let addr = node.attr.get("addr").unwrap();
     // // 获取请求端口

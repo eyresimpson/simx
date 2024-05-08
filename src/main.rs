@@ -13,6 +13,7 @@ mod conf;
 mod net;
 mod db;
 mod tools;
+mod test;
 
 #[tokio::main]
 async fn main() {

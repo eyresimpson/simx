@@ -4,31 +4,31 @@ version = "1.0.0"
 edition = "2021"
 
 [dependencies]
-# 彩色控制台输出依赖
+# 用于处理颜色字符串的库。它提供了将颜色表示为字符串、解析颜色字符串以及转换颜色格式的功能。
 color-string = "0.1.6"
-# 提供安全初始化全局变量方法
+# 用于延迟初始化的库。它允许你在首次访问时初始化一个值，并在后续访问中重用该值，从而避免了重复初始化的开销。
 once_cell = "1.19.0"
-# toml配置解析依赖
+# 用于解析和生成 TOML 格式配置文件的库。TOML 是一种易于阅读和编写的配置语言，常用于 Rust 项目的配置文件。
 toml = "0.8.12"
-# 序列化/反序列化
+# 用于序列化和反序列化数据的库。通过 features = ["derive"]，它还支持自动派生（derive）序列化和反序列化的代码。
 serde = { version = "1.0", features = ["derive"] }
-# 序列化/反序列化
+# serde 的派生宏库，用于自动生成实现 serde trait 的代码。它使得在自定义数据类型上使用 serde 变得更加方便。
 serde_derive = "1.0.197"
-# 引擎默认数据库依赖（sqlite）
+# 用于操作 SQLite 数据库的库。通过 features = ["bundled"]，它将 SQLite 库静态链接到你的项目中，使得你无需外部依赖即可使用 SQLite。
 rusqlite = { version = "0.31.0", features = ["bundled"] }
-# rust api框架
+# Web 框架，用于构建 Web 应用程序。它提供了路由、中间件、请求处理等功能
 rocket = "^0.5.0"
-# 异步运行时
-tokio = { version = "1.0.0", features = ["rt", "rt-multi-thread", "macros"] }
-# json解析依赖
+# 异步运行时库，用于处理异步任务。通过 features = ["full"]，它包含了所有功能，包括网络、文件 I/O、定时器等。
+tokio = { version = "1.0.0", features = ["full"] }
+# 用于处理 JSON 数据的库。它提供了将 Rust 数据结构序列化为 JSON 字符串以及解析 JSON 字符串为 Rust 数据结构的功能。
 serde_json = "1.0.115"
-# 日志包
+# 用于日志记录的库。它提供了日志级别、日志输出、过滤等功能。
 log = "0.4.21"
-# 全局变量控制
+# 用于创建全局静态变量的库。它允许你在运行时初始化全局变量，并在整个程序生命周期内共享这些变量。
 lazy_static = "1.4.0"
-# 用于获取时间
+# 用于处理日期和时间的库。它提供了日期、时间、时区、格式化等功能，使得在 Rust 中处理时间变得更加方便。
 chrono = "0.4.38"
-# 用于发起请求（Get/Post等）
+# 用于发起 HTTP 请求的库。通过 features = ["json"]，它支持处理 JSON 格式的请求和响应。
 reqwest = { version = "0.10", features = ["json"] }
-# 异步处理
+# 用于处理异步任务的库。它提供了异步编程的基础设施，包括异步任务、Future、Stream 等。
 futures = "0.3.30"

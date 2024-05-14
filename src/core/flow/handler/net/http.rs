@@ -31,13 +31,13 @@ pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
 // 发起Get请求
 async fn request_get(node: Node, flow_data: &mut Data) {
     println!("handle http get: {:?},{:?}", node, flow_data);
-    let rest = reqwest::get("https://httpbin.org/ip").await.unwrap().json::<HashMap<String, String>>().await;
-    if rest.is_err() {
-        fail("Cannot launch new http get request.");
-    } else {
-        // flow_data.data.insert("res".to_string(), rest.unwrap().);
-        println!("Res: {:?}", rest);
-    }
+    // let rest = reqwest::get("https://httpbin.org/ip").await;
+    // if rest.is_err() {
+    //     fail("Cannot launch new http get request.");
+    // } else {
+    //     // flow_data.data.insert("res".to_string(), rest.unwrap().);
+    //     println!("Res: {:?}", rest);
+    // }
     // 获取请求地址
     // let addr = node.attr.get("addr").unwrap();
     // // 获取请求端口

@@ -14,6 +14,7 @@ mod net;
 mod db;
 mod tools;
 mod test;
+mod entity;
 
 #[tokio::main]
 async fn main() {
@@ -26,7 +27,7 @@ async fn main() {
     clean();
 }
 
-// 目前情况下暂时不需要在初始化时做什么操作，后续可能会考虑弄点什么东西放着
+// 初始化方法
 fn init() {
     // 每次更新系统都记得修改这里
     let engine_version = "1.0.0";

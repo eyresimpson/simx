@@ -3,7 +3,7 @@ use std::io::Read;
 use std::path::Path;
 
 use crate::core::common::log::interface::fail;
-use crate::core::flow::entity::standardisation::Flow;
+use crate::entity::standardisation::Flow;
 
 pub fn resolver_flow(path: &Path) -> Flow {
     // 尝试读取流文件

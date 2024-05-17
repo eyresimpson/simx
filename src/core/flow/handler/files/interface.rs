@@ -1,6 +1,6 @@
 use crate::core::common::log::interface::warn;
-use crate::core::flow::entity::standardisation::{Data, Node};
 use crate::core::flow::handler::files::plain::handle_file_plain;
+use crate::entity::standardisation::{Data, Node};
 
 pub fn handle_file(node: Node, flow_data: &mut Data) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

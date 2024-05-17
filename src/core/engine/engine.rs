@@ -8,6 +8,23 @@ use crate::core::engine::watcher::start_net_watcher;
 pub async fn run() {
     info("Engine Starting...");
 
+    // // 创建一个新线程
+    // let handle = thread::spawn(|| {
+    //     for i in 1..10 {
+    //         println!("从新线程打印: {}", i);
+    //         thread::sleep(Duration::from_millis(1));
+    //     }
+    // });
+    // 
+    // // 在主线程中执行其他操作
+    // for i in 1..5 {
+    //     println!("从主线程打印: {}", i);
+    //     // thread::sleep(Duration::from_millis(1));
+    // }
+    // 
+    // // 等待新线程结束
+    // handle.join().unwrap();
+    
     // debug("test");
     // 执行系统初始化事件
     // 包括运行初始化脚本和初始化流

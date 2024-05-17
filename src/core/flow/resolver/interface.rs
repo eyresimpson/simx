@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use crate::core::common::log::interface::warn;
-use crate::core::flow::entity::standardisation::Flow;
 use crate::core::flow::resolver::flow::resolver_flow;
+use crate::entity::standardisation::Flow;
 
 pub fn flow_resolver(path: &Path) -> Flow {
     if let Some(extension) = path.extension() {

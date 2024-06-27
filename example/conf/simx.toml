@@ -27,6 +27,8 @@ console-log-style = true
 # fail：仅显示报错信息
 # none：不显示控制台日志
 shell-log-level = "debug"
+# 文件日志等级（同控制台日志）
+file-log-level = "info"
 
 [update]
 # 保留版本数量，默认为 3

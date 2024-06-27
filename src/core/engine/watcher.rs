@@ -4,8 +4,9 @@ use rocket::config::LogLevel;
 use crate::conf::toml::{get_engine_config, get_net_conf};
 use crate::core::common::log::interface::{info, warn};
 use crate::net::http::handler::common::welcome_info;
+use crate::net::http::handler::flow::{handle_exec_flow_by_path, handle_list_flow};
 use crate::net::http::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
-use crate::net::http::handler::version::{handle_version_current, handle_version_latest, handle_version_list};
+use crate::net::http::handler::status::{handle_version_current, handle_version_latest, handle_version_list};
 
 pub async fn start_net_watcher() {
     let net_conf = get_net_conf();
@@ -72,5 +73,8 @@ pub async fn start_net_watcher() {
         handle_exec_script,
         handle_list_script,
         handle_search_script,
+        // 流程相关
+        // handle_list_flow,
+        handle_exec_flow_by_path
     ]).launch().await.expect("Cannot load rest services.");
 }

@@ -8,6 +8,7 @@ pub fn handle_version_current() -> String {
     return version;
 }
 
+
 // 获取版本列表
 #[get("/common/version/list-version")]
 pub fn handle_version_list() -> &'static str {
@@ -19,3 +20,7 @@ pub fn handle_version_list() -> &'static str {
 pub fn handle_version_latest() -> &'static str {
     return "Ok";
 }
+
+// 升级到指定版本
+
+// 获取引擎运行状况

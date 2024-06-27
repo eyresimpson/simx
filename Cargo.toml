@@ -17,7 +17,7 @@ serde_derive = "1.0.197"
 # 用于操作 SQLite 数据库的库。通过 features = ["bundled"]，它将 SQLite 库静态链接到你的项目中，使得你无需外部依赖即可使用 SQLite。
 rusqlite = { version = "0.31.0", features = ["bundled"] }
 # Web 框架，用于构建 Web 应用程序。它提供了路由、中间件、请求处理等功能
-rocket = "^0.5.0"
+rocket = { version = "^0.5.0", features = ["json"] }
 # 异步运行时库，用于处理异步任务。通过 features = ["full"]，它包含了所有功能，包括网络、文件 I/O、定时器等。
 tokio = { version = "1.0.0", features = ["full"] }
 # 用于处理 JSON 数据的库。它提供了将 Rust 数据结构序列化为 JSON 字符串以及解析 JSON 字符串为 Rust 数据结构的功能。

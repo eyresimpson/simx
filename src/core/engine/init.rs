@@ -23,6 +23,8 @@ pub async fn engine_init() -> Result<String, String> {
     if env_check_ret.is_err() {
         return Err("Check Engine Runtime Env Failed.".to_string());
     }
+    
+    // 检查文件日志大小，如果超过指定大小，就进行压缩并放入backup文件夹中，默认按照日期进行分类（年月日时）
 
     // 尝试检查并初始化数据库
     info("System Database checking...");

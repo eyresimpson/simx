@@ -2,8 +2,9 @@ use std::fs;
 use std::path::Path;
 
 use rusqlite::{Connection, Result};
-use crate::conf::runtime::get_runtime_conf;
 
+use crate::conf::runtime::get_runtime_conf;
+use crate::conf::toml::get_engine_config;
 use crate::core::common::log::interface::{fail, warn};
 use crate::db::interface::init_base_db_struct;
 
@@ -11,6 +12,17 @@ use crate::db::interface::init_base_db_struct;
 pub fn db_init() -> Result<()> {
     let db_path = get_runtime_conf("db_path").unwrap();
     let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
+    let conf = get_engine_config();
+    let auto_refresh = conf.get("engine").unwrap().get("auto-refresh-local-data").unwrap().as_bool().unwrap();
+    if auto_refresh {
+        // 删除指定的数据表（方法太笨，后续改进）
+        let tables = ["simx_script", "simx_flow", "simx_ext"];
+
+        for table in &tables {
+            let query = format!("DROP TABLE IF EXISTS {}", table);
+            conn.execute(&query, [])?;
+        }
+    }
     let exists = conn.query_row(
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
         &[&"simx_script"],
@@ -44,16 +56,16 @@ pub fn scan_load_local() -> std::result::Result<String, String> {
     let script_path = get_runtime_conf("script_path").unwrap();
     let ext_path = get_runtime_conf("ext_path").unwrap();
     // 加载脚本信息
-    traverse_folder(Path::new(script_path.as_str()));
+    traverse_folder(Path::new(script_path.as_str()), "script");
     // 加载流信息
-    traverse_folder(Path::new(flow_path.as_str()));
+    traverse_folder(Path::new(flow_path.as_str()), "flow");
     // 加载插件信息
-    traverse_folder(Path::new(ext_path.as_str()));
+    traverse_folder(Path::new(ext_path.as_str()), "ext");
     // 返回成功消息
     return Ok("Scan done.".to_string());
 }
 
-fn traverse_folder(folder_path: &Path) {
+fn traverse_folder(folder_path: &Path, traverse_type: &str) {
     let db_path = get_runtime_conf("db_path").unwrap();
     // 连接到数据库（获取到的信息需要写入到数据库中）
     let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
@@ -69,17 +81,19 @@ fn traverse_folder(folder_path: &Path) {
         for entry in entries {
             if let Ok(entry) = entry {
                 let path = entry.path();
+                let table_name = format!("simx_{}", traverse_type);
+                let sql = format!("insert into {} (display_name, file_name, file_path, file_type) values (?1, ?2, ?3, ?4);", table_name);
                 if path.is_file() {
-                    let _ = conn.execute("insert into simx_script (display_name, file_name, file_path, file_type) \
-                        values (?1, ?2, ?3, ?4);", &[
+                    let _ = conn.execute(sql.as_str(), &[
                         path.file_name().unwrap().to_str().unwrap(),
                         path.file_name().unwrap().to_str().unwrap(),
                         path.to_str().unwrap(),
-                        folder_path.to_str().unwrap()
+                        // 通过这种方式添加的数据均为本地数据
+                        "local"
                     ]);
                 } else if path.is_dir() {
                     // 多级文件夹，继续遍历其中的文件和文件夹
-                    traverse_folder(path.as_path());
+                    traverse_folder(path.as_path(), traverse_type);
                 }
             }
         }

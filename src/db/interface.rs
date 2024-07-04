@@ -47,18 +47,18 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
                 ", ()
     )?;
 
-    // 创建日志表
-    conn.execute("create table simx_log
-                    (
-                        id  integer not null
-                            constraint id
-                                primary key autoincrement,
-                        log_datetime TEXT,
-                        log_type    TEXT,
-                        log_message    TEXT,
-                    );
-                ", (),
-    )?;
+    // // 创建日志表
+    // conn.execute("create table simx_log
+    //                 (
+    //                     id  integer not null
+    //                         constraint id
+    //                             primary key autoincrement,
+    //                     log_datetime TEXT,
+    //                     log_type    TEXT,
+    //                     log_message    TEXT,
+    //                 );
+    //             ", (),
+    // )?;
 
     Ok(())
 }

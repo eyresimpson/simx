@@ -1,8 +1,8 @@
 // 标准文件日志
 
-use std::fs::{File, OpenOptions};
+use std::fs::OpenOptions;
+use std::io::{BufWriter, Write};
 
-use std::io::{Write, BufWriter};
 use crate::conf::toml::get_engine_config;
 
 // 写文件日志

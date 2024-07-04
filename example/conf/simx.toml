@@ -8,6 +8,10 @@ max-thread = 100
 run-init-script = false
 # 在启动时运行默认流，默认为false
 run-init-flow = true
+# 系统启动后刷新本地数据
+# 注意，即使本配置为false，系统也会在初次启动时刷新一次
+# 一般不建议禁止，否则可能引起数据本地不同步的情况
+auto-refresh-local-data = true
 # 扫描的流程目录
 flow-path = "flow"
 # 扫描的脚本目录
@@ -28,7 +32,7 @@ console-log-style = true
 # none：不显示控制台日志
 shell-log-level = "debug"
 # 文件日志等级（同控制台日志）
-file-log-level = "info"
+file-log-level = "debug"
 
 [update]
 # 保留版本数量，默认为 3

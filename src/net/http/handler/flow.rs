@@ -1,12 +1,12 @@
 use rocket::http::Status;
-use rocket::serde::{json::Json, Serialize};
-use rusqlite::{Connection, params};
+use rocket::serde::json::Json;
+use rusqlite::Connection;
 use tokio::task;
 
 use crate::core::common::log::interface::{info, success};
 use crate::core::flow::interface::exec_flow;
 use crate::db::interface::query_data_by_id;
-use crate::entity::db::SimxResultVec;
+use crate::entity::db::{SimxFlow, SimxResultVec};
 use crate::entity::net::{ExecFlowRequestData, SimxResponse};
 
 #[post("/flow/exec", format = "application/json", data = "<request>")]
@@ -20,14 +20,15 @@ pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Res
 
     let results = match results {
         SimxResultVec::SimxFlow(data) => data,
+        // 一般不可能进这个分支
         SimxResultVec::SimxScript(_) => panic!("Invalid data type"),
     };
 
     // 执行流程
     for result in results {
-        info(format!("Exec flow {} start by http.", result.display_name).as_str());
+        info(format!("Exec flow {} [{}] start by http.", result.display_name, result.id).as_str());
         exec_flow(result.file_path.as_ref()).await;
-        success(format!("Exec flow {} success.", result.display_name).as_str());
+        success(format!("Exec flow {} [{}] success.", result.display_name, result.id).as_str());
     }
 
     // 创建响应数据
@@ -42,18 +43,23 @@ pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Res
 
 
 // 列出所有流程
-#[get("/flow/list")]
-pub fn handle_list_flow() -> &'static str {
-    let conn = Connection::open("./db/simx.db").unwrap();
-    let mut stmt = conn.prepare(
-        "select * from simx_script",
-    ).unwrap();
-    let ret = stmt.query(()).unwrap();
-    println!("{:?}", ret.as_ref());
-    return "Ok";
+#[post("/flow/list")]
+pub async fn handle_list_flow() -> Result<Json<Vec<SimxFlow>>, Status> {
+    let def = "*".to_string();
+    let results =
+        task::spawn_blocking(move || {
+            query_data_by_id(def, "simx_flow")
+        }).await.unwrap().await.unwrap();
+
+    let results = match results {
+        SimxResultVec::SimxFlow(data) => data,
+        // 一般不可能进这个分支
+        SimxResultVec::SimxScript(_) => panic!("Invalid data type"),
+    };
+    Ok(Json(results))
 }
 
-// 搜索指定脚本（并非执行）
+// 搜索指定流程（并非执行）
 #[get("/flow/search")]
 pub fn handle_search_flow() -> &'static str {
     return "Ok";

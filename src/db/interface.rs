@@ -1,4 +1,4 @@
-use rusqlite::{Connection, params};
+use rusqlite::{Connection, params, Rows};
 
 use crate::conf::runtime::get_runtime_conf;
 use crate::entity::db::{SimxFlow, SimxResultVec, SimxScript};
@@ -68,22 +68,29 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
     Ok(())
 }
 
-
 // 根据id查询数据库
 pub async fn query_data_by_id(id: String, table_name: &str) -> Result<SimxResultVec, rusqlite::Error> {
     // 从配置中获取数据库路径
     let db_path = get_runtime_conf("db_path").unwrap();
     // 链接到数据库
-    let conn = Connection::open(db_path + "/simx.db").unwrap();
-    let sql = format!("SELECT * FROM {} WHERE id = (?1)", table_name);
-    // 执行sql
-    let mut stmt = conn.prepare(sql.as_str())?;
-    // 拆解行
-    let mut rows = stmt.query(params![id])?;
+    let conn = Connection::open(format!("{}/simx.db", db_path))?;
+    let sql: String;
+    let mut stmt;
+    let mut rows: Rows;
+    if id != "*" {
+        sql = format!("SELECT * FROM {} WHERE id = (?1)", table_name);
+        stmt = conn.prepare(sql.as_str())?;
+        rows = stmt.query(params![id]).unwrap()
+    } else {
+        sql = format!("SELECT * FROM {}", table_name);
+        stmt = conn.prepare(sql.as_str())?;
+        rows = stmt.query(params![]).unwrap()
+    }
+
     let mut flow_results = Vec::new();
     let mut script_results = Vec::new();
     // 遍历行
-    while let Some(row) = rows.next()? {
+    while let Some(row) = rows.next().unwrap() {
         if table_name.eq("simx_flow") {
             let simx_flow = SimxFlow {
                 id: row.get(0)?,
@@ -104,6 +111,7 @@ pub async fn query_data_by_id(id: String, table_name: &str) -> Result<SimxResult
             script_results.push(simx_script);
         }
     }
+
     if table_name.eq("simx_flow") {
         Ok(SimxResultVec::SimxFlow(flow_results))
     } else {

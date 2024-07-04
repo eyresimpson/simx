@@ -1,6 +1,8 @@
 use serde::Serialize;
 use serde_derive::Deserialize;
 
+use crate::entity::db::SimxFlow;
+
 // 请求执行脚本
 #[derive(Serialize, Deserialize)]
 pub struct ExecScriptRequestData {
@@ -19,4 +21,15 @@ pub struct ExecFlowRequestData {
 pub struct SimxResponse {
     pub(crate) code: i32,
     pub(crate) message: String,
+}
+
+pub struct FlowListResponse {
+    pub(crate) code: i32,
+    pub(crate) message: String,
+    pub(crate) data: Vec<SimxFlow>,
+}
+pub struct ScriptListResponse {
+    pub(crate) code: i32,
+    pub(crate) message: String,
+    pub(crate) data: Vec<SimxFlow>,
 }

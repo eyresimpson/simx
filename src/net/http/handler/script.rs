@@ -6,7 +6,7 @@ use tokio::task;
 use crate::core::common::log::interface::{info, success};
 use crate::core::script::interface::exec_script;
 use crate::db::interface::query_data_by_id;
-use crate::entity::db::SimxResultVec;
+use crate::entity::db::{SimxFlow, SimxResultVec, SimxScript};
 use crate::entity::net::{ExecScriptRequestData, SimxResponse};
 
 // 执行指定脚本
@@ -27,9 +27,9 @@ pub async fn handle_exec_script(request: Json<ExecScriptRequestData>) -> Result<
 
     // 执行流程
     for result in results {
-        info(format!("Exec script {} start by http.", result.display_name).as_str());
+        info(format!("Exec script {} [{}] start by http.", result.display_name, result.id).as_str());
         exec_script(result.file_path.as_ref());
-        success(format!("Exec script {} success.", result.display_name).as_str());
+        success(format!("Exec script {} [{}] success.", result.display_name, result.id).as_str());
     }
     // 创建响应数据
     let response_data = SimxResponse {
@@ -40,19 +40,24 @@ pub async fn handle_exec_script(request: Json<ExecScriptRequestData>) -> Result<
 }
 
 // 列出所有脚本
-#[get("/list-script")]
-pub fn handle_list_script() -> &'static str {
-    let conn = Connection::open("./db/simx.db").unwrap();
-    let mut stmt = conn.prepare(
-        "select * from simx_script",
-    ).unwrap();
-    let ret = stmt.query(()).unwrap();
-    println!("===> {:?}", ret.as_ref().unwrap());
-    return "Ok";
+#[post("/script/list")]
+pub async fn handle_list_script() -> Result<Json<Vec<SimxScript>>, Status> {
+    let def = "*".to_string();
+    let results =
+        task::spawn_blocking(move || {
+            query_data_by_id(def, "simx_script")
+        }).await.unwrap().await.unwrap();
+
+    let results = match results {
+        SimxResultVec::SimxScript(data) => data,
+        // 一般不可能进这个分支
+        SimxResultVec::SimxFlow(_) => panic!("Invalid data type"),
+    };
+    Ok(Json(results))
 }
 
 // 搜索指定脚本
-#[get("/search-script")]
+#[get("/script/search")]
 pub fn handle_search_script() -> &'static str {
     return "Ok";
 }

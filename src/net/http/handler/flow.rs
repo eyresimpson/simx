@@ -1,6 +1,5 @@
 use rocket::http::Status;
 use rocket::serde::json::Json;
-use rusqlite::Connection;
 use tokio::task;
 
 use crate::core::common::log::interface::{info, success};

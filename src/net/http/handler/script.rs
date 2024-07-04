@@ -1,12 +1,11 @@
 use rocket::http::Status;
 use rocket::serde::json::Json;
-use rusqlite::Connection;
 use tokio::task;
 
 use crate::core::common::log::interface::{info, success};
 use crate::core::script::interface::exec_script;
 use crate::db::interface::query_data_by_id;
-use crate::entity::db::{SimxFlow, SimxResultVec, SimxScript};
+use crate::entity::db::{SimxResultVec, SimxScript};
 use crate::entity::net::{ExecScriptRequestData, SimxResponse};
 
 // 执行指定脚本

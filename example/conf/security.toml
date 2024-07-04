@@ -11,3 +11,7 @@ pass-key = "noah123"
 private-key = "auth/private.key"
 passwd1 = "A8C*8c-Pc5bY4ynl232Cb9z8iD.X"
 passwd2 = "ANcI-c,msmjj2h34v5z9v5rt2a53"
+
+[script]
+# 允许远程请求执行脚本（非同一网段内）
+remote-request = false

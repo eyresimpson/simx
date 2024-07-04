@@ -1,9 +1,42 @@
+use rocket::http::Status;
+use rocket::serde::json::Json;
 use rusqlite::Connection;
+use tokio::task;
+
+use crate::core::common::log::interface::{info, success};
+use crate::core::script::interface::exec_script;
+use crate::db::interface::query_data_by_id;
+use crate::entity::db::SimxResultVec;
+use crate::entity::net::{ExecScriptRequestData, SimxResponse};
 
 // 执行指定脚本
-#[get("/exec-script")]
-pub fn handle_exec_script() -> &'static str {
-    return "Ok";
+#[post("/script/exec", format = "application/json", data = "<request>")]
+pub async fn handle_exec_script(request: Json<ExecScriptRequestData>) -> Result<Json<SimxResponse>, Status> {
+    // 处理接收到的请求数据
+    let received_data = request.into_inner();
+    // 在阻塞任务中查询数据
+    let results =
+        task::spawn_blocking(move || {
+            query_data_by_id(received_data.id, "simx_script")
+        }).await.unwrap().await.unwrap();
+
+    let results = match results {
+        SimxResultVec::SimxScript(data) => data,
+        SimxResultVec::SimxFlow(_) => panic!("Invalid data type"),
+    };
+
+    // 执行流程
+    for result in results {
+        info(format!("Exec script {} start by http.", result.display_name).as_str());
+        exec_script(result.file_path.as_ref());
+        success(format!("Exec script {} success.", result.display_name).as_str());
+    }
+    // 创建响应数据
+    let response_data = SimxResponse {
+        message: "Exec script success.".to_string(),
+        code: 200,
+    };
+    Ok(Json(response_data))
 }
 
 // 列出所有脚本
@@ -23,5 +56,3 @@ pub fn handle_list_script() -> &'static str {
 pub fn handle_search_script() -> &'static str {
     return "Ok";
 }
-
-//

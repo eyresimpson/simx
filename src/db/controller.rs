@@ -30,7 +30,7 @@ pub fn db_init() -> Result<()> {
     );
 
     if exists.is_err() {
-        warn("cannot find table, will init it.");
+        // warn("cannot find table, will init it.");
         // 初始化数据表结构
         // 后续这部分内容应该会移动到sql文件中，而不是内置在程序里，这样可能比较浪费内存空间，目前表还少，先这样用着
         let ir = init_base_db_struct();

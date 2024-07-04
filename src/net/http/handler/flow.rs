@@ -7,10 +7,10 @@ use crate::core::common::log::interface::{info, success};
 use crate::core::flow::interface::exec_flow;
 use crate::db::interface::query_data_by_id;
 use crate::entity::db::SimxResultVec;
-use crate::entity::net::{RequestData, SimxResponse};
+use crate::entity::net::{ExecFlowRequestData, SimxResponse};
 
 #[post("/flow/exec", format = "application/json", data = "<request>")]
-pub async fn handle_exec_flow_by_path(request: Json<RequestData>) -> Result<Json<SimxResponse>, Status> {
+pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Result<Json<SimxResponse>, Status> {
     // 处理接收到的请求数据
     let received_data = request.into_inner();
     let results =

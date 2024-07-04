@@ -3,3 +3,4 @@
 /.idea
 /example/db/*
 /tmp/*
+/example/logs/*

@@ -317,3 +317,113 @@ text = "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_
 2024-07-04 16:05:50.419 [info]: Run init flow done. 
 2024-07-04 16:05:50.419 [info]: Engine has started. 
 2024-07-04 16:05:50.420 [info]: Engine Net Services Starting... 
+2024-07-04 16:11:03.502 [info]: Engine run out. 
+2024-07-04 16:11:03.503 [info]: Simx System Shutdown. 
+2024-07-04 16:11:07.976 [info]: Simx System Starting... 
+2024-07-04 16:11:07.976 [info]: Engine Starting... 
+2024-07-04 16:11:07.977 [info]: Check Workspace... 
+2024-07-04 16:11:07.990 [info]: Check Workspace Done. 
+2024-07-04 16:11:07.990 [info]: System Database checking... 
+2024-07-04 16:11:08.002 [info]: System database checked successfully. 
+2024-07-04 16:11:08.002 [info]: Skip init script running. 
+2024-07-04 16:11:08.002 [info]: Default flow running... 
+2024-07-04 16:11:08.103 [info]: flow { demo-flow } will be exec. 
+2024-07-04 16:11:08.103 [debug]: [ Node Exec Start ] 
+2024-07-04 16:11:08.103 [debug]: Node Input -> handler: simx.files.plain.reader, data: Data { data: {} }, args: {"node_index": "1", "path": "auth/private.key"} 
+2024-07-04 16:11:08.103 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.103 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.103 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:11:08.103 [debug]: [ Node Exec End ] 
+2024-07-04 16:11:08.103 [debug]: [ Node Exec Start ] 
+2024-07-04 16:11:08.104 [debug]: Node Input -> handler: simx.os.shell.println, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "2", "text": "hello world"} 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:11:08.104 [debug]: [ Node Exec End ] 
+2024-07-04 16:11:08.104 [debug]: [ Node Exec Start ] 
+2024-07-04 16:11:08.104 [debug]: Node Input -> handler: simx.basic.debug.node, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "3"} 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Node: handler = "simx.basic.debug.node"
+
+[attr]
+node_index = "3"
+ 
+2024-07-04 16:11:08.104 [debug]: Data: [data]
+text = "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"
+ 
+2024-07-04 16:11:08.104 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:11:08.104 [debug]: [ Node Exec End ] 
+2024-07-04 16:11:08.104 [debug]: [ Node Exec Start ] 
+2024-07-04 16:11:08.104 [debug]: Node Input -> handler: simx.net.http.request_get, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"attr": "{\"aaa\":\"bbb\"}", "node_index": "4"} 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.104 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:11:08.105 [debug]: [ Node Exec End ] 
+2024-07-04 16:11:08.105 [debug]: [ Node Exec Start ] 
+2024-07-04 16:11:08.105 [debug]: Node Input -> handler: simx.files.json.writer, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "5", "path": "example/simx.txt", "type": "default"} 
+2024-07-04 16:11:08.105 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.105 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:11:08.105 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:11:08.105 [debug]: [ Node Exec End ] 
+2024-07-04 16:11:08.105 [info]: flow { demo-flow } has be exec success. 
+2024-07-04 16:11:08.105 [info]: Run init flow done. 
+2024-07-04 16:11:08.105 [info]: Engine has started. 
+2024-07-04 16:11:08.105 [info]: Engine Net Services Starting... 
+2024-07-04 16:11:32.556 [info]: Exec script hello.py start by http. 
+2024-07-04 16:11:32.557 [info]: Find python in path -> hello.py 
+2024-07-04 16:11:32.612 [info]: hello world 
+2024-07-04 16:11:32.612 [info]: Exec script hello.py success. 
+2024-07-04 16:12:42.505 [info]: Engine run out. 
+2024-07-04 16:12:42.505 [info]: Simx System Shutdown. 
+2024-07-04 16:12:45.776 [info]: Simx System Starting... 
+2024-07-04 16:12:45.776 [info]: Engine Starting... 
+2024-07-04 16:12:45.777 [info]: Check Workspace... 
+2024-07-04 16:12:45.792 [info]: Check Workspace Done. 
+2024-07-04 16:12:45.792 [info]: System Database checking... 
+2024-07-04 16:12:45.805 [info]: System database checked successfully. 
+2024-07-04 16:12:45.805 [info]: Skip init script running. 
+2024-07-04 16:12:45.805 [info]: Default flow running... 
+2024-07-04 16:12:45.898 [info]: flow { demo-flow } will be exec. 
+2024-07-04 16:12:45.898 [debug]: [ Node Exec Start ] 
+2024-07-04 16:12:45.898 [debug]: Node Input -> handler: simx.files.plain.reader, data: Data { data: {} }, args: {"path": "auth/private.key", "node_index": "1"} 
+2024-07-04 16:12:45.898 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.898 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.899 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec End ] 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec Start ] 
+2024-07-04 16:12:45.899 [debug]: Node Input -> handler: simx.os.shell.println, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "2", "text": "hello world"} 
+2024-07-04 16:12:45.899 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.899 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.899 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec End ] 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec Start ] 
+2024-07-04 16:12:45.899 [debug]: Node Input -> handler: simx.basic.debug.node, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "3"} 
+2024-07-04 16:12:45.899 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.899 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.899 [debug]: Node: handler = "simx.basic.debug.node"
+
+[attr]
+node_index = "3"
+ 
+2024-07-04 16:12:45.899 [debug]: Data: [data]
+text = "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"
+ 
+2024-07-04 16:12:45.899 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec End ] 
+2024-07-04 16:12:45.899 [debug]: [ Node Exec Start ] 
+2024-07-04 16:12:45.900 [debug]: Node Input -> handler: simx.net.http.request_get, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "4", "attr": "{\"aaa\":\"bbb\"}"} 
+2024-07-04 16:12:45.900 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.900 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.900 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:12:45.900 [debug]: [ Node Exec End ] 
+2024-07-04 16:12:45.900 [debug]: [ Node Exec Start ] 
+2024-07-04 16:12:45.900 [debug]: Node Input -> handler: simx.files.json.writer, data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} }, args: {"node_index": "5", "type": "default", "path": "example/simx.txt"} 
+2024-07-04 16:12:45.900 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.900 [debug]: Expression { expression_str: "test{a1}", expression_type: STR, expression_result: {} } 
+2024-07-04 16:12:45.900 [debug]: Node Output -> data: Data { data: {"text": "LrH@uWkD.XugFipbBrJGsvdvhVA.pRt7WWum4n6JhrHMVeoDajQytuLK_krf@3639dxd7pE_WHm6jj*rVXEcAxtJr3ZB4ayerypw@cH@AbV!ogoy@xahg2dqU6*QLQ@BUeRDo9sw!QiNMjqdkBvJ!cCuJbiw@tF-4oV9T-MVweoC-xKXt!Qn!fvbKeDfkdz_V84A9aoy"} } 
+2024-07-04 16:12:45.900 [debug]: [ Node Exec End ] 
+2024-07-04 16:12:45.900 [info]: flow { demo-flow } has be exec success. 
+2024-07-04 16:12:45.900 [info]: Run init flow done. 
+2024-07-04 16:12:45.900 [info]: Engine has started. 
+2024-07-04 16:12:45.901 [info]: Engine Net Services Starting... 

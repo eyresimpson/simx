@@ -10,8 +10,12 @@ pub fn write_log(log_message: &str, num: i64) {
     if get_log_num() < num {
         return;
     }
+    let now = chrono::Local::now();
     // 日志目录，从配置文件中读取
-    let log_path = "./logs/simx.log";
+    let conf = get_engine_config();
+    let path = conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap();
+    // 默认情况下是根据日期写日志，即每天都有一个日志
+    let log_path = format!("{}/simx-{}.log", path, now.format("%Y-%m-%d"));
     // 打开文件（如果不存在会自动创建）
     let file = OpenOptions::new()
         .append(true)
@@ -19,7 +23,7 @@ pub fn write_log(log_message: &str, num: i64) {
         .open(log_path)
         .expect("Failed to open log file");
     let mut writer = BufWriter::new(file);
-    let now = chrono::Local::now();
+
     let formatted_time = now.format("%Y-%m-%d %H:%M:%S%.3f").to_string();
     let str: &str;
     match num {

@@ -34,6 +34,7 @@ pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Res
     let response_data = SimxResponse {
         message: "Exec flow success.".to_string(),
         code: 200,
+        data: "".to_string(),
     };
 
     // 返回响应数据
@@ -43,7 +44,7 @@ pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Res
 
 // 列出所有流程
 #[post("/flow/list")]
-pub async fn handle_list_flow() -> Result<Json<Vec<SimxFlow>>, Status> {
+pub async fn handle_list_flow() -> Result<Json<SimxResponse>, Status> {
     let def = "*".to_string();
     let results =
         task::spawn_blocking(move || {
@@ -55,7 +56,13 @@ pub async fn handle_list_flow() -> Result<Json<Vec<SimxFlow>>, Status> {
         // 一般不可能进这个分支
         SimxResultVec::SimxScript(_) => panic!("Invalid data type"),
     };
-    Ok(Json(results))
+    let result_data = SimxResponse {
+        message: "List flow success.".to_string(),
+        code: 200,
+        // data: serde_json::to_string(&results).unwrap()
+        data: serde_json::to_string_pretty(&results).unwrap(),
+    };
+    Ok(Json(result_data))
 }
 
 // 搜索指定流程（并非执行）

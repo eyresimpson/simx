@@ -16,9 +16,8 @@ pub struct Flow {
     pub(crate) version: String,
     // 环境要求
     pub(crate) env_req: Vec<Env>,
-
+    // 节点列表
     pub(crate) nodes: Vec<Node>,
-
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

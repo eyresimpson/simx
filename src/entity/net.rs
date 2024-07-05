@@ -19,8 +19,12 @@ pub struct ExecFlowRequestData {
 
 #[derive(Serialize, Deserialize)]
 pub struct SimxResponse {
+    // 编码，200 代表成功
     pub(crate) code: i32,
+    // 消息
     pub(crate) message: String,
+    // 数据，建议为Json字符串
+    pub data: String,
 }
 
 pub struct FlowListResponse {
@@ -28,6 +32,7 @@ pub struct FlowListResponse {
     pub(crate) message: String,
     pub(crate) data: Vec<SimxFlow>,
 }
+
 pub struct ScriptListResponse {
     pub(crate) code: i32,
     pub(crate) message: String,

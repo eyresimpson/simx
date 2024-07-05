@@ -34,6 +34,7 @@ pub async fn handle_exec_script(request: Json<ExecScriptRequestData>) -> Result<
     let response_data = SimxResponse {
         message: "Exec script success.".to_string(),
         code: 200,
+        data: "".to_string(),
     };
     Ok(Json(response_data))
 }

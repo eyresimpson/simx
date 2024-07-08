@@ -2,9 +2,9 @@ use std::fs::File;
 use std::io::{Read, Write};
 
 use crate::core::common::log::interface::{fail, warn};
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub fn handle_file_plain(node: Node, flow_data: &mut Data) {
+pub fn handle_file_plain(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -23,7 +23,7 @@ pub fn handle_file_plain(node: Node, flow_data: &mut Data) {
 }
 
 // 此方法仅会触发一次，不是一个持续性的任务
-fn reader(node: Node, flow_data: &mut Data) {
+fn reader(node: Node, flow_data: &mut FlowData) {
     let args = node.attr;
     let file_path = args.get("path").unwrap();
     // 返回的数据
@@ -32,10 +32,10 @@ fn reader(node: Node, flow_data: &mut Data) {
     let mut toml_str = String::new();
     file.read_to_string(&mut toml_str).unwrap();
     // 将数据写入到flow_data中
-    flow_data.data.insert("text".parse().unwrap(), toml_str);
+    flow_data.params.insert("text".parse().unwrap(), toml_str);
 }
 
-fn writer(node: Node, flow_data: &mut Data) {
+fn writer(node: Node, flow_data: &mut FlowData) {
     let args = node.attr;
     let file_path = args.get("path").unwrap();
     let file_content;
@@ -43,7 +43,7 @@ fn writer(node: Node, flow_data: &mut Data) {
     if args.contains_key("text") {
         file_content = args.get("text").unwrap().to_string();
     } else {
-        file_content = flow_data.data.get("text").unwrap().to_string();
+        file_content = flow_data.params.get("text").unwrap().to_string();
     }
 
     let mut file = File::open(file_path);

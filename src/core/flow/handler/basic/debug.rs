@@ -1,9 +1,9 @@
 use toml::to_string;
 
 use crate::core::common::log::interface::{debug, warn};
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub fn handle_basic_debug(node: Node, flow_data: &mut Data) {
+pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -18,7 +18,7 @@ pub fn handle_basic_debug(node: Node, flow_data: &mut Data) {
 }
 
 // 用于显示所有的节点内容，一般用于调试
-fn node_debug(node: Node, flow_data: &mut Data) {
+fn node_debug(node: Node, flow_data: &mut FlowData) {
     debug(format!("Node: {}", to_string(&node).unwrap().as_str()).as_str());
     debug(format!("Data: {}", to_string(&flow_data).unwrap().as_str()).as_str());
 }

@@ -1,7 +1,7 @@
 use crate::core::common::log::interface::warn;
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
+pub async fn handle_net_http(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[3] {
         "request_get" => {
@@ -27,7 +27,7 @@ pub async fn handle_net_http(node: Node, flow_data: &mut Data) {
 }
 
 // 发起Get请求
-async fn request_get(node: Node, flow_data: &mut Data) {
+async fn request_get(node: Node, flow_data: &mut FlowData) {
     println!("handle http get: {:?},{:?}", node, flow_data);
     // let rest = reqwest::get("https://httpbin.org/ip").await;
     // if rest.is_err() {
@@ -51,16 +51,16 @@ async fn request_get(node: Node, flow_data: &mut Data) {
 }
 
 // 发起Post请求
-fn request_post(node: Node, flow_data: &Data) {
+fn request_post(node: Node, flow_data: &FlowData) {
     println!("{:?},{:?}", node, flow_data)
 }
 
 // 发起Put请求
-fn request_put(node: Node, flow_data: &Data) {
+fn request_put(node: Node, flow_data: &FlowData) {
     println!("{:?},{:?}", node, flow_data)
 }
 
 // 发起Delete请求
-fn request_delete(node: Node, flow_data: &Data) {
+fn request_delete(node: Node, flow_data: &FlowData) {
     println!("{:?},{:?}", node, flow_data)
 }

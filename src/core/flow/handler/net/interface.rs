@@ -1,8 +1,8 @@
 use crate::core::common::log::interface::warn;
 use crate::core::flow::handler::net::http::handle_net_http;
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub async fn handle_net(node: Node, flow_data: &mut Data) {
+pub async fn handle_net(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[2] {
         "http" => {

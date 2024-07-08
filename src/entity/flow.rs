@@ -43,8 +43,19 @@ pub struct Env {
     pub(crate) env_val: String,
 }
 
-// 标准参数
+// // 标准参数
+// #[derive(Serialize, Deserialize, Clone, Debug)]
+// pub struct Data {
+//     pub(crate) data: HashMap<String, String>,
+// }
+
+// 流程数据
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Data {
-    pub(crate) data: HashMap<String, String>,
+pub struct FlowData {
+    // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
+    pub basics: HashMap<String, String>,
+    // 用户参数域，可以理解为声明的变量
+    pub params: HashMap<String, String>,
+    // 数据统一为二进制，使用时需要根据具体情况判断
+    pub data: HashMap<String, Vec<u8>>
 }

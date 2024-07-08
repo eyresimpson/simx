@@ -2,6 +2,7 @@ use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_engine_config;
 use crate::core::common::log::interface::{info, success};
 use crate::core::env::check::env_check;
+use crate::core::extension::interface::load_local_extendion;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
@@ -10,7 +11,6 @@ pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
     let engine_conf = get_engine_config();
     // 从配置文件中初始化系统文件夹位置
-
     set_runtime_conf("flow_path", engine_conf.get("engine").unwrap().get("flow-path").unwrap().as_str().unwrap());
     set_runtime_conf("script_path", engine_conf.get("engine").unwrap().get("script-path").unwrap().as_str().unwrap());
     set_runtime_conf("db_path", engine_conf.get("engine").unwrap().get("db-path").unwrap().as_str().unwrap());
@@ -23,8 +23,11 @@ pub async fn engine_init() -> Result<String, String> {
     if env_check_ret.is_err() {
         return Err("Check Engine Runtime Env Failed.".to_string());
     }
-    
-    // 检查文件日志大小，如果超过指定大小，就进行压缩并放入backup文件夹中，默认按照日期进行分类（年月日时）
+
+    // 扫描并加载插件
+    load_local_extendion();
+
+    // TODO：检查文件日志大小，如果超过指定大小，就进行压缩并放入backup文件夹中，默认按照日期进行分类（年月日时）
 
     // 尝试检查并初始化数据库
     info("System Database checking...");

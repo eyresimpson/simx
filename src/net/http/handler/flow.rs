@@ -5,7 +5,7 @@ use tokio::task;
 use crate::core::common::log::interface::{info, success};
 use crate::core::flow::interface::exec_flow;
 use crate::db::interface::query_data_by_id;
-use crate::entity::db::{SimxFlow, SimxResultVec};
+use crate::entity::db::SimxResultVec;
 use crate::entity::net::{ExecFlowRequestData, SimxResponse};
 
 #[post("/flow/exec", format = "application/json", data = "<request>")]

@@ -7,7 +7,7 @@ max-thread = 100
 # 在启动时运行默认脚本，默认为false
 run-init-script = false
 # 在启动时运行默认流，默认为false
-run-init-flow = true
+run-init-flow = false
 # 系统启动后刷新本地数据
 # 注意，即使本配置为false，系统也会在初次启动时刷新一次
 # 一般不建议禁止，否则可能引起数据本地不同步的情况

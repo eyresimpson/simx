@@ -4,9 +4,9 @@ use crate::core::flow::handler::db::interface::handle_db;
 use crate::core::flow::handler::files::interface::handle_file;
 use crate::core::flow::handler::net::interface::handle_net;
 use crate::core::flow::handler::os::interface::handle_os;
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub async fn handler(node: Node, flow_data: &mut Data) {
+pub async fn handler(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {

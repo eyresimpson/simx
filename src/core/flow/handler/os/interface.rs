@@ -1,8 +1,8 @@
 use crate::core::common::log::interface::warn;
 use crate::core::flow::handler::os::shell::handle_os_shell;
-use crate::entity::flow::{Data, Node};
+use crate::entity::flow::{FlowData, Node};
 
-pub fn handle_os(node: Node, flow_data: &mut Data) {
+pub fn handle_os(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[2] {
         "shell" => {

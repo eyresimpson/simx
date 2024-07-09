@@ -21,4 +21,6 @@ pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
 fn node_debug(node: Node, flow_data: &mut FlowData) {
     debug(format!("Node: {}", to_string(&node).unwrap().as_str()).as_str());
     debug(format!("Data: {}", to_string(&flow_data).unwrap().as_str()).as_str());
+    // let f = (flow_data.data.get("text").unwrap());
+    // warn(bytes_to_string(f).as_str())
 }

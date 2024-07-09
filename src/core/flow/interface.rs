@@ -1,11 +1,12 @@
 use std::fs;
 use std::path::Path;
 use std::sync::Arc;
-use crate::conf::runtime::get_runtime_conf;
+
 use futures::future::BoxFuture;
 use futures::FutureExt;
 use tokio::join;
 
+use crate::conf::runtime::get_runtime_conf;
 use crate::core::common::log::interface::info;
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
 
@@ -34,6 +35,7 @@ fn traverse_folder(folder_path: &Path) -> BoxFuture<'static, ()> {
                     if path.is_file() {
                         // If it's a file, try parsing it as a script
                         // 并发处理 flow
+                        // 其实理论上没必要，因为主要是靠http等方式触发
                         join!(exec_flow(&path));
                         // exec_flow(&path).await;
                     } else if path.is_dir() {

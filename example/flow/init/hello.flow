@@ -38,10 +38,22 @@
       }
     },
     {
-      "handler": "simx.files.json.writer",
+      "handler": "simx.files.plain.writer",
       "attr": {
-        "path": "example/simx.txt",
-        "type": "default"
+        "path": "tmp/simx.txt",
+        "type": "default",
+        "content": "text",
+        "override": "force"
+      }
+    },
+    {
+      "handler": "simx.files.plain.writer",
+      "attr": {
+        "path": "tmp/test.txt",
+        "text": "aaabbbccc",
+        "type": "default",
+        "content": "",
+        "override": "append"
       }
     }
   ]

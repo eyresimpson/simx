@@ -2,7 +2,7 @@ use rocket::{build, Config};
 use rocket::config::LogLevel;
 
 use crate::conf::toml::{get_engine_config, get_net_conf};
-use crate::core::common::log::interface::{info, warn};
+use crate::core::common::log::interface::{success, warn};
 use crate::net::http::handler::common::welcome_info;
 use crate::net::http::handler::flow::{handle_exec_flow_by_path, handle_list_flow, handle_search_flow};
 use crate::net::http::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
@@ -16,8 +16,6 @@ pub async fn start_net_watcher() {
         warn("Service listening disable, The engine will not be maintained");
         return;
     }
-    // info("Attempt to enable service listening...");
-    info("Engine Net Services Starting...");
     let net_conf = get_net_conf();
     let engine_conf = get_engine_config();
     // 获取监听地址
@@ -40,6 +38,8 @@ pub async fn start_net_watcher() {
     // http 配置
     let config = Config {
         profile: Default::default(),
+        // 不打印Rocket的日志
+        log_level: LogLevel::Off,
         // 绑定的端口
         port,
         // 工作线程数
@@ -54,12 +54,12 @@ pub async fn start_net_watcher() {
         temp_dir: temp_dir.into(),
         keep_alive: 0,
         shutdown: Default::default(),
-        log_level: LogLevel::Critical,
         // 是否显示控制台颜色
         cli_colors,
         limits: Default::default(),
         __non_exhaustive: (),
     };
+    success(format!("Engine Http Services has started in {}:{}.", addr, port).as_str());
     // 挂载到simx
     // simx中包含所有操作相关内容
     // 此处阻塞了系统的运行，如果后续需要修改，可以去掉 await

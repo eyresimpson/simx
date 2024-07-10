@@ -20,7 +20,7 @@ pub fn flow_resolver(path: &Path) -> Flow {
                     create_date: "".to_string(),
                     developer: "".to_string(),
                     version: "".to_string(),
-                    env_req: vec![],
+                    requirements: vec![],
                     nodes: vec![],
                 };
             }
@@ -34,7 +34,7 @@ pub fn flow_resolver(path: &Path) -> Flow {
             create_date: "".to_string(),
             developer: "".to_string(),
             version: "".to_string(),
-            env_req: vec![],
+            requirements: vec![],
             nodes: vec![],
         };
     }

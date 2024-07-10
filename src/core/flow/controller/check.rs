@@ -3,7 +3,7 @@ use crate::entity::flow::Flow;
 
 pub fn check_require(flow: Flow) -> bool {
     // 获取要求列表
-    let require = flow.env_req;
+    let require = flow.requirements;
     check(require);
     // for env in require {
     //     let ret = match env.env_key.as_str() {

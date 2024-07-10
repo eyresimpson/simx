@@ -2,7 +2,7 @@ use crate::conf::runtime::set_runtime_conf;
 use crate::conf::toml::get_engine_config;
 use crate::core::common::log::interface::{info, success};
 use crate::core::env::check::env_check;
-use crate::core::extension::interface::load_local_extendion;
+use crate::core::extension::interface::load_local_extensions;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
@@ -25,10 +25,10 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
     // 扫描并加载插件
-    load_local_extendion();
-
-    // TODO：检查文件日志大小，如果超过指定大小，就进行压缩并放入backup文件夹中，默认按照日期进行分类（年月日时）
-
+    if load_local_extensions().is_err(){
+        return Err("Cannot load local extensions.".to_string());
+    }
+    
     // 尝试检查并初始化数据库
     info("System Database checking...");
     if db_init().is_err() {

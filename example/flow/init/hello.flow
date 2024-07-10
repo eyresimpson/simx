@@ -4,14 +4,16 @@
   "update_date": "2024-04-26",
   "create_date": "2024-04-01",
   "developer": "Tine aine",
-  "env_req": [
+  "requirements": [
     {
-      "env_key": "engine",
-      "env_val": "1.0.0"
+      "name": "engine",
+      "env_type": "Base",
+      "ver": "1.0.0"
     },
     {
-      "env_key": "java",
-      "env_val": "1.8.0"
+      "name": "java",
+      "env_type": "RT",
+      "ver": "1.8.0"
     }
   ],
   "nodes": [

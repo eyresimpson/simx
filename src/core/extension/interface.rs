@@ -9,7 +9,7 @@ use crate::core::extension::py::interface::load_py_extension;
 use crate::core::extension::so::interface::load_so_extension;
 
 // 加载并执行默认脚本
-pub fn load_local_extendion() {
+pub fn load_local_extensions() -> Result<String, String>{
     info("Load Extension...");
     // debug(format!("Ext Path: {}", get_runtime_conf("ext_path").unwrap()).as_str());
     // engine_conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap()
@@ -22,8 +22,10 @@ pub fn load_local_extendion() {
     if Path::new(path).is_dir() {
         // 遍历文件夹下的所有内容
         traverse_folder(path);
+        Ok("Load Extensions Done.".parse().unwrap())
     } else {
-        info("No extensions found, Skip...")
+        info("No extensions found, Skip...");
+        Ok("No extensions found, Skip...".parse().unwrap())
     }
 }
 

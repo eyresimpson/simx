@@ -32,3 +32,5 @@ chrono = "0.4.38"
 reqwest = { version = "0.10", features = ["json"] }
 # 用于处理异步任务的库。它提供了异步编程的基础设施，包括异步任务、Future、Stream 等。
 futures = "0.3.30"
+# 加载dll的库
+libloader = "0.1.4"

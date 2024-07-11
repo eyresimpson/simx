@@ -1,20 +1,22 @@
+use std::collections::HashMap;
 use std::fs;
+use std::fs::File;
+use std::io::Read;
 use std::path::Path;
-
-use crate::conf::runtime::get_runtime_conf;
-use crate::core::common::log::interface::{fail, info};
+use serde_json::{from_str, Value};
+use crate::conf::runtime::{get_runtime_conf, set_runtime_conf};
+use crate::core::common::log::interface::{fail, info, success};
 use crate::core::extension::dll::interface::load_dll_extension;
 use crate::core::extension::jar::interface::load_jar_extension;
 use crate::core::extension::py::interface::load_py_extension;
 use crate::core::extension::so::interface::load_so_extension;
 
 // 加载并执行默认脚本
-pub fn load_local_extensions() -> Result<String, String>{
+pub fn load_local_extensions() -> Result<String, String> {
     info("Load Extension...");
     // debug(format!("Ext Path: {}", get_runtime_conf("ext_path").unwrap()).as_str());
     // engine_conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap()
     let script_path = get_runtime_conf("ext_path").unwrap();
-    // TODO: 将这个路径修改到配置文件中
     let binding = Path::new(script_path.as_str()).iter().as_path();
     let path = binding;
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
@@ -29,7 +31,7 @@ pub fn load_local_extensions() -> Result<String, String>{
     }
 }
 
-// 遍历并执行指定目录下的所有脚本（包含子目录）
+// 遍历并执行指定目录下的所有路径（包含子目录）
 fn traverse_folder(folder_path: &Path) {
     if let Ok(entries) = fs::read_dir(folder_path) {
         // 循环指定的目录
@@ -55,21 +57,34 @@ fn traverse_folder(folder_path: &Path) {
 pub fn load_extension_by_path(path: &Path) {
     // 判断插件类型
     if path.exists() {
-        if let Some(extension) = path.extension() {
-            // 交给对应的加载程序
-            match extension.to_str().unwrap().to_lowercase().as_str() {
-                "jar" => load_jar_extension(path),
-                "dll" => load_dll_extension(path),
-                "so" => load_so_extension(path),
-                "py" => load_py_extension(path),
-                // 没有后缀名的文件统一作为so加载
-                _ => load_so_extension(path)
-            }
-        } else {
-            fail("Cannot find assign extension file path.")
+        // if let Some(extension) = path.extension() {
+        //     // 交给对应的加载程序
+        //     match extension.to_str().unwrap().to_lowercase().as_str() {
+        //         "jar" => load_jar_extension(path),
+        //         "dll" => load_dll_extension(path),
+        //         "so" => load_so_extension(path),
+        //         "py" => load_py_extension(path),
+        //         // 不处理（因为json、ini、xml、yaml和toml都可能是配置文件）
+        //         "json" | "xml" | "ini" | "yml" | "toml" => {}
+        //         // 没有后缀名的文件统一作为so加载
+        //         _ => load_so_extension(path)
+        //     }
+        // } else {
+        //     fail("Cannot find assign extension file path.")
+        // }
+        if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
+            // 加载配置文件，即根目录下的extension.json文件
+            let mut file = File::open(path).expect("Extension: Failed to open file");
+            let mut contents = String::new();
+            file.read_to_string(&mut contents).expect("Extension: Failed to read file");
+            let map: HashMap<String, Value> = from_str(&contents).expect("Extension: Failed to parse JSON");
+            // 存入runtime中（这个数据比较小，直接存于内存即可，便于使用）
+            set_runtime_conf(map.get("name").expect("Extension: Cannot find [ name ] filed in extension json.").as_str().unwrap(), contents.as_str());
+            success("Load extension done.");
         }
     }
 }
+
 //
 // // 检查插件可用性
 // pub fn check_extension_available() {}

@@ -15,6 +15,10 @@ pub async fn run() {
         fail(init_ret.err().unwrap().as_str());
         return;
     }
+    
+    // test: 调用
+    info("Test: Calling...");
+    
 
     // 系统启动完成
     success("Engine has started.");

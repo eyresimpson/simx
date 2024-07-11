@@ -14,6 +14,11 @@
       "name": "java",
       "env_type": "RT",
       "ver": "1.8.0"
+    },
+    {
+      "name": "core",
+      "env_type": "Ext",
+      "ver": "0.1.0"
     }
   ],
   "nodes": [

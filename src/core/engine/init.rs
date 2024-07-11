@@ -17,6 +17,12 @@ pub async fn engine_init() -> Result<String, String> {
     set_runtime_conf("log_path", engine_conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap());
     set_runtime_conf("ext_path", engine_conf.get("engine").unwrap().get("ext-path").unwrap().as_str().unwrap());
 
+    // 扫描并加载插件
+    // 插件的扫描和加载要早于环境检查和流程运行
+    if load_local_extensions().is_err() {
+        return Err("Cannot load local extensions.".to_string());
+    }
+
     // 检查工作环境（当前目录）
     let env_check_ret = env_check();
     // 判断环境检查是否通过
@@ -24,11 +30,7 @@ pub async fn engine_init() -> Result<String, String> {
         return Err("Check Engine Runtime Env Failed.".to_string());
     }
 
-    // 扫描并加载插件
-    if load_local_extensions().is_err(){
-        return Err("Cannot load local extensions.".to_string());
-    }
-    
+
     // 尝试检查并初始化数据库
     info("System Database checking...");
     if db_init().is_err() {

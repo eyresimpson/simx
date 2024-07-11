@@ -17,7 +17,7 @@ flow-path = "flow"
 # 扫描的脚本目录
 script-path = "script"
 # 扫描的插件目录
-ext-path = "ext"
+ext-path = "D:\\Code\\simx-core\\release"
 # 系统日志目录
 log-path = "logs"
 # 系统数据库目录
@@ -33,6 +33,11 @@ console-log-style = true
 shell-log-level = "debug"
 # 文件日志等级（同控制台日志）
 file-log-level = "info"
+# 内存策略
+# auto: 默认选项，使用数据尽可能保存在h2数据库中
+# db: 同auto，将数据尽可能存于数据库中，占用内存较小，对硬盘负荷增加，减少内存占用
+# ram: 将数据尽可能保存在内存中，可能占用更多的内存，降低硬盘读写负荷，可提升运行速度
+memory-policy = "auto"
 
 [update]
 # 保留版本数量，默认为 3

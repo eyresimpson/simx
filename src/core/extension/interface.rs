@@ -3,13 +3,11 @@ use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+
 use serde_json::{from_str, Value};
+
 use crate::conf::runtime::{get_runtime_conf, set_runtime_conf};
-use crate::core::common::log::interface::{fail, info, success};
-use crate::core::extension::dll::interface::load_dll_extension;
-use crate::core::extension::jar::interface::load_jar_extension;
-use crate::core::extension::py::interface::load_py_extension;
-use crate::core::extension::so::interface::load_so_extension;
+use crate::core::common::log::interface::{info, success};
 
 // 加载并执行默认脚本
 pub fn load_local_extensions() -> Result<String, String> {

@@ -1,6 +1,7 @@
 use crate::core::common::log::interface::{fail, info, success};
 use crate::core::engine::init::engine_init;
 use crate::core::engine::watcher::start_net_watcher;
+use crate::core::extension::dll::interface::call_extension_method;
 
 /// 引擎核心
 /// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
@@ -18,6 +19,7 @@ pub async fn run() {
     
     // test: 调用
     info("Test: Calling...");
+    call_extension_method("D:\\Code\\simx-core\\release\\core.dll".to_string(),"test".to_string());
     
 
     // 系统启动完成

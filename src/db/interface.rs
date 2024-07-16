@@ -42,12 +42,15 @@ pub fn init_base_db_struct() -> rusqlite::Result<()> {
                         id  integer not null
                             constraint id
                                 primary key autoincrement,
-                        display_name TEXT,
-                        file_name    TEXT,
-                        ext_path    TEXT,
-                        ext_type    TEXT,
+                        name TEXT,
+                        path TEXT,
                         version    TEXT,
-                        file_type    TEXT
+                        description    TEXT,
+                        license    TEXT,
+                        author    TEXT,
+                        keywords    TEXT,
+                        dependencies    TEXT,
+                        function    TEXT
                     );
                 ", (),
     )?;

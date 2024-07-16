@@ -1,19 +1,16 @@
-use std::collections::HashMap;
 use std::fs;
-use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-
-use serde_json::{from_str, Value};
+use rusqlite::Connection;
+use serde_json::from_str;
 
 use crate::conf::runtime::{get_runtime_conf, set_runtime_conf};
-use crate::core::common::log::interface::{info, success};
+use crate::core::common::log::interface::info;
+use crate::entity::ext::Extension;
 
-// 加载并执行默认脚本
+// 加载配置目录下的插件信息
 pub fn load_local_extensions() -> Result<String, String> {
     info("Load Extension...");
-    // debug(format!("Ext Path: {}", get_runtime_conf("ext_path").unwrap()).as_str());
-    // engine_conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap()
     let script_path = get_runtime_conf("ext_path").unwrap();
     let binding = Path::new(script_path.as_str()).iter().as_path();
     let path = binding;
@@ -55,30 +52,33 @@ fn traverse_folder(folder_path: &Path) {
 pub fn load_extension_by_path(path: &Path) {
     // 判断插件类型
     if path.exists() {
-        // if let Some(extension) = path.extension() {
-        //     // 交给对应的加载程序
-        //     match extension.to_str().unwrap().to_lowercase().as_str() {
-        //         "jar" => load_jar_extension(path),
-        //         "dll" => load_dll_extension(path),
-        //         "so" => load_so_extension(path),
-        //         "py" => load_py_extension(path),
-        //         // 不处理（因为json、ini、xml、yaml和toml都可能是配置文件）
-        //         "json" | "xml" | "ini" | "yml" | "toml" => {}
-        //         // 没有后缀名的文件统一作为so加载
-        //         _ => load_so_extension(path)
-        //     }
-        // } else {
-        //     fail("Cannot find assign extension file path.")
-        // }
         if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
-            // 加载配置文件，即根目录下的extension.json文件
-            let mut file = File::open(path).expect("Extension: Failed to open file");
-            let mut contents = String::new();
-            file.read_to_string(&mut contents).expect("Extension: Failed to read file");
-            let map: HashMap<String, Value> = from_str(&contents).expect("Extension: Failed to parse JSON");
-            // 存入runtime中（这个数据比较小，直接存于内存即可，便于使用）
-            set_runtime_conf(map.get("name").expect("Extension: Cannot find [ name ] filed in extension json.").as_str().unwrap(), contents.as_str());
-            success("Load extension done.");
+            // 数据库地址
+            let db_path = get_runtime_conf("db_path").unwrap();
+            // 连接到数据库（获取到的信息需要写入到数据库中）
+            let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
+            // 循环指定的目录
+            let table_name = "simx_ext".to_string();
+            // 读取 JSON 文件
+            let file_path = Path::new(path);
+            let data = fs::read_to_string(file_path).expect("Unable to read file");
+            let extension: Extension = from_str(&data).expect("JSON was not well-formatted");
+            
+            // 将数据放到 runtime 配置中
+            set_runtime_conf(extension.name.as_str(), serde_json::to_string(&extension).unwrap().as_str());
+            let sql = format!("insert into {} (name, version, path, description, license, author, keywords, dependencies, function) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);", table_name);
+            let _ = conn.execute(sql.as_str(), &[
+                extension.name.as_str(),
+                extension.version.as_str(),
+                path.to_str().unwrap(),
+                extension.description.as_str(),
+                extension.license.as_str(),
+                extension.author.as_str(),
+                extension.keywords.join(",").as_str(),
+                serde_json::to_string(&extension.dependencies).unwrap().as_str(),
+                serde_json::to_string(&extension.function).unwrap().as_str(),
+            ]);
+            conn.close().unwrap()
         }
     }
 }

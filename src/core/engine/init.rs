@@ -17,8 +17,16 @@ pub async fn engine_init() -> Result<String, String> {
     set_runtime_conf("log_path", engine_conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap());
     set_runtime_conf("ext_path", engine_conf.get("engine").unwrap().get("ext-path").unwrap().as_str().unwrap());
 
+    // 尝试检查并初始化数据库
+    info("System Database checking...");
+    if db_init().is_err() {
+        return Err("System Error: Check Your Db Conf!".to_string());
+    } else {
+        success("System database checked successfully.");
+    }
+    
     // 扫描并加载插件
-    // 插件的扫描和加载要早于环境检查和流程运行
+    // 插件的扫描和加载要早于环境检查和流程运行，但要晚于数据库初始化
     if load_local_extensions().is_err() {
         return Err("Cannot load local extensions.".to_string());
     }
@@ -31,13 +39,7 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
 
-    // 尝试检查并初始化数据库
-    info("System Database checking...");
-    if db_init().is_err() {
-        return Err("System Error: Check Your Db Conf!".to_string());
-    } else {
-        success("System database checked successfully.");
-    }
+
 
     // 初始化脚本
     if engine_conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {

@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::Read;
 use std::path::Path;
 use rusqlite::Connection;
 use serde_json::from_str;

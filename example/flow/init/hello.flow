@@ -54,13 +54,10 @@
       }
     },
     {
-      "handler": "simx.files.plain.writer",
+      "handler": "core.test",
       "attr": {
-        "path": "tmp/test.txt",
-        "text": "aaabbbccc",
-        "type": "default",
-        "content": "",
-        "override": "append"
+        "a": "30",
+        "b": "20"
       }
     }
   ]

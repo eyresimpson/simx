@@ -34,7 +34,8 @@ pub fn call_extension_method(path: String, function: Function) {
         let args: Vec<*const c_void> = params.iter().map(|p| p.as_ref() as *const _ as *const c_void).collect();
 
         // 调用函数
-        let result_ptr = func(args.as_ptr() as *const c_void);
+        // let result_ptr = func(args.as_ptr() as *const c_void);
+        func(args.as_ptr() as *const c_void);
 
         // // 处理返回值
         // match function.result.result_type.as_str() {

@@ -4,6 +4,13 @@
 [engine]
 # 最大线程数，默认为 100
 max-thread = 100
+# 运行模式
+# - default: 默认文件数据库模式
+# - file-db：文件数据库模式，一般不关注持久化数据可以使用这种模式
+# - memory：仅内存模式，引擎不会对文件系统进行任何操作（可单独配置日志）
+# - db：数据库模式，需要对db配置文件进行配置（指mysql等数据库）
+# - mixture：混合运行模式，系统会同时考虑内存和文件数据库，优先内存
+engine-mode = "default"
 # 在启动时运行默认脚本，默认为false
 run-init-script = false
 # 在启动时运行默认流，默认为false

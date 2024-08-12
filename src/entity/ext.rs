@@ -28,12 +28,14 @@ pub struct Function {
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Extension {
+    pub path: Option<String>,
     pub name: String,
     pub version: String,
+    pub engine: String,
     pub description: String,
     pub license: String,
     pub author: String,
     pub keywords: Vec<String>,
     pub dependencies: Vec<String>,
-    pub function: Vec<Function>,
+    pub function: Vec<Vec<String>>,
 }

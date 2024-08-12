@@ -7,9 +7,10 @@ use futures::FutureExt;
 use tokio::join;
 
 use crate::conf::runtime::get_runtime_conf;
-use crate::core::common::log::interface::info;
+use crate::core::common::log::interface::{info, warn};
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
 
+// 加载并执行默认流
 pub async fn load_and_exec_default_flow() {
     let flow_path = get_runtime_conf("flow_path").unwrap();
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
@@ -22,7 +23,7 @@ pub async fn load_and_exec_default_flow() {
     }
 }
 
-// 遍历并执行指定目录下的所有流程（包含子目录）
+// 遍历并执行指定目录下的所有流（包含子目录）
 fn traverse_folder(folder_path: &Path) -> BoxFuture<'static, ()> {
     let folder_path = Arc::new(folder_path.to_owned());
     let folder_path_clone = folder_path.clone();
@@ -33,11 +34,9 @@ fn traverse_folder(folder_path: &Path) -> BoxFuture<'static, ()> {
                 if let Ok(entry) = entry {
                     let path = entry.path();
                     if path.is_file() {
-                        // If it's a file, try parsing it as a script
                         // 并发处理 flow
-                        // 其实理论上没必要，因为主要是靠http等方式触发
+                        // 其实理论上没必要，因为主要是靠http等方式触发，本身就是异步的
                         join!(exec_flow(&path));
-                        // exec_flow(&path).await;
                     } else if path.is_dir() {
                         // If it's a directory, recursively traverse its contents
                         traverse_folder(&path).await;
@@ -48,6 +47,7 @@ fn traverse_folder(folder_path: &Path) -> BoxFuture<'static, ()> {
     }.boxed()
 }
 
+// 执行流
 pub async fn exec_flow(path: &Path) {
     if let Some(extension) = path.extension() {
         match extension.to_str().unwrap().to_lowercase().as_str() {
@@ -57,9 +57,13 @@ pub async fn exec_flow(path: &Path) {
             "xml" => exec_xml_flow(path),
             "toml" => exec_toml_flow(path),
             // 目前拒绝处理其他类型的流程
-            _ => return,
+            _ => {
+                warn("Unparsable process file format! Check your flow file format.");
+                return
+            }
         }
     } else {
+        warn("Unparsable process file format! Check your flow file format.");
         // 不解析其他任何后缀名的文件
         return;
     }

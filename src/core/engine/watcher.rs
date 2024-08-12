@@ -2,7 +2,7 @@ use rocket::{build, Config};
 use rocket::config::LogLevel;
 
 use crate::conf::toml::{get_engine_config, get_net_conf};
-use crate::core::common::log::interface::{success, warn};
+use crate::core::common::log::interface::{info, warn};
 use crate::net::http::handler::common::welcome_info;
 use crate::net::http::handler::flow::{handle_exec_flow_by_path, handle_list_flow, handle_search_flow};
 use crate::net::http::handler::script::{handle_exec_script, handle_list_script, handle_search_script};
@@ -59,7 +59,7 @@ pub async fn start_net_watcher() {
         limits: Default::default(),
         __non_exhaustive: (),
     };
-    success(format!("Engine Http Services has started in {}:{}.", addr, port).as_str());
+    info(format!("Engine Http Services has started in {}:{}.", addr, port).as_str());
     // 挂载到simx
     // simx中包含所有操作相关内容
     // 此处阻塞了系统的运行，如果后续需要修改，可以去掉 await

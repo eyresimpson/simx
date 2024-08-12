@@ -1,12 +1,13 @@
 use crate::conf::runtime::get_runtime_conf;
 use crate::core::common::log::interface::{info, warn};
-use crate::core::engine::init::scan_load_local;
+use crate::core::engine::init::reload_local;
 use crate::core::extension::interface::call;
 use crate::core::flow::handler::basic::interface::handle_basic;
 use crate::core::flow::handler::db::interface::handle_db;
 use crate::core::flow::handler::files::interface::handle_file;
 use crate::core::flow::handler::net::interface::handle_net;
 use crate::core::flow::handler::os::interface::handle_os;
+use crate::core::flow::handler::script::interface::handle_script;
 use crate::entity::flow::{FlowData, Node};
 
 pub async fn handler(node: Node, flow_data: &mut FlowData) {
@@ -31,6 +32,9 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
             "basic" => {
                 handle_basic(node, flow_data);
             }
+            "script" => {
+                handle_script(node);
+            }
             _ => {
                 warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[1]).as_str());
             }
@@ -42,7 +46,7 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
             // TODO：重新刷新一遍插件，然后重试，这样可以实现所谓的插件热拔插
             info("Engine cannot find ext, Try to refresh ext list...");
             // 重新加载插件数据
-            let ret = scan_load_local("ext");
+            let ret = reload_local("ext");
             if ret.is_err() {
                 warn("Engine cannot find ext, Refresh ext list failed, Skip...");
             }

@@ -39,9 +39,9 @@
       "attr": {}
     },
     {
-      "handler": "simx.net.http.request_get",
+      "handler": "simx.script",
       "attr": {
-        "attr": "{\"aaa\":\"bbb\"}"
+        "path": "script/os/windows/test.ps1"
       }
     },
     {

@@ -3,7 +3,6 @@ use crate::core::common::log::interface::{info, warn};
 use crate::core::engine::init::reload_local;
 use crate::core::extension::interface::call;
 use crate::core::flow::handler::basic::interface::handle_basic;
-use crate::core::flow::handler::db::interface::handle_db;
 use crate::core::flow::handler::files::interface::handle_file;
 use crate::core::flow::handler::net::interface::handle_net;
 use crate::core::flow::handler::os::interface::handle_os;
@@ -19,9 +18,6 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
         match handler_path[1] {
             "files" => {
                 handle_file(node, flow_data);
-            }
-            "db" => {
-                handle_db(node, flow_data);
             }
             "net" => {
                 handle_net(node, flow_data).await;

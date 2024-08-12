@@ -78,7 +78,7 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
     // 尝试扫描并加载流，默认全部
-    let result = scan_load_local("");
+    let result = reload_local("");
     if result.is_err() {
         fail("Cannot scan and load local resource")
     } else {
@@ -108,33 +108,33 @@ pub async fn engine_init() -> Result<String, String> {
     return Ok("Engine init success.".parse().unwrap());
 }
 
-// 加载当前环境信息
+// 重新加载当前环境信息
 // 比如当前系统中的脚本，流程等信息，这些信息会被加载到数据库中
-pub fn scan_load_local(mode: &str) -> std::result::Result<String, String> {
+pub fn reload_local(mode: &str) -> Result<String, String> {
     // 这种写法虽然繁琐了点，但可以节省一小部分的内存...
     match mode {
         "script" => {
             let script_path = get_runtime_conf("script_path").unwrap();
-            traverse_folder(Path::new(script_path.as_str()), "script");
+            reload_local_traverse_folder(Path::new(script_path.as_str()), "script");
         }
         "flow" => {
             let flow_path = get_runtime_conf("flow_path").unwrap();
-            traverse_folder(Path::new(flow_path.as_str()), "flow");
+            reload_local_traverse_folder(Path::new(flow_path.as_str()), "flow");
         }
         "ext" => {
             let ext_path = get_runtime_conf("ext_path").unwrap();
-            traverse_folder(Path::new(ext_path.as_str()), "ext");
+            reload_local_traverse_folder(Path::new(ext_path.as_str()), "ext");
         }
         _ => {
             let ext_path = get_runtime_conf("ext_path").unwrap();
             let script_path = get_runtime_conf("script_path").unwrap();
             let flow_path = get_runtime_conf("flow_path").unwrap();
             // 加载脚本信息
-            traverse_folder(Path::new(script_path.as_str()), "script");
+            reload_local_traverse_folder(Path::new(script_path.as_str()), "script");
             // 加载流信息
-            traverse_folder(Path::new(flow_path.as_str()), "flow");
+            reload_local_traverse_folder(Path::new(flow_path.as_str()), "flow");
             // 加载插件信息
-            traverse_folder(Path::new(ext_path.as_str()), "ext");
+            reload_local_traverse_folder(Path::new(ext_path.as_str()), "ext");
         }
     }
 
@@ -143,7 +143,7 @@ pub fn scan_load_local(mode: &str) -> std::result::Result<String, String> {
     return Ok("Scan done.".to_string());
 }
 
-fn traverse_folder(folder_path: &Path, traverse_type: &str) {
+fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
     // 判断给定的路径是否存在
     let path_exist = Path::new(folder_path).is_dir();
     if !path_exist {
@@ -156,7 +156,6 @@ fn traverse_folder(folder_path: &Path, traverse_type: &str) {
         for entry in entries {
             if let Ok(entry) = entry {
                 let path = entry.path();
-
                 if path.is_file() {
                     if !get_runtime_conf("engine-mode").unwrap().eq("memory") {
                         let db_path = get_runtime_conf("db_path").unwrap();
@@ -176,12 +175,14 @@ fn traverse_folder(folder_path: &Path, traverse_type: &str) {
                     // 插件的信息会直接进入内存
                     if traverse_type.eq("ext") {
                         load_extension_by_path(path.as_path());
+                    } else if traverse_type.eq("flow") {
+                        load_flow_by_path(path.as_path());
+                    } else if traverse_type.eq("script") {
+                        load_script_by_path(path.as_path());
                     }
-                    // 将数据放到 runtime 配置中
-                    set_runtime_conf(format!("{}_{:?}", traverse_type, path.file_name().unwrap().to_str()).as_str(), path.to_str().unwrap());
                 } else if path.is_dir() {
                     // 多级文件夹，继续遍历其中的文件和文件夹
-                    traverse_folder(path.as_path(), traverse_type);
+                    reload_local_traverse_folder(path.as_path(), traverse_type);
                 }
             }
         }
@@ -228,8 +229,14 @@ pub fn load_extension_by_path(path: &Path) {
     }
 }
 
-// 将指定路径下的流程信息加载到内存中
-pub fn load_flow_by_path() {}
+// 将指定路径下的流程信息加载到内存中，理论上没有必要
+pub fn load_flow_by_path(path: &Path) {
+    // 将数据放到 runtime 配置中
+    set_runtime_conf(format!("flow_{:?}", path.to_str()).as_str(), path.to_str().unwrap());
+}
 
-// 将指定路径下的脚本信息加载到内存中
-pub fn load_script_by_path() {}
+// 将指定路径下的脚本信息加载到内存中，理论上没有必要
+pub fn load_script_by_path(path: &Path) {
+    // 将数据放到 runtime 配置中
+    set_runtime_conf(format!("script_{:?}", path.to_str()).as_str(), path.to_str().unwrap());
+}

@@ -43,6 +43,10 @@ file-log-level = "info"
 # warn：仅显示警告信息
 # fail：报错并中止流
 missing-plugin-action = "warn"
+# 错误的默认handel名称时的操作
+# warn：仅显示警告信息
+# fail：报错并中止流
+missing-default-handel-action = "warn"
 
 [update]
 # 保留版本数量，默认为 3

@@ -1,9 +1,9 @@
 // 脚本引擎核心
 use std::fs;
 use std::path::Path;
-use crate::conf::runtime::get_runtime_conf;
 
-use crate::core::common::log::interface::info;
+use crate::conf::runtime::get_runtime_conf;
+use crate::core::common::log::interface::{info, warn};
 use crate::core::script::bat::exec_bat_script;
 use crate::core::script::ps1::exec_powershell_script;
 use crate::core::script::py::exec_python_script;
@@ -55,9 +55,13 @@ pub fn exec_script(path: &Path) {
             "ps1" => exec_powershell_script(path),
             "sql" => exec_sql_script(path),
             // 目前拒绝处理其他脚本
-            _ => return,
+            _ => {
+                warn("Unsupported script type, Skip...");
+                return
+            },
         }
     } else {
+        warn("No script extension found, Skip...");
         // 不解析其他任何后缀名的文件
         return;
     }

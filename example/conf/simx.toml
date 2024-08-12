@@ -13,7 +13,7 @@ engine-mode = "memory"
 # 在启动时运行默认脚本，默认为false
 run-init-script = false
 # 在启动时运行默认流，默认为false
-run-init-flow = true
+run-init-flow = false
 # 系统启动后刷新本地数据
 # 注意，即使本配置为false，系统也会在初次启动时刷新一次
 # 一般不建议禁止，否则可能引起数据本地不同步的情况
@@ -36,7 +36,7 @@ console-log-style = true
 # warn：仅显示警告信息，包括部分未正常配置的环境等
 # fail：仅显示报错信息
 # none：不显示控制台日志
-shell-log-level = "debug"
+shell-log-level = "info"
 # 文件日志等级（同控制台日志）
 file-log-level = "info"
 # 缺少插件时的操作

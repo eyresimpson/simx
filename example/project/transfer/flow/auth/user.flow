@@ -1,0 +1,44 @@
+{
+  "version": "1",
+  "flow_name": "first-flow",
+  "update_date": "2024-04-23",
+  "create_date": "2024-04-01",
+  "developer": "Tine aine",
+  "env_req": [
+    {
+      "env_name": "engine",
+      "env_type": "1.0.0"
+    },
+    {
+      "env_name": "java",
+      "env_type": "1.8.0"
+    }
+  ],
+  "nodes": [
+    {
+      "handler": "simx.files.plain.reader",
+      "attr": {
+        "path": "auth/private.key"
+      }
+    },
+    {
+      "handler": "simx.os.shell.println",
+      "attr": {
+        "text": "hello world"
+      }
+    },
+    {
+      "handler": "simx.net.http.request_get",
+      "attr": {
+        "attr": "{\"aaa\":\"bbb\"}"
+      }
+    },
+    {
+      "handler": "simx.files.json.writer",
+      "attr": {
+        "path": "conf/simx.txt",
+        "type": "default"
+      }
+    }
+  ]
+}

@@ -1,4 +1,8 @@
 /target
 /Cargo.lock
-/.idea/workspace.xml
-!/dist/db/simx.db
+/.idea
+/example/db/*
+/tmp/*
+/example/logs/*
+/example/tmp/
+/example/simx.exe

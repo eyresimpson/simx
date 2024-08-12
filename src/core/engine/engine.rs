@@ -1,53 +1,28 @@
-use crate::conf::simx::get_config;
-use crate::core::db::controller::db_init;
-use crate::core::engine::flow::load_and_exec_default_flow;
-use crate::core::engine::script::load_and_exec_default_script;
+use crate::core::common::log::interface::{fail, info, success};
+use crate::core::engine::init::engine_init;
 use crate::core::engine::watcher::start_net_watcher;
-use crate::tools::log::shell::{err, info, success, warn};
 
 /// 引擎核心
+/// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
+/// 才会调用引擎方法，发起流程或脚本
 pub async fn run() {
     info("Engine Starting...");
-    // 尝试加载运行配置
-    let conf = get_config();
 
-    // 尝试检查并初始化数据库
-    info("System Database checking...");
-    if db_init().is_err() {
-        err("System Error: Check Your Db Conf!");
-    } else {
-        success("System database checked successfully.");
+    // 执行系统初始化事件
+    // 包括运行初始化脚本和初始化流
+    let init_ret = engine_init().await;
+    if init_ret.is_err() {
+        fail(init_ret.err().unwrap().as_str());
+        return;
     }
 
+    // 系统启动完成
     success("Engine has started.");
 
-    // 初始化脚本
-    if conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {
-        info("Default script running...");
-        load_and_exec_default_script();
-        success("Run init script done.");
-    } else {
-        info("Skip init script running.");
-    }
-
-    // 初始流
-    if conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
-        info("Default flow running...");
-        load_and_exec_default_flow();
-        success("Run init flow done.");
-    } else {
-        info("Skip init flow running.");
-    }
-
-    // 系统监听
-    if conf.get("net").unwrap().get("rest-enable-listener").unwrap().as_bool().unwrap() {
-        info("Attempt to enable service listening...");
-        // 尝试调起网络监听器（阻塞）
-        start_net_watcher().await;
-    } else {
-        warn("Service listening disable, The engine will not be maintained");
-    }
+    // 尝试调起网络监听器（阻塞）
+    start_net_watcher().await;
 
     // 运行结束
-    success("Engine run out.");
+    // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）
+    info("Engine run out.");
 }

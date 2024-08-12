@@ -11,8 +11,9 @@ pub struct ExecScriptRequestData {
 // 发起流时使用的请求数据结构
 #[derive(Serialize, Deserialize)]
 pub struct ExecFlowRequestData {
-    pub id: String,
-    pub url: String
+    pub id: Option<String>,
+    pub url: Option<String>,
+    pub path: Option<String>
 }
 
 #[derive(Serialize, Deserialize)]

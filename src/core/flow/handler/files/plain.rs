@@ -9,14 +9,10 @@ pub fn handle_file_plain(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
-        "reader" => {
-            // 普通文本
-            reader(node, flow_data);
-        }
-        "writer" => {
-            // Json文件
-            writer(node, flow_data);
-        }
+        // 读取器
+        "reader" => reader(node, flow_data),
+        // 写入器
+        "writer" => writer(node, flow_data),
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
         }

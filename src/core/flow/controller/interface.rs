@@ -21,11 +21,6 @@ pub fn exec_toml_flow(path: &Path) {
     info(path.to_str().unwrap())
 }
 
-// 执行json流
-// pub fn exec_json_flow(path: &Path) {
-//     info(path.to_str().unwrap())
-// }
-
 // 执行xml流
 pub fn exec_xml_flow(path: &Path) {
     info(path.to_str().unwrap())

@@ -1,7 +1,8 @@
 use rocket::http::Status;
 use rocket::serde::json::Json;
+
 use crate::conf::runtime::get_runtime_confs;
-use crate::core::common::log::interface::{info, success};
+use crate::core::common::log::interface::info;
 use crate::core::flow::interface::exec_flow;
 use crate::entity::net::{ExecFlowRequestData, SimxResponse};
 

@@ -11,7 +11,6 @@ use crate::core::engine::engine::run;
 mod core;
 mod conf;
 mod net;
-mod db;
 mod tools;
 mod test;
 mod entity;

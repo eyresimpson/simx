@@ -1,61 +1,21 @@
-# simx 核心配置
-
-# 引擎配置
 [engine]
-# 最大线程数，默认为 100
-max-thread = 100
-# 运行模式，目前仅实现memory和部分文件数据库模式
-# - memory：仅内存模式，默认模式，引擎不会对文件系统进行任何操作（可单独配置日志）
-# - file-db：文件数据库模式，一般不关注持久化数据可以使用这种模式
-# - db：数据库模式，需要对db配置文件进行配置（指mysql等数据库）
-# - mixture：混合运行模式，系统会同时考虑内存和文件数据库，优先内存
-engine-mode = "memory"
-# 在启动时运行默认脚本，默认为false
-run-init-script = false
-# 在启动时运行默认流，默认为false
-run-init-flow = false
-# 系统启动后刷新本地数据
-# 注意，即使本配置为false，系统也会在初次启动时刷新一次
-# 一般不建议禁止，否则可能引起数据本地不同步的情况
-auto-refresh-local-data = true
-# 扫描的流程目录
-flow-path = "flow"
-# 扫描的脚本目录
-script-path = "script"
-# 扫描的插件目录
-ext-path = "D:\\Code\\simx-core\\release"
-# 系统日志目录
-log-path = "logs"
-# 系统数据库目录
-db-path = "db"
-# 控制台输出样式，默认为true(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
-console-log-style = true
-# 控制台日志等级
-# debug: 包含每个节点的输入、输入等信息，最详细，仅适用于开发环境
-# info：显示引擎正在进行的步骤和操作
-# warn：仅显示警告信息，包括部分未正常配置的环境等
-# fail：仅显示报错信息
-# none：不显示控制台日志
-shell-log-level = "info"
-# 文件日志等级（同控制台日志）
-file-log-level = "info"
-# 缺少插件时的操作
-# warn：仅显示警告信息
-# fail：报错并中止流
-missing-plugin-action = "warn"
-# 错误的默认handel名称时的操作
-# warn：仅显示警告信息
-# fail：报错并中止流
-missing-default-handel-action = "warn"
+run_init_script = true
+run_init_flow = true
+auto_refresh_local_data = true
+ext_path = "D:\\Code\\simx-core\\release"
+shell_log_level = "debug"
+file_log_level = "info"
+missing_plugin_action = "warn"
+missing_default_handel_action = "warn"
 
-[update]
-# 保留版本数量，默认为 3
-stored-version = 3
-# 系统自动更新，默认为false（主动请求更新服务器）
-auto-update = false
-# simx 更新服务器地址，为空会请求默认服务器( https://simx.tineaine.cn/update )
-update-addr = ""
-# simx 更新服务器端口，为空会请求默认服务器（20083）
-update-port = 20083
-# simx 更新通道，默认为 stable
-update-channel = "stable"
+[net]
+rest_listener_port = 9899
+
+[env]
+enable_python_script = true
+enable_shell_script = true
+enable_batch_script = true
+enable_powershell_script = false
+enable_shell_script_in_mac = true
+enable_shell_script_in_linux = true
+python_path = "python"

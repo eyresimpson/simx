@@ -3,7 +3,7 @@
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
-use crate::conf::toml::get_engine_config;
+use crate::entity::config::engine::get_engine_config;
 
 // 写文件日志
 pub fn write_log(log_message: &str, num: i64) {
@@ -12,8 +12,8 @@ pub fn write_log(log_message: &str, num: i64) {
     }
     let now = chrono::Local::now();
     // 日志目录，从配置文件中读取
-    let conf = get_engine_config();
-    let path = conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap();
+    let conf = get_engine_config().engine;
+    let path = conf.log_path;
     // 默认情况下是根据日期写日志，即每天都有一个日志
     let log_path = format!("{}/simx-{}.log", path, now.format("%Y-%m-%d"));
     // 打开文件（如果不存在会自动创建）
@@ -53,8 +53,8 @@ pub fn write_log(log_message: &str, num: i64) {
 }
 
 fn get_log_num() -> i64 {
-    let conf = get_engine_config();
-    let level = conf.get("engine").unwrap().get("file-log-level").unwrap().as_str().unwrap();
+    let conf = get_engine_config().engine;
+    let level = conf.file_log_level.as_str();
     // # 文件日志等级
     // 0 fail 仅写入错误日志
     // 1 warn：记录错误、警告日志

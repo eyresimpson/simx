@@ -2,20 +2,25 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::toml::get_env_conf;
 use crate::core::common::log::interface::{info, script_fail, script_log, warn};
+use crate::entity::config::engine::get_engine_config;
 
 pub fn exec_shell_script(path: &Path) {
     info(format!("Find Shell in path -> {:?}", path).as_str());
-    let conf = get_env_conf();
+    let env_config = get_engine_config().env;
     // 获取操作系统类型
     let os = env::consts::OS;
     if os == "linux" || os == "macos" {
         if os == "macos" {
-            if conf.get("shell").unwrap().get("enable-macos").unwrap().as_bool().unwrap() {
+            if env_config.enable_shell_script_in_mac {
                 warn("Run sh script on mac!")
             } else {
                 info("Skip executing the sh script on mac.");
+                return;
+            }
+        } else if os == "linux" {
+            if !env_config.enable_shell_script_in_linux {
+                info("Skip executing the sh script on linux.");
                 return;
             }
         }
@@ -30,7 +35,7 @@ pub fn exec_shell_script(path: &Path) {
         if &*String::from_utf8_lossy(&output.stderr) != "" {
             script_fail(&*String::from_utf8_lossy(&output.stderr).trim());
         }
-    }else {
+    } else {
         info("Incompatible operating system, skip")
     }
 }

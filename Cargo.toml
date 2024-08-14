@@ -14,8 +14,6 @@ toml = "0.8.14"
 serde = { version = "1.0", features = ["derive"] }
 # serde 的派生宏
 serde_derive = "1.0.204"
-# 用于操作 SQLite 数据库
-rusqlite = { version = "0.31.0", features = ["bundled"] }
 # Web 框架
 rocket = { version = "^0.5.1", features = ["json"] }
 # 异步运行时库

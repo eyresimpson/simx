@@ -17,8 +17,3 @@ pub struct SimxScript {
     pub(crate) file_path: String,
     pub(crate) file_type: String,
 }
-
-pub enum SimxResultVec {
-    SimxFlow(Vec<SimxFlow>),
-    SimxScript(Vec<SimxScript>),
-}

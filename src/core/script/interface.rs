@@ -2,17 +2,17 @@
 use std::fs;
 use std::path::Path;
 
-use crate::conf::runtime::get_runtime_conf;
 use crate::core::common::log::interface::{info, warn};
 use crate::core::script::bat::exec_bat_script;
 use crate::core::script::ps1::exec_powershell_script;
 use crate::core::script::py::exec_python_script;
 use crate::core::script::sh::exec_shell_script;
-use crate::core::script::sql::exec_sql_script;
+use crate::entity::config::engine::get_engine_config;
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
-    let script_path = get_runtime_conf("script_path").unwrap();
+    let engine_conf = get_engine_config().engine;
+    let script_path = engine_conf.script_path;
     // TODO: 将这个路径修改到配置文件中
     let binding = Path::new(script_path.as_str()).join("init");
     let path = binding.as_path();
@@ -51,17 +51,17 @@ pub fn exec_script(path: &Path) {
         match extension.to_str().unwrap().to_lowercase().as_str() {
             "py" => exec_python_script(path),
             "sh" => exec_shell_script(path),
+            // bat脚本和cmd脚本按同一种方式执行
             "bat" | "cmd" => exec_bat_script(path),
             "ps1" => exec_powershell_script(path),
-            "sql" => exec_sql_script(path),
             // 目前拒绝处理其他脚本
             _ => {
-                warn("Unsupported script type, Skip...");
-                return
-            },
+                warn(format!("Unsupported script extension: {}", path.display()).as_str());
+                return;
+            }
         }
     } else {
-        warn("No script extension found, Skip...");
+        warn(format!("No script extension found, Skip...{}", path.display()).as_str());
         // 不解析其他任何后缀名的文件
         return;
     }

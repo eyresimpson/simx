@@ -15,7 +15,7 @@ pub struct Flow {
     // 版本
     pub version: String,
     // 环境要求
-    pub requirements: Vec<Env>,
+    pub requirements: Vec<Environment>,
     // 节点列表
     pub nodes: Vec<Node>,
 }
@@ -39,7 +39,7 @@ pub enum EnvType {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Env {
+pub struct Environment {
     pub name: String,
     pub env_type: EnvType,
     pub ver: String,

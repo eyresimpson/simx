@@ -9,7 +9,7 @@ use crate::core::runtime::extension::get_extension_info;
 use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::{info, warn};
 
-pub async fn handler(node: Node, flow_data: &mut FlowData) {
+pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {
@@ -53,13 +53,15 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
             }
         }
         let extension = get_extension_info(handler_path[0]);
-        if extension.is_none() {
+        return if extension.is_none() {
             // 提示找不到插件
             warn(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]).as_str());
-        }else{
+            Err(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]))
+        } else {
             // 调用方法
             call(extension.unwrap(), handler_path[1].to_string());
+            Ok(())
         }
-
     }
+    Ok(())
 }

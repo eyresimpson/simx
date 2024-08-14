@@ -3,10 +3,15 @@ run_init_script = true
 run_init_flow = true
 auto_refresh_local_data = true
 ext_path = "D:\\Code\\simx-core\\release"
-shell_log_level = "debug"
+shell_log_level = "info"
 file_log_level = "info"
 missing_plugin_action = "warn"
 missing_default_handel_action = "warn"
+# 实例间通信方式
+# share-memory: 使用共享内存（速度快，占用资源少，可执行部分控制操作）
+# rustful: 使用rustful接口通信（宿主必须作为serve运行，可执行所有控制操作）
+# id-file: 通过实例的描述文件通信（速度很慢，根据文件交换互相信息，不能执行控制操作）
+instance_communication_type = "share-memory"
 
 [net]
 rest_listener_port = 9899

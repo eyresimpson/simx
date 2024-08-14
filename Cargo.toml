@@ -2,6 +2,7 @@
 name = "simx"
 version = "1.0.0"
 edition = "2021"
+build = "build.rs"
 
 [dependencies]
 # 用于处理颜色字符串
@@ -32,3 +33,6 @@ reqwest = { version = "0.12.5", features = ["json"] }
 futures = "0.3.30"
 # 加载dll
 libloader = "0.1.4"
+
+[build-dependencies]
+winres = "0.1.12"

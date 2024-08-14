@@ -113,8 +113,7 @@ pub fn reload_local(mode: &str) -> Result<String, String> {
     return Ok("Scan done.".to_string());
 }
 
-fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
-    // let engine_conf = get_simx_config().engine;
+pub fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
     let path_exist = Path::new(folder_path).is_dir();
     // 判断给定的路径是否存在
     if !path_exist {

@@ -2,16 +2,16 @@
 
 > Eyre Simpson
 >
-> May 15, 2024
+> Aug 14, 2024
 >
 > **MIT Opensource**
 >
 
-## Introduce
+## 💡 Introduce
 
 simx is a streamlined flow engine, mainly used in data processing, user action encapsulation, user action automation and other scenarios. It has no interface itself, is a command line (shell) tool, but the system provides apis, allowing users to encapsulate a layer of UI interface on it, the subsequent system development is completed, may create a new project to achieve this function.
 
-## Usage
+## 🌟 Usage
 
 simx supports most operating systems, and currently tested environments include Windows 10/11, macOS, linux(ubuntu/centos).
 

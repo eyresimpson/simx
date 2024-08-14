@@ -1,5 +1,6 @@
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
+use std::path::Path;
 
 use crate::entity::flow::{FlowData, Node};
 use crate::tools::bytes::string_to_bytes;
@@ -10,9 +11,9 @@ pub fn handle_file_plain(node: Node, flow_data: &mut FlowData) {
 
     match handler_path[3] {
         // 读取器
-        "reader" => reader(node, flow_data),
+        "reader" => reader(node, flow_data).unwrap(),
         // 写入器
-        "writer" => writer(node, flow_data),
+        "writer" => writer(node, flow_data).unwrap(),
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
         }
@@ -20,9 +21,14 @@ pub fn handle_file_plain(node: Node, flow_data: &mut FlowData) {
 }
 
 // 此方法仅会触发一次，不是一个持续性的任务
-fn reader(node: Node, flow_data: &mut FlowData) {
+fn reader(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let args = node.attr;
     let file_path = args.get("path").unwrap();
+    let path = Path::new(file_path);
+    if !path.exists() {
+        fail(format!("Reader: Cannot find specified file, {}", file_path).as_str());
+        return Err("Cannot find specified file.".to_string());
+    }
     // 返回的数据
     let read_file_ret = File::open(file_path);
     let mut file = read_file_ret.unwrap();
@@ -30,9 +36,10 @@ fn reader(node: Node, flow_data: &mut FlowData) {
     file.read_to_string(&mut toml_str).unwrap();
     // 将数据写入到flow_data中
     flow_data.data.insert("text".parse().unwrap(), toml_str.into_bytes());
+    Ok(())
 }
 
-fn writer(node: Node, flow_data: &mut FlowData) {
+fn writer(node: Node, flow_data: &mut FlowData)  -> Result<(), String>  {
     let args = node.attr;
     let file_path = args.get("path").unwrap();
     let file_content: &[u8];
@@ -71,4 +78,5 @@ fn writer(node: Node, flow_data: &mut FlowData) {
         fail("Cannot write content to file.");
         fail(ret.err().unwrap().to_string().as_str());
     }
+    Ok(())
 }

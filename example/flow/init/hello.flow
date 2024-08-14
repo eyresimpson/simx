@@ -25,7 +25,8 @@
     {
       "handler": "simx.files.plain.reader",
       "attr": {
-        "path": "auth/private.key"
+        "vital": "true",
+        "path": "C:\\Users\\nuaka\\Downloads\\HomePage.dart"
       }
     },
     {
@@ -47,7 +48,7 @@
     {
       "handler": "simx.files.plain.writer",
       "attr": {
-        "path": "tmp/simx.txt",
+        "path": "D:\\HomePage.dart",
         "type": "default",
         "content": "text",
         "override": "force"

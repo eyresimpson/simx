@@ -4,16 +4,16 @@ use std::path::Path;
 use serde_json::from_str;
 
 use crate::conf::runtime::set_runtime_conf;
-use crate::core::common::log::interface::{fail, info, success, warn};
-use crate::core::env::check::env_check;
+use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
+use crate::core::runtime::config::get_simx_config;
 use crate::core::script::interface::load_and_exec_default_script;
-use crate::entity::config::engine::get_engine_config;
 use crate::entity::ext::Extension;
+use crate::tools::log::interface::{fail, info, success, warn};
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
-    let engine_conf = get_engine_config().engine;
+    let engine_conf = get_simx_config().engine;
 
     // 初始化内存中的脚本集合
     set_runtime_conf("script_list", "[]");
@@ -23,6 +23,7 @@ pub async fn engine_init() -> Result<String, String> {
 
     // 检查运行模式
     match engine_conf.engine_mode.as_str() {
+        // 目前仅支持内存模式
         "memory" => {
             info("Engine run in [ Memory ] mode");
         }
@@ -81,7 +82,7 @@ pub async fn engine_init() -> Result<String, String> {
 // 重新加载当前环境信息
 // 比如当前系统中的脚本，流程等信息，这些信息会被加载到数据库中
 pub fn reload_local(mode: &str) -> Result<String, String> {
-    let engine_conf = get_engine_config().engine;
+    let engine_conf = get_simx_config().engine;
     // 这种写法虽然繁琐了点，但可以节省一小部分的内存...
     match mode {
         "script" => {
@@ -115,7 +116,7 @@ pub fn reload_local(mode: &str) -> Result<String, String> {
 }
 
 fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
-    let engine_conf = get_engine_config().engine;
+    let engine_conf = get_simx_config().engine;
     if !engine_conf.engine_mode.eq("memory") {
         // 判断给定的路径是否存在
         let path_exist = Path::new(folder_path).is_dir();
@@ -150,7 +151,6 @@ fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
 
 // 将指定路径下的插件信息加载到内存中
 pub fn load_extension_by_path(path: &Path) {
-    let engine_conf = get_engine_config().engine;
     // 判断插件类型
     if path.exists() {
         if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {

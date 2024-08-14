@@ -1,6 +1,6 @@
-use crate::core::common::log::interface::warn;
 use crate::core::flow::handler::basic::debug::handle_basic_debug;
 use crate::entity::flow::{FlowData, Node};
+use crate::tools::log::interface::warn;
 
 pub fn handle_basic(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

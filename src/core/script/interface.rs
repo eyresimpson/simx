@@ -2,16 +2,16 @@
 use std::fs;
 use std::path::Path;
 
-use crate::core::common::log::interface::{info, warn};
+use crate::core::runtime::config::get_simx_config;
 use crate::core::script::bat::exec_bat_script;
 use crate::core::script::ps1::exec_powershell_script;
 use crate::core::script::py::exec_python_script;
 use crate::core::script::sh::exec_shell_script;
-use crate::entity::config::engine::get_engine_config;
+use crate::tools::log::interface::{info, warn};
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {
-    let engine_conf = get_engine_config().engine;
+    let engine_conf = get_simx_config().engine;
     let script_path = engine_conf.script_path;
     // TODO: 将这个路径修改到配置文件中
     let binding = Path::new(script_path.as_str()).join("init");

@@ -1,31 +1,6 @@
-use std::fs;
-use std::path::Path;
-use std::sync::Mutex;
-
-use once_cell::sync::Lazy;
 use serde::Deserialize;
 
-// 全局静态变量
-pub static CONFIG: Lazy<Mutex<SimxConfig>> = Lazy::new(|| {
-    // 判断是否有配置，现在允许无配置的情况下运行
-    if !Path::new("conf").join("simx.toml").exists() {
-        let config: SimxConfig = SimxConfig{
-            engine: EngineConfig::default(),
-            net: NetConfig::default(),
-            env: EnvConfig::default()
-        };
-        Mutex::new(config)
-    } else {
-        let config_path = Path::new("conf").join("simx.toml");
-        let config_str = fs::read_to_string(config_path).unwrap_or_else(|_| String::new());
-        let config: SimxConfig = toml::from_str(&config_str).unwrap_or_default();
-        Mutex::new(config)
-    }
-});
-
-pub fn get_engine_config() -> SimxConfig {
-    CONFIG.lock().unwrap().clone()
-}
+// 配置文件的实体类
 
 #[derive(Debug, Deserialize, Clone, Default)]
 pub struct SimxConfig {

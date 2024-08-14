@@ -1,9 +1,9 @@
-use crate::core::common::log::interface::debug;
 use crate::core::flow::expression::said::entity::{Expression, ExpressionType};
 use crate::core::flow::expression::said::resolve_bool::resolve_bool;
 use crate::core::flow::expression::said::resolve_num::resolve_num;
 use crate::core::flow::expression::said::resolve_opt::resolve_opt;
 use crate::core::flow::expression::said::resolve_str::resolve_str;
+use crate::tools::log::interface::debug;
 
 pub fn resolve(expression: Box<Expression>) -> Box<Expression> {
     // 处理表达式

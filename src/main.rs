@@ -4,8 +4,9 @@ extern crate rocket;
 use chrono::prelude::*;
 use rocket::tokio;
 
+use tools::log::interface::info;
+
 use crate::conf::runtime::set_runtime_conf;
-use crate::core::common::log::interface::info;
 use crate::core::engine::engine::run;
 
 mod core;

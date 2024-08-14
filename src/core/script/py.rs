@@ -2,17 +2,17 @@ use std::path::Path;
 use std::process::Command;
 
 use crate::conf::runtime::get_runtime_conf;
-use crate::core::common::log::interface::{info, script_fail, script_log, warn};
-use crate::entity::config::engine::get_engine_config;
+use crate::core::runtime::config::get_simx_config;
+use crate::tools::log::interface::{info, script_fail, script_log, warn};
 
 pub fn exec_python_script(path: &Path) {
-    let env_config = get_engine_config().env;
+    let env_config = get_simx_config().env;
     let python = env_config.python_path;
     if !env_config.enable_python_script {
         return;
     }
     if get_runtime_conf("env_python_status").unwrap().eq("not-find") {
-        warn("Skip python script exec, cannot find python env.");
+        warn("Skip python script exec, cannot find python environment.");
         return;
     }
     // 文件名

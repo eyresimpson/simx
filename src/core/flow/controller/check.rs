@@ -1,15 +1,15 @@
-use crate::core::env::interface::check;
+use crate::core::environment::interface::check;
 use crate::entity::flow::Flow;
 
 pub fn check_require(flow: Flow) -> bool {
     // 获取要求列表
     let require = flow.requirements;
     check(require);
-    // for env in require {
-    //     let ret = match env.env_key.as_str() {
+    // for environment in require {
+    //     let ret = match environment.env_key.as_str() {
     //         "engine" => {
     //             // 检查引擎版本是否匹配
-    //             check_engine(env.env_val.as_str())
+    //             check_engine(environment.env_val.as_str())
     //         }
     //         "java" => {
     //

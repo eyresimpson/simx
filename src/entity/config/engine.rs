@@ -72,10 +72,6 @@ pub struct EngineConfig {
     #[serde(default = "default_log_path")]
     pub log_path: String,
 
-    // 系统数据库目录
-    #[serde(default = "default_db_path")]
-    pub db_path: String,
-
     // 控制台输出样式
     #[serde(default = "default_console_log_style")]
     pub console_log_style: bool,
@@ -110,7 +106,6 @@ impl Default for EngineConfig {
             script_path: default_script_path(),
             ext_path: default_ext_path(),
             log_path: default_log_path(),
-            db_path: default_db_path(),
             console_log_style: default_console_log_style(),
             shell_log_level: default_shell_log_level(),
             file_log_level: default_file_log_level(),
@@ -155,10 +150,6 @@ fn default_ext_path() -> String {
 
 fn default_log_path() -> String {
     "logs".to_string()
-}
-
-fn default_db_path() -> String {
-    "db".to_string()
 }
 
 fn default_console_log_style() -> bool {

@@ -1,7 +1,6 @@
 use std::fs;
 use std::path::Path;
 
-use rusqlite::Connection;
 use serde_json::from_str;
 
 use crate::conf::runtime::set_runtime_conf;
@@ -9,7 +8,6 @@ use crate::core::common::log::interface::{fail, info, success, warn};
 use crate::core::env::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
-use crate::db::controller::db_init;
 use crate::entity::config::engine::get_engine_config;
 use crate::entity::ext::Extension;
 
@@ -41,25 +39,6 @@ pub async fn engine_init() -> Result<String, String> {
             info("Engine run in [ Memory ] mode");
         }
     }
-
-    // 判断运行模式，如果非内存模式的情况下再初始化数据库
-    if !engine_conf.engine_mode.eq("memory") {
-        // 尝试检查并初始化数据库
-        info("System Database checking...");
-        if db_init().is_err() {
-            return Err("System Error: Check Your Db Conf!".to_string());
-        } else {
-            success("System database checked successfully.");
-        }
-    }
-
-    // 扫描并加载插件
-    // 插件的扫描和加载要早于环境检查和流程运行，但要晚于数据库初始化
-    // if load_local_extensions().is_err() {
-    //     return Err("Cannot load local extensions.".to_string());
-    // }else{
-    //     success("Load local extensions done.");
-    // }
 
     // 检查工作环境（当前目录）
     let env_check_ret = env_check();
@@ -152,21 +131,6 @@ fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
             if let Ok(entry) = entry {
                 let path = entry.path();
                 if path.is_file() {
-                    if !engine_conf.engine_mode.eq("memory") {
-                        let db_path = engine_conf.db_path.as_str();
-                        // 连接到数据库（获取到的信息需要写入到数据库中）
-                        let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
-                        let table_name = format!("simx_{}", traverse_type);
-                        let sql = format!("insert into {} (display_name, file_name, file_path, file_type) values (?1, ?2, ?3, ?4);", table_name);
-                        let _ = conn.execute(sql.as_str(), &[
-                            path.file_name().unwrap().to_str().unwrap(),
-                            path.file_name().unwrap().to_str().unwrap(),
-                            path.to_str().unwrap(),
-                            // 通过这种方式添加的数据均为本地数据
-                            "local"
-                        ]);
-                        conn.close().unwrap()
-                    }
                     // 插件的信息会直接进入内存
                     if traverse_type.eq("ext") {
                         load_extension_by_path(path.as_path());
@@ -196,29 +160,6 @@ pub fn load_extension_by_path(path: &Path) {
             let data = fs::read_to_string(file_path).expect("Unable to read file");
             let mut extension: Extension = from_str(&data).expect("JSON was not well-formatted");
             extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
-
-            if !engine_conf.engine_mode.eq("memory") {
-                // 循环指定的目录
-                let table_name = "simx_ext".to_string();
-                // 数据库地址
-                let db_path = engine_conf.db_path;
-                // 连接到数据库（获取到的信息需要写入到数据库中）
-                let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
-                let sql = format!("insert into {} (name, version, path, description, license, author, keywords, dependencies, function) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);", table_name);
-                let _ = conn.execute(sql.as_str(), &[
-                    extension.name.as_str(),
-                    extension.version.as_str(),
-                    path.to_str().unwrap(),
-                    extension.description.as_str(),
-                    extension.license.as_str(),
-                    extension.author.as_str(),
-                    extension.keywords.join(",").as_str(),
-                    serde_json::to_string(&extension.dependencies).unwrap().as_str(),
-                    serde_json::to_string(&extension.function).unwrap().as_str(),
-                ]);
-                conn.close().unwrap()
-            }
-
             // 将数据放到 runtime 配置中
             set_runtime_conf(format!("ext_{}", extension.name.as_str()).as_str(), serde_json::to_string(&extension).unwrap().as_str());
         }

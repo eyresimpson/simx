@@ -1,28 +1,27 @@
-use crate::conf::toml::get_engine_config;
-use crate::core::common::log::direct::shell::basic::info as b_info;
-use crate::core::common::log::direct::shell::basic::warn as b_warn;
-use crate::core::common::log::direct::shell::basic::err as b_err;
 use crate::core::common::log::direct::shell::basic::debug as b_debug;
+use crate::core::common::log::direct::shell::basic::err as b_err;
+use crate::core::common::log::direct::shell::basic::info as b_info;
 use crate::core::common::log::direct::shell::basic::success as b_success;
-use crate::core::common::log::direct::shell::colourful::script_log as b_script_log;
-use crate::core::common::log::direct::shell::colourful::script_err as b_script_err;
-use crate::core::common::log::direct::shell::colourful::info as c_info;
-use crate::core::common::log::direct::shell::colourful::warn as c_warn;
+use crate::core::common::log::direct::shell::basic::warn as b_warn;
 use crate::core::common::log::direct::shell::colourful::debug as c_debug;
 use crate::core::common::log::direct::shell::colourful::err as c_err;
-use crate::core::common::log::direct::shell::colourful::success as c_success;
-use crate::core::common::log::direct::shell::colourful::script_log as c_script_log;
+use crate::core::common::log::direct::shell::colourful::info as c_info;
+use crate::core::common::log::direct::shell::colourful::script_err as b_script_err;
 use crate::core::common::log::direct::shell::colourful::script_err as c_script_err;
-
+use crate::core::common::log::direct::shell::colourful::script_log as b_script_log;
+use crate::core::common::log::direct::shell::colourful::script_log as c_script_log;
+use crate::core::common::log::direct::shell::colourful::success as c_success;
+use crate::core::common::log::direct::shell::colourful::warn as c_warn;
+use crate::entity::config::engine::get_engine_config;
 
 fn show_colourful() -> bool {
-    let conf = get_engine_config();
-    return conf.get("engine").unwrap().get("console-log-style").unwrap().as_bool().unwrap();
+    let conf = get_engine_config().engine;
+    return conf.console_log_style;
 }
 
 fn get_log_num() -> i64 {
-    let conf = get_engine_config();
-    let level = conf.get("engine").unwrap().get("shell-log-level").unwrap().as_str().unwrap();
+    let conf = get_engine_config().engine;
+    let level = conf.shell_log_level.as_str();
     // # 控制台日志等级
     // 0 fail
     // 1 warn：仅显示

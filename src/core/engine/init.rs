@@ -1,31 +1,22 @@
 use std::fs;
 use std::path::Path;
+
 use rusqlite::Connection;
 use serde_json::from_str;
-use crate::conf::runtime::{get_runtime_conf, set_runtime_conf};
-use crate::conf::toml::get_engine_config;
+
+use crate::conf::runtime::set_runtime_conf;
 use crate::core::common::log::interface::{fail, info, success, warn};
 use crate::core::env::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::db::controller::db_init;
+use crate::entity::config::engine::get_engine_config;
 use crate::entity::ext::Extension;
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
-    let engine_conf = get_engine_config();
-    // 运行模式
-    set_runtime_conf("engine-mode", engine_conf.get("engine").unwrap().get("engine-mode").unwrap().as_str().unwrap());
-    // 流所在目录
-    set_runtime_conf("flow_path", engine_conf.get("engine").unwrap().get("flow-path").unwrap().as_str().unwrap());
-    // 脚本目录
-    set_runtime_conf("script_path", engine_conf.get("engine").unwrap().get("script-path").unwrap().as_str().unwrap());
-    // 文件数据库目录
-    set_runtime_conf("db_path", engine_conf.get("engine").unwrap().get("db-path").unwrap().as_str().unwrap());
-    // 日志目录
-    set_runtime_conf("log_path", engine_conf.get("engine").unwrap().get("log-path").unwrap().as_str().unwrap());
-    // 插件所在目录
-    set_runtime_conf("ext_path", engine_conf.get("engine").unwrap().get("ext-path").unwrap().as_str().unwrap());
+    let engine_conf = get_engine_config().engine;
+
     // 初始化内存中的脚本集合
     set_runtime_conf("script_list", "[]");
     // 初始化内存在的流集合
@@ -33,7 +24,7 @@ pub async fn engine_init() -> Result<String, String> {
 
 
     // 检查运行模式
-    match get_runtime_conf("engine-mode").unwrap().as_str() {
+    match engine_conf.engine_mode.as_str() {
         "memory" => {
             info("Engine run in [ Memory ] mode");
         }
@@ -52,7 +43,7 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
     // 判断运行模式，如果非内存模式的情况下再初始化数据库
-    if !get_runtime_conf("engine-mode").unwrap().eq("memory") {
+    if !engine_conf.engine_mode.eq("memory") {
         // 尝试检查并初始化数据库
         info("System Database checking...");
         if db_init().is_err() {
@@ -87,7 +78,7 @@ pub async fn engine_init() -> Result<String, String> {
 
 
     // 初始化脚本
-    if engine_conf.get("engine").unwrap().get("run-init-script").unwrap().as_bool().unwrap() {
+    if engine_conf.run_init_script {
         info("Default script running...");
         load_and_exec_default_script();
         success("Run init script done.");
@@ -96,7 +87,7 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
     // 初始流
-    if engine_conf.get("engine").unwrap().get("run-init-flow").unwrap().as_bool().unwrap() {
+    if engine_conf.run_init_flow {
         info("Default flow running...");
         load_and_exec_default_flow().await;
         success("Run init flow done.");
@@ -111,24 +102,25 @@ pub async fn engine_init() -> Result<String, String> {
 // 重新加载当前环境信息
 // 比如当前系统中的脚本，流程等信息，这些信息会被加载到数据库中
 pub fn reload_local(mode: &str) -> Result<String, String> {
+    let engine_conf = get_engine_config().engine;
     // 这种写法虽然繁琐了点，但可以节省一小部分的内存...
     match mode {
         "script" => {
-            let script_path = get_runtime_conf("script_path").unwrap();
+            let script_path = engine_conf.script_path;
             reload_local_traverse_folder(Path::new(script_path.as_str()), "script");
         }
         "flow" => {
-            let flow_path = get_runtime_conf("flow_path").unwrap();
+            let flow_path = engine_conf.flow_path;
             reload_local_traverse_folder(Path::new(flow_path.as_str()), "flow");
         }
         "ext" => {
-            let ext_path = get_runtime_conf("ext_path").unwrap();
+            let ext_path = engine_conf.ext_path;
             reload_local_traverse_folder(Path::new(ext_path.as_str()), "ext");
         }
         _ => {
-            let ext_path = get_runtime_conf("ext_path").unwrap();
-            let script_path = get_runtime_conf("script_path").unwrap();
-            let flow_path = get_runtime_conf("flow_path").unwrap();
+            let ext_path = engine_conf.ext_path;
+            let script_path = engine_conf.script_path;
+            let flow_path = engine_conf.flow_path;
             // 加载脚本信息
             reload_local_traverse_folder(Path::new(script_path.as_str()), "script");
             // 加载流信息
@@ -144,12 +136,15 @@ pub fn reload_local(mode: &str) -> Result<String, String> {
 }
 
 fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
-    // 判断给定的路径是否存在
-    let path_exist = Path::new(folder_path).is_dir();
-    if !path_exist {
-        warn("folder not found, ignored err and rebuilt.");
-        // 不存在的话自动创建一下
-        fs::create_dir(folder_path).expect("Cannot rebuild path.");
+    let engine_conf = get_engine_config().engine;
+    if !engine_conf.engine_mode.eq("memory") {
+        // 判断给定的路径是否存在
+        let path_exist = Path::new(folder_path).is_dir();
+        if !path_exist {
+            warn("folder not found, ignored err and rebuilt.");
+            // 不存在的话自动创建一下
+            fs::create_dir(folder_path).expect("Cannot rebuild path.");
+        }
     }
     if let Ok(entries) = fs::read_dir(folder_path) {
         // 循环指定的目录
@@ -157,8 +152,8 @@ fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
             if let Ok(entry) = entry {
                 let path = entry.path();
                 if path.is_file() {
-                    if !get_runtime_conf("engine-mode").unwrap().eq("memory") {
-                        let db_path = get_runtime_conf("db_path").unwrap();
+                    if !engine_conf.engine_mode.eq("memory") {
+                        let db_path = engine_conf.db_path.as_str();
                         // 连接到数据库（获取到的信息需要写入到数据库中）
                         let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
                         let table_name = format!("simx_{}", traverse_type);
@@ -191,6 +186,7 @@ fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
 
 // 将指定路径下的插件信息加载到内存中
 pub fn load_extension_by_path(path: &Path) {
+    let engine_conf = get_engine_config().engine;
     // 判断插件类型
     if path.exists() {
         if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
@@ -201,11 +197,11 @@ pub fn load_extension_by_path(path: &Path) {
             let mut extension: Extension = from_str(&data).expect("JSON was not well-formatted");
             extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
 
-            if !get_runtime_conf("engine-mode").unwrap().eq("memory") {
+            if !engine_conf.engine_mode.eq("memory") {
                 // 循环指定的目录
                 let table_name = "simx_ext".to_string();
                 // 数据库地址
-                let db_path = get_runtime_conf("db_path").unwrap();
+                let db_path = engine_conf.db_path;
                 // 连接到数据库（获取到的信息需要写入到数据库中）
                 let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
                 let sql = format!("insert into {} (name, version, path, description, license, author, keywords, dependencies, function) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9);", table_name);

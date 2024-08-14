@@ -1,7 +1,0 @@
-# 流节点仓库
-[warehouse]
-# 远程handler仓库，默认为
-url = "https://simx.tineaine.cn"
-port = 9999
-# 运行流程过程中，如果缺少依赖的节点，允许simx自动前往仓库拉取
-auto-pull = false

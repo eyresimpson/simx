@@ -1,16 +1,15 @@
 use rusqlite::{Connection, Result};
 
-use crate::conf::runtime::get_runtime_conf;
-use crate::conf::toml::get_engine_config;
 use crate::core::common::log::interface::fail;
 use crate::db::interface::init_base_db_struct;
+use crate::entity::config::engine::get_engine_config;
 
 // 此方法用于初始化数据库（如果需要的话）
 pub fn db_init() -> Result<()> {
-    let db_path = get_runtime_conf("db_path").unwrap();
+    let db_path = get_engine_config().engine.db_path;
     let conn = Connection::open(format!("./{}/simx.db", db_path)).unwrap();
-    let conf = get_engine_config();
-    let auto_refresh = conf.get("engine").unwrap().get("auto-refresh-local-data").unwrap().as_bool().unwrap();
+    let conf = get_engine_config().engine;
+    let auto_refresh = conf.auto_refresh_local_data;
     if auto_refresh {
         // 删除指定的数据表（方法太笨，后续改进）
         let tables = ["simx_script", "simx_flow", "simx_ext"];
@@ -36,7 +35,6 @@ pub fn db_init() -> Result<()> {
         }
         // 加载数据到数据库
         // 只有数据库文件不存在的时候才会去重新加载本地内容
-        // TODO：后续会允许手动重新加载配置，或者考虑主动监视文件夹改动
         // let ret = scan_load_local();
         // if ret.is_err() {
         //     warn("Cannot load local Data.");

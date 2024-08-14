@@ -58,6 +58,21 @@ rest_listener_port = 9898
 rest_listener_worker = 5
 # http temp临时目录所在位置
 rest_listener_temp_path = "tmp/web"
-
 # 是否启动Socket 监听
 socket_enable_listener = false
+
+[env]
+# 是否允许执行python 脚本
+enable_python_script = true
+# 是否允许执行shell 脚本
+enable_shell_script = true
+# 是否允许执行批处理脚本
+enable_batch_script = true
+# 是否允许执行powershell 脚本
+enable_powershell_script = false
+# 是否允许在mac系统上执行shell 脚本
+enable_shell_script_in_mac = true
+# 是否允许在linux系统上执行shell 脚本
+enable_shell_script_in_linux = true
+# python 脚本执行路径
+python_path = "python"

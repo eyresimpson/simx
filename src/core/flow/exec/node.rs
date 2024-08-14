@@ -7,10 +7,15 @@ use crate::tools::log::interface::{debug, fail};
 // Node 需要对应的Handler执行
 // 需要传入标准的handler路径字符串和参数列表，并返回统一传回对象
 pub async fn exec_node(node: Node, data: &mut FlowData) -> Result<(), String> {
-    debug("[ Node Exec Start ]");
+    if node.attr.contains_key("node_name") {
+        debug(format!("[ Node ( {} ) Exec Start] ", node.attr.get("node_name").unwrap()).as_str());
+    } else {
+        debug("[ Node Exec Start ]");
+    }
+
 
     // 打印提示信息
-    debug(format!("Node Input -> handler: {}, data: {:?}, args: {:?}", node.handler, data, node.attr).as_str());
+    // debug(format!("Node Input -> handler: {}, data: {:?}, args: {:?}", node.handler, data, node.attr).as_str());
 
     // 解析表达式
     resolve_said_expression("test{a1}", "str");
@@ -26,7 +31,7 @@ pub async fn exec_node(node: Node, data: &mut FlowData) -> Result<(), String> {
         });
     }
 
-    debug(format!("Node Output -> data: {:?}", data).as_str());
+    // debug(format!("Node Output -> data: {:?}", data).as_str());
     debug("[ Node Exec End ]");
     Ok(())
 }

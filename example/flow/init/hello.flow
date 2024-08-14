@@ -25,29 +25,40 @@
     {
       "handler": "simx.files.plain.reader",
       "attr": {
-        "vital": "true",
+        "node_id": "150245215351",
+        "node_name": "读取文件",
+        "node_type": "raw",
+        "ignore": "none",
         "path": "C:\\Users\\nuaka\\Downloads\\HomePage.dart"
       }
     },
     {
       "handler": "simx.os.shell.println",
       "attr": {
+        "node_id": "150245215351",
+        "node_name": "打印信息",
+        "node_type": "raw",
+        "ignore": "none",
         "text": "hello world"
       }
     },
     {
-      "handler": "simx.basic.debug.node",
-      "attr": {}
-    },
-    {
       "handler": "simx.script",
       "attr": {
+        "node_id": "150245215351",
+        "node_name": "执行脚本",
+        "node_type": "raw",
+        "ignore": "none",
         "path": "script/os/windows/test.ps1"
       }
     },
     {
       "handler": "simx.files.plain.writer",
       "attr": {
+        "node_id": "150245215351",
+        "node_name": "写文件",
+        "node_type": "raw",
+        "ignore": "none",
         "path": "D:\\HomePage.dart",
         "type": "default",
         "content": "text",
@@ -57,6 +68,10 @@
     {
       "handler": "core.test",
       "attr": {
+        "node_id": "150245215351",
+        "node_name": "测试方法",
+        "node_type": "ext",
+        "ignore": "err",
         "a": "30",
         "b": "20"
       }

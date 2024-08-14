@@ -6,13 +6,14 @@ use futures::future::BoxFuture;
 use futures::FutureExt;
 use tokio::join;
 
-use crate::conf::runtime::get_runtime_conf;
 use crate::core::common::log::interface::{info, warn};
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
+use crate::entity::config::engine::get_engine_config;
 
 // 加载并执行默认流
 pub async fn load_and_exec_default_flow() {
-    let flow_path = get_runtime_conf("flow_path").unwrap();
+    let engine_conf = get_engine_config().engine;
+    let flow_path = engine_conf.flow_path;
     // 默认脚本指在运行目录同级下的script/ 中的所有脚本文件（py/sh/bat/cmd/ps1），根据操作系统类型执行对应的脚本文件
     // 检查运行目录是否有对应的文件夹
     if Path::new(flow_path.as_str()).join("init").is_dir() {

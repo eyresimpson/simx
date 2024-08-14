@@ -45,12 +45,12 @@ fn request_post(node: Node, flow_data: &FlowData) {
     println!("{:?},{:?}", node, flow_data)
 }
 
-// 发起Put请求
-fn request_put(node: Node, flow_data: &FlowData) {
-    println!("{:?},{:?}", node, flow_data)
-}
-
-// 发起Delete请求
-fn request_delete(node: Node, flow_data: &FlowData) {
-    println!("{:?},{:?}", node, flow_data)
-}
+// // 发起Put请求
+// fn request_put(node: Node, flow_data: &FlowData) {
+//     println!("{:?},{:?}", node, flow_data)
+// }
+//
+// // 发起Delete请求
+// fn request_delete(node: Node, flow_data: &FlowData) {
+//     println!("{:?},{:?}", node, flow_data)
+// }

@@ -2,15 +2,16 @@ use std::fs;
 use std::path::Path;
 
 use crate::conf::runtime::set_runtime_conf;
-use crate::conf::toml::get_env_conf;
 use crate::core::common::log::interface::{fail, info, success, warn};
 use crate::core::env::python::check_python;
+use crate::entity::config::engine::get_engine_config;
 
 /// 环境检查
 pub fn env_check() -> Result<String, String> {
     // 尝试加载运行配置
-    let env_conf = get_env_conf();
-
+    // let env_conf = get_env_conf();
+    
+    let env_config = get_engine_config().env;
     // 检查运行目录下是否有配置文件夹
     // 这个配置是必需的，一旦找不到，立即报错退出
     info("Check Workspace...");
@@ -40,7 +41,7 @@ pub fn env_check() -> Result<String, String> {
     
 
     // 检查是否有 Python 环境
-    if !check_python(env_conf.clone()) {
+    if !check_python(env_config.python_path) {
         warn("Cannot find python in your env, check your configuration.");
         set_runtime_conf("env_python_status", "not-find");
     } else {

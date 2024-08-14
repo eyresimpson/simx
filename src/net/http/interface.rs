@@ -4,7 +4,7 @@ use rocket::config::LogLevel;
 use crate::core::runtime::config::get_simx_config;
 use crate::net::http::handler::common::welcome_info;
 use crate::net::http::handler::flow::{handle_exec_flow_by_path, handle_list_flow, handle_search_flow};
-use crate::net::http::handler::script::{handle_exec_script, handle_search_script};
+use crate::net::http::handler::script::{handle_list_script, handle_search_script};
 use crate::net::http::handler::status::{handle_version_current, handle_version_latest, handle_version_list};
 use crate::tools::log::interface::{info, warn};
 
@@ -63,7 +63,7 @@ pub async fn start_net_watcher() {
         handle_version_list,
         handle_version_latest,
         // 脚本相关
-        handle_exec_script,
+        handle_list_script,
         handle_search_script,
         // 流程相关
         handle_list_flow,

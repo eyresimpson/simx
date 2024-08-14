@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::process::Command;
 
-use crate::conf::runtime::get_runtime_conf;
+use crate::core::runtime::common::get_runtime_info;
 use crate::core::runtime::config::get_simx_config;
 use crate::tools::log::interface::{info, script_fail, script_log, warn};
 
@@ -11,7 +11,7 @@ pub fn exec_python_script(path: &Path) {
     if !env_config.enable_python_script {
         return;
     }
-    if get_runtime_conf("env_python_status").unwrap().eq("not-find") {
+    if get_runtime_info("env_python_status").unwrap().eq("not-find") {
         warn("Skip python script exec, cannot find python environment.");
         return;
     }

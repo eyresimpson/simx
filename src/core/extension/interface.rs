@@ -1,12 +1,8 @@
-use serde_json::from_str;
-
-use crate::conf::runtime::get_runtime_conf;
 use crate::core::extension::dll::interface::call_dll_extension_method;
 use crate::entity::ext::Extension;
 use crate::tools::log::interface::warn;
 
-pub fn call(extension_name: String, function_name: String) {
-    let extension: Extension = from_str(get_runtime_conf(format!("ext_{}", extension_name).as_str()).unwrap().as_str()).unwrap();
+pub fn call(extension: Extension, function_name: String) {
     let functions = extension.function;
     for function in functions {
         if function[0].eq(function_name.as_str()) {

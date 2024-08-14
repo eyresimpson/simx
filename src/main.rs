@@ -1,16 +1,19 @@
 #[macro_use]
 extern crate rocket;
 
+use std::fs;
+use std::path::Path;
+
 use chrono::prelude::*;
 use rocket::tokio;
 
 use tools::log::interface::info;
 
-use crate::conf::runtime::set_runtime_conf;
 use crate::core::engine::engine::run;
+use crate::core::runtime::config::get_simx_config;
+use crate::core::runtime::engine::set_engine_info;
 
 mod core;
-mod conf;
 mod net;
 mod tools;
 mod test;
@@ -34,9 +37,18 @@ fn init() {
     // 系统支持API的版本
     let support_api_version = "0.0.1";
     let local: DateTime<Local> = Local::now();
-    set_runtime_conf("engine_version", engine_version);
-    set_runtime_conf("support_api_version", support_api_version);
-    set_runtime_conf("engine_start_datetime", local.to_string().as_str());
+    set_engine_info("engine_version", engine_version);
+    set_engine_info("support_api_version", support_api_version);
+    set_engine_info("engine_start_datetime", local.to_string().as_str());
+    // 检查日志文件夹
+    let engine_conf = get_simx_config().engine;
+    // 检查运行目录下是否有日志目录
+    let log_path = Path::new(engine_conf.log_path.as_str()).is_dir();
+    if !log_path {
+        // 重建日志目录
+        fs::create_dir(engine_conf.log_path.as_str()).expect("Engine cannot fix workspace, Please check your environment.");
+        // info("Cannot find logs dir, system will automatically rebuild this directory.");
+    }
     info("Simx System Starting...");
 }
 

@@ -23,9 +23,10 @@ flow_path = "flow"
 # 扫描的脚本目录
 script_path = "script"
 # 扫描的插件目录
-ext_path = "D:\\Code\\simx-core\\release"
+ext_path = "D:/Code/simx-core/release"
 # 系统日志目录
 log_path = "logs"
+
 # 控制台输出样式，默认为true(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
 console_log_style = true
 # 控制台日志等级

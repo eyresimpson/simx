@@ -1,4 +1,3 @@
-use crate::conf::runtime::get_runtime_conf;
 use crate::core::engine::initialization::reload_local;
 use crate::core::extension::interface::call;
 use crate::core::flow::handler::basic::interface::handle_basic;
@@ -6,6 +5,7 @@ use crate::core::flow::handler::files::interface::handle_file;
 use crate::core::flow::handler::net::interface::handle_net;
 use crate::core::flow::handler::os::interface::handle_os;
 use crate::core::flow::handler::script::interface::handle_script;
+use crate::core::runtime::extension::get_extension_info;
 use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::{info, warn};
 
@@ -43,7 +43,7 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
     } else {
         // 第一次检查, 如果插件未加载，则加载插件，这样可以实现引擎启动后再添加的插件能被正确调用
         // TODO: 后续这种方法会被淘汰，改用文件监视的方式实现
-        if get_runtime_conf(format!("ext_{}", handler_path[0]).as_str()).is_none() {
+        if get_extension_info(handler_path[0]).is_none() {
             // 重新刷新一遍插件，然后重试，这样可以实现所谓的插件热拔插
             info("Engine cannot find ext, Try to refresh ext list...");
             // 重新加载插件数据
@@ -52,13 +52,14 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) {
                 warn("Engine cannot find ext, Refresh ext list failed, Skip...");
             }
         }
-        // 这一步是检查是否加载了需要的插件
-        if get_runtime_conf(format!("ext_{}", handler_path[0]).as_str()).is_none() {
+        let extension = get_extension_info(handler_path[0]);
+        if extension.is_none() {
             // 提示找不到插件
             warn(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]).as_str());
         }else{
             // 调用方法
-            call(handler_path[0].to_string(), handler_path[1].to_string());
+            call(extension.unwrap(), handler_path[1].to_string());
         }
+
     }
 }

@@ -3,22 +3,20 @@ use std::path::Path;
 
 use serde_json::from_str;
 
-use crate::conf::runtime::set_runtime_conf;
 use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::runtime::config::get_simx_config;
+use crate::core::runtime::extension::set_extension_info;
+use crate::core::runtime::flow::set_flow_info;
+use crate::core::runtime::script::set_script_info;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::entity::ext::Extension;
+use crate::entity::simx::{SimxFlow, SimxScript};
 use crate::tools::log::interface::{fail, info, success, warn};
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
     let engine_conf = get_simx_config().engine;
-
-    // 初始化内存中的脚本集合
-    set_runtime_conf("script_list", "[]");
-    // 初始化内存在的流集合
-    set_runtime_conf("flow_list", "[]");
 
 
     // 检查运行模式
@@ -116,16 +114,14 @@ pub fn reload_local(mode: &str) -> Result<String, String> {
 }
 
 fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
-    let engine_conf = get_simx_config().engine;
-    if !engine_conf.engine_mode.eq("memory") {
-        // 判断给定的路径是否存在
-        let path_exist = Path::new(folder_path).is_dir();
-        if !path_exist {
-            warn("folder not found, ignored err and rebuilt.");
-            // 不存在的话自动创建一下
-            fs::create_dir(folder_path).expect("Cannot rebuild path.");
-        }
+    // let engine_conf = get_simx_config().engine;
+    let path_exist = Path::new(folder_path).is_dir();
+    // 判断给定的路径是否存在
+    if !path_exist {
+        warn("folder not found, ignored err and skip.");
+        return;
     }
+
     if let Ok(entries) = fs::read_dir(folder_path) {
         // 循环指定的目录
         for entry in entries {
@@ -154,26 +150,38 @@ pub fn load_extension_by_path(path: &Path) {
     // 判断插件类型
     if path.exists() {
         if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
-
             // 读取 JSON 文件
             let file_path = Path::new(path);
             let data = fs::read_to_string(file_path).expect("Unable to read file");
             let mut extension: Extension = from_str(&data).expect("JSON was not well-formatted");
             extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
             // 将数据放到 runtime 配置中
-            set_runtime_conf(format!("ext_{}", extension.name.as_str()).as_str(), serde_json::to_string(&extension).unwrap().as_str());
+            set_extension_info(extension.name.as_str(), extension.clone());
         }
     }
 }
 
-// 将指定路径下的流程信息加载到内存中，理论上没有必要
+// 将路径下的流程信息加载到内存中
 pub fn load_flow_by_path(path: &Path) {
     // 将数据放到 runtime 配置中
-    set_runtime_conf(format!("flow_{:?}", path.to_str()).as_str(), path.to_str().unwrap());
+    set_flow_info(path.to_str().unwrap(), SimxFlow {
+        id: 0,
+        display_name: path.file_name().unwrap().to_str().unwrap().to_string(),
+        file_name: path.file_name().unwrap().to_str().unwrap().to_string(),
+        file_path: path.to_str().unwrap().to_string(),
+        // 目前仅支持flow格式的流文件
+        file_type: "flow".to_string(),
+    });
 }
 
-// 将指定路径下的脚本信息加载到内存中，理论上没有必要
+// 将路径下的脚本信息加载到内存中
 pub fn load_script_by_path(path: &Path) {
     // 将数据放到 runtime 配置中
-    set_runtime_conf(format!("script_{:?}", path.to_str()).as_str(), path.to_str().unwrap());
+    set_script_info(path.to_str().unwrap(), SimxScript {
+        id: 0,
+        display_name: path.file_name().unwrap().to_str().unwrap().to_string(),
+        file_name: path.file_name().unwrap().to_str().unwrap().to_string(),
+        file_path: path.to_str().unwrap().to_string(),
+        file_type: path.extension().unwrap().to_str().unwrap().to_string(),
+    });
 }

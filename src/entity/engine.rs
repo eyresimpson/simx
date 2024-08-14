@@ -46,7 +46,7 @@ pub struct EngineConfig {
     // 系统日志目录
     #[serde(default = "default_log_path")]
     pub log_path: String,
-
+    
     // 控制台输出样式
     #[serde(default = "default_console_log_style")]
     pub console_log_style: bool,
@@ -90,7 +90,7 @@ impl Default for EngineConfig {
     }
 }
 
-// 默认值函数
+// 注意，默认值为20，仅用于测试或非大量数据的情况
 fn default_max_thread() -> u32 {
     20
 }

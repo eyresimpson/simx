@@ -1,20 +1,32 @@
 use rocket::http::Status;
 use rocket::serde::json::Json;
 
-use crate::entity::net::{ExecScriptRequestData, SimxResponse};
+use crate::core::runtime::script::{get_all_script_info, get_script_info};
+use crate::entity::net::SimxResponse;
+
+// 列出所有脚本
+#[post("/script/list", format = "application/json")]
+pub async fn handle_list_script() -> Result<Json<SimxResponse>, Status> {
+    let scripts = get_all_script_info();
+    let result_data = SimxResponse {
+        message: "List scripts success.".to_string(),
+        code: 200,
+        data: serde_json::to_string_pretty(&scripts).unwrap(),
+    };
+    Ok(Json(result_data))
+}
 
 // 执行指定脚本
-#[post("/script/exec", format = "application/json", data = "<request>")]
-pub async fn handle_exec_script(request: Json<ExecScriptRequestData>) -> Result<Json<SimxResponse>, Status> {
-    // 处理接收到的请求数据
-
-    // 创建响应数据
-    let response_data = SimxResponse {
-        message: "Exec script success.".to_string(),
+#[post("/script/exec", format = "application/json")]
+pub async fn handle_exec_script() -> Result<Json<SimxResponse>, Status> {
+    let scripts = get_all_script_info();
+    get_script_info("");
+    let result_data = SimxResponse {
+        message: "List scripts success.".to_string(),
         code: 200,
-        data: "".to_string(),
+        data: serde_json::to_string_pretty(&scripts).unwrap(),
     };
-    Ok(Json(response_data))
+    Ok(Json(result_data))
 }
 
 

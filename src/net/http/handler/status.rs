@@ -1,10 +1,9 @@
-use crate::conf::runtime::{get_runtime_conf};
+use crate::core::runtime::engine::get_engine_info;
 
 // 获取当前simx版本
-// TODO 改造成restful风格（Json）
 #[get("/common/version/current")]
 pub fn handle_version_current() -> String {
-    let version = format!("engine current version: {:?}\nsupport api version: {:?}", get_runtime_conf("engine_version").unwrap(), get_runtime_conf("support_api_version").unwrap());
+    let version = format!("engine current version: {:?}\nsupport api version: {:?}", get_engine_info("engine_version").unwrap(), get_engine_info("support_api_version").unwrap());
     return version;
 }
 

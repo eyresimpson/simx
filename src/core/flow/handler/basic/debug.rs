@@ -1,7 +1,7 @@
 use toml::to_string;
 
-use crate::core::common::log::interface::{debug, warn};
 use crate::entity::flow::{FlowData, Node};
+use crate::tools::log::interface::{debug, warn};
 
 pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

@@ -1,5 +1,5 @@
-use crate::core::common::log::direct::interface::{d_debug, d_err, d_info, d_script_err, d_script_log, d_success, d_warn};
-use crate::core::common::log::file::slog::write_log;
+use crate::tools::log::direct::interface::{d_debug, d_err, d_info, d_script_err, d_script_log, d_success, d_warn};
+use crate::tools::log::file::slog::write_log;
 
 pub fn info(text: &str) {
     d_info(text);

@@ -2,11 +2,11 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::core::common::log::interface::{info, script_fail, script_log};
-use crate::entity::config::engine::get_engine_config;
+use crate::core::runtime::config::get_simx_config;
+use crate::tools::log::interface::{info, script_fail, script_log};
 
 pub fn exec_powershell_script(path: &Path) {
-    let env_config = get_engine_config().env;
+    let env_config = get_simx_config().env;
     info(format!("Find powershell in path -> {:?}", path).as_str());
     if !env_config.enable_powershell_script {
         info("Powershell script disabled, skip");

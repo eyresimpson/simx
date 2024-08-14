@@ -3,7 +3,8 @@ use std::ffi::c_void;
 use std::path::Path;
 
 use libloader::libloading::{Library, Symbol};
-use crate::core::common::log::interface::debug;
+
+use crate::tools::log::interface::debug;
 
 // 根据路径 + 方法名调用
 pub fn call_dll_extension_method(ext_path: String, function: &Vec<String>) {

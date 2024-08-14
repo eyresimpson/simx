@@ -2,9 +2,9 @@ use rocket::http::Status;
 use rocket::serde::json::Json;
 
 use crate::conf::runtime::get_runtime_confs;
-use crate::core::common::log::interface::info;
 use crate::core::flow::interface::exec_flow;
 use crate::entity::net::{ExecFlowRequestData, SimxResponse};
+use crate::tools::log::interface::info;
 
 #[post("/flow/exec", format = "application/json", data = "<request>")]
 pub async fn handle_exec_flow_by_path(request: Json<ExecFlowRequestData>) -> Result<Json<SimxResponse>, Status> {

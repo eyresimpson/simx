@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-
+use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Flow {
@@ -20,7 +20,7 @@ pub struct Flow {
     pub nodes: Vec<Node>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct Node {
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
@@ -52,7 +52,7 @@ pub struct Environment {
 // }
 
 // 流程数据
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
     pub basics: HashMap<String, String>,

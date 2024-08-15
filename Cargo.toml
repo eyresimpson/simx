@@ -33,6 +33,11 @@ reqwest = { version = "0.12.5", features = ["json"] }
 futures = "0.3.30"
 # 加载dll
 libloader = "0.1.4"
+# 加载 so和dylib
+libloading = "0.8.5"
+# 用于序列化和反序列化数据
+bincode = "2.0.0-rc.3"
 
 [build-dependencies]
+# Windows 下资源打包
 winres = "0.1.12"

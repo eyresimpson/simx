@@ -6,3 +6,8 @@
 /example/logs/*
 /example/tmp/
 /example/simx.exe
+/extension/simx-comm/target/
+/extension/simx-core/target/
+/extension/simx-doc/target/
+/extension/simx-file/target/
+/extension/simx-net/target/

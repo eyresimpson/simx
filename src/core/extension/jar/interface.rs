@@ -5,3 +5,4 @@
 // pub fn load_jar_extension(path: &Path) {
 //     debug(format!("Load jar extension: {}", path.display()).as_str())
 // }
+pub fn call_jar_extension_method(ext_path: String, function: &Vec<String>) {}

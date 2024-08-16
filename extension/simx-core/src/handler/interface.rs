@@ -9,7 +9,6 @@ pub fn handler(mut transition: Transition) -> Transition {
         "file" => { transition.flow_data = handle_root(transition.node.clone(), transition.flow_data.clone()) }
         "doc" => { transition.flow_data = handle_root(transition.node.clone(), transition.flow_data.clone()) }
         "db" => { transition.flow_data = handle_root(transition.node.clone(), transition.flow_data.clone()) }
-        "serve" => { transition.flow_data = handle_root(transition.node.clone(), transition.flow_data.clone()) }
         _ => {}
     };
     transition

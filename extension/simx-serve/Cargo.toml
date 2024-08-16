@@ -1,0 +1,23 @@
+[package]
+name = "simx-serve"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+name = "core"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib", "staticlib"]
+
+[dependencies]
+# 用于序列化和反序列化数据
+serde = { version = "1.0.207", features = ["derive"] }
+# serde 的派生宏
+serde_derive = "1.0.207"
+# 用于处理 JSON 数据
+serde_json = "1.0.124"
+# 用于序列化和反序列化数据
+bincode = "2.0.0-rc.3"
+# Web 框架
+rocket = { version = "^0.5.1", features = ["json"] }
+# 异步运行时库
+tokio = { version = "1.39.2", features = ["full"] }

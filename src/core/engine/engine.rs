@@ -2,8 +2,9 @@ use std::env;
 use std::path::Path;
 
 use crate::core::engine::initialization::engine_init;
+use crate::core::extension::interface::call_init;
 use crate::core::flow::interface::exec_flow;
-use crate::net::http::interface::start_net_watcher;
+use crate::core::runtime::extension::get_all_extension_info;
 use crate::tools::log::interface::{fail, info, success};
 
 /// 引擎核心
@@ -23,8 +24,21 @@ pub async fn serve() {
     // 系统启动完成
     success("Engine has started.");
 
+    // 尝试创建新线程，并调用所有插件的init
+    let job = tokio::spawn(async move {
+        // 获取插件列表
+        let extensions = get_all_extension_info();
+        // 遍历插件列表，调用init方法
+        for extension in extensions {
+            // 调用插件的init方法
+            call_init(extension).unwrap();
+        }
+    });
+    // 等待插件的init执行完成
+    job.await.unwrap();
+
     // 尝试调起网络监听器（阻塞）
-    start_net_watcher().await;
+    // start_net_watcher().await;
 
     // 运行结束
     // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）

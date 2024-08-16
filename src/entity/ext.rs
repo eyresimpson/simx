@@ -39,7 +39,8 @@ pub struct Extension {
     pub author: String,
     pub keywords: Vec<String>,
     pub dependencies: Vec<String>,
-    pub function: Vec<Vec<String>>,
+    pub entry_lib: String,
+    pub entry_func: String
 }
 
 // 与插件交流时传递的数据

@@ -1,8 +1,13 @@
 [engine]
 run_init_script = false
 run_init_flow = true
+# 运行插件的初始化方法，一般不建议关闭
+run_init_extensions_func = true
+# 允许插件加载配置文件
+allow_load_extension_config = true
+extensions_init_list = ["simx-core", "simx-common"]
 auto_refresh_local_data = true
-ext_path = "/Users/eyresimpson/Code/simx-core/release"
+ext_path = "ext"
 shell_log_level = "debug"
 file_log_level = "info"
 missing_plugin_action = "warn"

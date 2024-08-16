@@ -1,7 +1,3 @@
-// use std::path::Path;
-//
-// use crate::core::common::log::interface::debug;
-//
-// pub fn load_so_extension(path: &Path) {
-//     debug(format!("Load dll extension from {}", path.display()).as_str())
-// }
+use crate::entity::flow::{FlowData, Node};
+
+pub fn call_so_extension_method(ext_path: String, function: &Vec<String>, node: Node, flow_data: &mut FlowData) {}

@@ -2,21 +2,17 @@ use std::any::Any;
 use std::ffi::c_void;
 use std::path::Path;
 
+use crate::entity::flow::{FlowData, Node};
+use crate::tools::log::interface::debug;
 use libloader::libloading::{Library, Symbol};
 
-use crate::tools::log::interface::debug;
-
 // 根据路径 + 方法名调用
-pub fn call_dll_extension_method(ext_path: String, function: &Vec<String>) {
+pub fn call_dll_extension_method(ext_path: String, function: &Vec<String>, node: Node, flow_data: &mut FlowData) {
 
     // 取方法名
     let function_name = function.get(0).unwrap().to_string();
     // 取方法所在插件文件名（相对于插件根目录）
     let function_file = function.get(1).unwrap().to_string();
-    // 取方法描述（x）
-    // let function_description = function.get(2).unwrap().to_string();
-    // TODO：取方法返回值
-    // let function_return = function.get(3).unwrap().to_string();
     // 取方法参数
     let function_params = function[4..].to_vec();
 
@@ -56,43 +52,6 @@ pub fn call_dll_extension_method(ext_path: String, function: &Vec<String>) {
         let args: Vec<*const c_void> = params.iter().map(|p| p.as_ref() as *const _ as *const c_void).collect();
 
         // 调用函数
-        // let result_ptr = func(args.as_ptr() as *const c_void);
         func(args.as_ptr() as *const c_void);
-
-        // // 处理返回值
-        // match function.result.result_type.as_str() {
-        //     // 返回值为空
-        //     "None" => {
-        //         let result: i32 = *(result_ptr as *const i32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // 整数类型
-        //     "Int" => {
-        //         let result: i32 = *(result_ptr as *const i32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // 浮点数类型
-        //     "Float" => {
-        //         let result: f32 = *(result_ptr as *const f32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // 字符串类型
-        //     "String" => {
-        //         let result: f32 = *(result_ptr as *const f32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // Json类型（其实是字符串，但转换为Json），标准返回值
-        //     "Json" => {
-        //         let result: f32 = *(result_ptr as *const f32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // Bytes数组类型
-        //     "Bytes" => {
-        //         let result: f32 = *(result_ptr as *const f32);
-        //         println!("The result of the function is: {}", result);
-        //     }
-        //     // 处理其他返回类型...
-        //     _ => panic!("Unsupported result type"),
-        // }
     }
 }

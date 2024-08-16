@@ -29,7 +29,7 @@
         "node_name": "读取文件",
         "node_type": "raw",
         "ignore": "none",
-        "path": "C:\\Users\\nuaka\\Downloads\\HomePage.dart"
+        "path": "conf/simx.toml"
       }
     },
     {
@@ -59,7 +59,7 @@
         "node_name": "写文件",
         "node_type": "raw",
         "ignore": "none",
-        "path": "D:\\HomePage.dart",
+        "path": "tmp/sss.toml",
         "type": "default",
         "content": "text",
         "override": "force"

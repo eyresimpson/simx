@@ -15,7 +15,6 @@ use crate::core::runtime::config::get_simx_config;
 use crate::core::runtime::engine::set_engine_info;
 
 mod core;
-mod net;
 mod tools;
 mod test;
 mod entity;

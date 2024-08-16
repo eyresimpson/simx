@@ -74,7 +74,7 @@ pub async fn engine_init() -> Result<String, String> {
     }
 
     // 返回成功信息
-    return Ok("Engine init success.".parse().unwrap());
+    Ok("Engine init success.".parse().unwrap())
 }
 
 // 重新加载当前环境信息

@@ -1,0 +1,12 @@
+{
+  "name": "serve",
+  "version": "0.0.1",
+  "engine": "0.1.0",
+  "description": "serve extension",
+  "license": "MIT",
+  "author": "Eyre Simpson",
+  "keywords": [],
+  "dependencies": [],
+  "entry_lib": "serve",
+  "entry_func": "interface"
+}

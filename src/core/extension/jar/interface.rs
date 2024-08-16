@@ -1,3 +1,4 @@
+use crate::entity::ext::Extension;
 use crate::entity::flow::{FlowData, Node};
 
 // use std::path::Path;
@@ -9,4 +10,8 @@ use crate::entity::flow::{FlowData, Node};
 // }
 pub fn call_jar_extension_method(ext_path: String, node: Node, flow_data: &mut FlowData) -> FlowData {
     flow_data.clone()
+}
+
+pub fn call_jar_extension_init(extension: Extension) -> Result<(), String> {
+    Ok(())
 }

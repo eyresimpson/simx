@@ -55,11 +55,10 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String>
         let extension = get_extension_info(handler_path[0]);
         return if extension.is_none() {
             // 提示找不到插件
-            warn(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]).as_str());
             Err(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]))
         } else {
             // 调用方法
-            call(extension.unwrap(), handler_path[1].to_string(), node, flow_data);
+            call(extension.unwrap(), node, flow_data);
             Ok(())
         }
     }

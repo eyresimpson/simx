@@ -23,7 +23,7 @@ pub fn get_extension_info(key: &str) -> Option<Extension> {
 }
 
 // 获取所有流的信息，以数组的形式
-pub fn get_all_extension_info() -> Vec<Extension> {
-    let data = RUNTIME_EXTENSION.lock().unwrap();
-    data.values().cloned().collect()
-}
+// pub fn get_all_extension_info() -> Vec<Extension> {
+//     let data = RUNTIME_EXTENSION.lock().unwrap();
+//     data.values().cloned().collect()
+// }

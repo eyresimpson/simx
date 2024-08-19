@@ -19,26 +19,6 @@ pub async fn engine_init() -> Result<String, String> {
     let engine_conf = get_simx_config().engine;
 
 
-    // 检查运行模式
-    match engine_conf.engine_mode.as_str() {
-        // 目前仅支持内存模式
-        "memory" => {
-            info("Engine run in [ Memory ] mode");
-        }
-        "file-db" => {
-            info("Engine run in [ File Database ] mode");
-        }
-        "mixture" => {
-            info("Engine run in [ Mixture ] mode");
-        }
-        "db" => {
-            info("Engine run in [ Database ] mode");
-        }
-        _ => {
-            info("Engine run in [ Memory ] mode");
-        }
-    }
-
     // 检查工作环境（当前目录）
     let env_check_ret = env_check();
     // 判断环境检查是否通过

@@ -1,12 +1,8 @@
-#[macro_use]
-extern crate rocket;
-
 use std::env;
 use std::fs;
 use std::path::Path;
 
 use chrono::prelude::*;
-use rocket::tokio;
 
 use tools::log::interface::info;
 
@@ -18,7 +14,6 @@ mod core;
 mod tools;
 mod test;
 mod entity;
-
 
 #[tokio::main]
 async fn main() {

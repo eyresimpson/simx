@@ -21,11 +21,11 @@
       "ver": "0.1.0"
     }
   ],
-  "nodes": [
+  "steps": [
     {
       "handler": "simx.files.plain.reader",
       "attr": {
-        "node_id": "150245215351",
+        "node_id": "150245215350",
         "node_name": "读取文件",
         "node_type": "raw",
         "ignore": "none",
@@ -45,7 +45,7 @@
     {
       "handler": "simx.script",
       "attr": {
-        "node_id": "150245215351",
+        "node_id": "150245215352",
         "node_name": "执行脚本",
         "node_type": "raw",
         "ignore": "none",
@@ -53,9 +53,19 @@
       }
     },
     {
+      "handler": "simx.basic.flow.subflow",
+      "attr": {
+        "node_id": "150245215359",
+        "node_name": "子流程",
+        "node_type": "raw",
+        "ignore": "none",
+        "steps": "[{\"handler\": \"simx.os.shell.println\",\"attr\":{\"node_id\": \"150245215351\",\"node_name\": \"打印信息\",\"node_type\": \"raw\",\"ignore\": \"none\",\"text\": \"hello world\"}},{\"handler\": \"simx.script\",\"attr\":{\"node_id\": \"150245215352\",\"node_name\": \"执行脚本\",\"node_type\": \"raw\",\"ignore\": \"none\",\"path\": \"script/os/windows/test.ps1\"}}]"
+      }
+    },
+    {
       "handler": "simx.files.plain.writer",
       "attr": {
-        "node_id": "150245215351",
+        "node_id": "150245215353",
         "node_name": "写文件",
         "node_type": "raw",
         "ignore": "none",
@@ -68,7 +78,7 @@
     {
       "handler": "core.test",
       "attr": {
-        "node_id": "150245215351",
+        "node_id": "150245215354",
         "node_name": "测试方法",
         "node_type": "ext",
         "ignore": "err",

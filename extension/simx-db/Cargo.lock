@@ -90,7 +90,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "simx-core"
+name = "simx-db"
 version = "0.1.0"
 dependencies = [
     "bincode",

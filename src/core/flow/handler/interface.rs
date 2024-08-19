@@ -8,7 +8,9 @@ use crate::core::flow::handler::script::interface::handle_script;
 use crate::core::runtime::extension::get_extension_info;
 use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::{info, warn};
+use async_recursion::async_recursion;
 
+#[async_recursion]
 pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
@@ -30,7 +32,7 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String>
             }
             // 基础操作
             "basic" => {
-                handle_basic(node, flow_data);
+                handle_basic(node, flow_data).await;
             }
             // 调用脚本（脚本引擎）
             "script" => {
@@ -53,14 +55,14 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String>
             }
         }
         let extension = get_extension_info(handler_path[0]);
-        return if extension.is_none() {
+        if extension.is_none() {
             // 提示找不到插件
             Err(format!("Engine cannot find ext by {}, Check your ext. Flow engine skip this node...", handler_path[0]))
         } else {
             // 调用方法
             call(extension.unwrap(), node, flow_data);
             Ok(())
-        }
+        }?
     }
     Ok(())
 }

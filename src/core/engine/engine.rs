@@ -30,7 +30,7 @@ pub async fn serve() {
     // 遍历插件列表，调用init方法
     for extension in extensions {
         // 调用插件的init方法
-        // 注意，新线程中执行init
+        // 注意，新线程中执行init，init的执行结果的顺序不能保证
         let job = tokio::spawn(async move {
             call_init(extension).unwrap();
         });
@@ -38,11 +38,9 @@ pub async fn serve() {
     }
 
     for job in jobs {
+        // 只要有一个线程没有退出，就阻塞引擎不退出
         job.await.unwrap();
     }
-
-    // 尝试调起网络监听器（阻塞）
-    // start_net_watcher().await;
 
     // 运行结束
     // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）
@@ -71,11 +69,6 @@ pub async fn run() {
         fail("The file is not exist.");
         return;
     }
-    // 重新加载插件信息，避免流程找不到插件
-    // let engine_conf = get_simx_config().engine;
-    //
-    // let ext_path = engine_conf.ext_path;
-    // reload_local_traverse_folder(Path::new(ext_path.as_str()), "ext");
 
     // 调用流引擎执行该文件
     exec_flow(path).await;

@@ -17,7 +17,7 @@ pub struct Flow {
     // 环境要求
     pub requirements: Vec<Environment>,
     // 节点列表
-    pub nodes: Vec<Node>,
+    pub steps: Vec<Node>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]

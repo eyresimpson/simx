@@ -18,7 +18,7 @@ pub fn call_dll_extension_method(extension: Extension, node: Node, flow_data: &m
         flow_data: flow_data.clone(),
     };
 
-    // dylib路径
+    // dll路径
     let dylib_path = Path::new(&function_file).join(extension.entry_lib + ".dll");
     let lib = unsafe { Library::new(dylib_path) }.expect("Could not load dll");
 

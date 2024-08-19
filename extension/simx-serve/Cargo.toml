@@ -6,7 +6,8 @@ edition = "2021"
 [lib]
 name = "core"
 path = "src/lib.rs"
-crate-type = ["cdylib", "rlib", "staticlib"]
+# 目前本库仅rust的simx调用，如果需要兼容，需要设置为cdylib
+crate-type = ["dylib", "rlib"]
 
 [dependencies]
 # 用于序列化和反序列化数据

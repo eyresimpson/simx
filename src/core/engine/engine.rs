@@ -1,11 +1,10 @@
-use std::env;
-use std::path::Path;
-
 use crate::core::engine::initialization::engine_init;
 use crate::core::extension::interface::call_init;
 use crate::core::flow::interface::exec_flow;
 use crate::core::runtime::extension::get_all_extension_info;
 use crate::tools::log::interface::{fail, info, success};
+use std::env;
+use std::path::Path;
 
 /// 引擎核心
 /// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
@@ -24,18 +23,23 @@ pub async fn serve() {
     // 系统启动完成
     success("Engine has started.");
 
-    // 尝试创建新线程，并调用所有插件的init
-    let job = tokio::spawn(async move {
-        // 获取插件列表
-        let extensions = get_all_extension_info();
-        // 遍历插件列表，调用init方法
-        for extension in extensions {
-            // 调用插件的init方法
+    let mut jobs = vec![];
+
+    // 获取插件列表
+    let extensions = get_all_extension_info();
+    // 遍历插件列表，调用init方法
+    for extension in extensions {
+        // 调用插件的init方法
+        // 注意，新线程中执行init
+        let job = tokio::spawn(async move {
             call_init(extension).unwrap();
-        }
-    });
-    // 等待插件的init执行完成
-    job.await.unwrap();
+        });
+        jobs.push(job);
+    }
+
+    for job in jobs {
+        job.await.unwrap();
+    }
 
     // 尝试调起网络监听器（阻塞）
     // start_net_watcher().await;
@@ -45,6 +49,8 @@ pub async fn serve() {
     info("Engine run out.");
 }
 
+/// 运行流
+/// 此方法不会开启额外的线程，只是通过流引擎执行目标的流
 pub async fn run() {
     // 获取命令行参数
     let args: Vec<String> = env::args().collect();

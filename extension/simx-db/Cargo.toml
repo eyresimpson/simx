@@ -1,10 +1,10 @@
 [package]
-name = "simx-core"
+name = "simx-db"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "core"
+name = "db"
 path = "src/lib.rs"
 crate-type = ["cdylib", "rlib", "staticlib"]
 

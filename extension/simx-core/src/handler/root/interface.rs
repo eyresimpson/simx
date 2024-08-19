@@ -3,9 +3,6 @@ use crate::entity::flow::{FlowData, Node};
 pub fn handle_root(node: Node, flow_data: FlowData) -> FlowData {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[1] {
-        "init" => {
-            // 初始化方法
-        }
         "destroy" => {
             // 销毁方法
         }

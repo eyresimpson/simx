@@ -17,3 +17,5 @@
 /.idea/modules.xml
 /.idea/simx.iml
 /.idea/vcs.xml
+/example/ext/simx-core/core.dylib
+/example/ext/simx-serve/serve.dylib

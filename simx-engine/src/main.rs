@@ -3,7 +3,6 @@ use std::fs;
 use std::path::Path;
 
 use chrono::prelude::*;
-
 use tools::log::interface::info;
 
 use crate::core::engine::engine::{run, serve};
@@ -13,10 +12,10 @@ use crate::core::thread::interface::init_thread_pool;
 
 mod core;
 mod tools;
-mod entity;
 
 #[tokio::main]
 async fn main() {
+    // it_works();
     // 引擎运行前的准备和初始化动作
     init();
     // 分析用户输入参数，如果没有输入参数，就代表默认的启动方式

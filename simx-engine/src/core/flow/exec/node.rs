@@ -1,6 +1,6 @@
 use crate::core::flow::handler::interface::handler;
-use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::debug;
+use simx_common::entity::flow::{FlowData, Node};
 
 // Node 调度
 // Node 需要对应的Handler执行

@@ -1,7 +1,7 @@
-use crate::entity::ext::{Extension, Transition};
-use crate::entity::flow::{FlowData, Node};
 use bincode::config;
 use libloader::libloading::{Library, Symbol};
+use simx_common::entity::ext::{Extension, Transition};
+use simx_common::entity::flow::{FlowData, Node};
 use std::path::Path;
 
 // 根据路径 + 方法名调用

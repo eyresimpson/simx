@@ -1,6 +1,6 @@
 use crate::core::flow::exec::node::exec_node;
-use crate::entity::flow::{Flow, FlowData, Node};
 use crate::tools::log::interface::{info, success};
+use simx_common::entity::flow::{Flow, FlowData, Node};
 
 // 执行标准化的流
 pub async fn exec_standardisation_flow(flow: Flow) {

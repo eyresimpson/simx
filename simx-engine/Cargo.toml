@@ -5,6 +5,8 @@ edition = "2021"
 build = "build.rs"
 
 [dependencies]
+# 公共模块
+simx-common = { path = "../simx-common" }
 # 用于处理颜色字符串
 color-string = "0.1.6"
 # 用于延迟初始化
@@ -38,6 +40,7 @@ bincode = "2.0.0-rc.3"
 async-recursion = "1.1.1"
 # 线程池
 threadpool = "1.8.1"
+
 
 [build-dependencies]
 # Windows 下资源打包

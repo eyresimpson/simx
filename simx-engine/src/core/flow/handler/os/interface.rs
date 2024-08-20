@@ -1,6 +1,6 @@
 use crate::core::flow::handler::os::shell::handle_os_shell_println;
-use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::warn;
+use simx_common::entity::flow::{FlowData, Node};
 
 pub fn handle_os(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

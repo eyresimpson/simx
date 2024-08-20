@@ -1,6 +1,6 @@
-use crate::entity::flow::Transition;
 use crate::handler::interface::handler;
 use bincode::config;
+use simx_common::entity::flow::Transition;
 mod handler;
 mod tools;
 pub mod entity;

@@ -6,11 +6,11 @@ use serde_derive::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Expression {
     // 表达式字符串
-    pub(crate) expression_str: String,
+    pub expression_str: String,
     // 表达式类型
-    pub(crate) expression_type: ExpressionType,
+    pub expression_type: ExpressionType,
     // 表达式结果
-    pub(crate) expression_result: HashMap<String, ()>,
+    pub expression_result: HashMap<String, ()>,
 }
 
 // 表达式类型

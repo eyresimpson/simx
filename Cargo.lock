@@ -1631,6 +1631,14 @@ dependencies = [
 [[package]]
 name = "simx-common"
 version = "0.1.0"
+dependencies = [
+    "bincode",
+    "color-string",
+    "serde",
+    "serde_derive",
+    "serde_json",
+    "toml 0.8.19",
+]
 
 [[package]]
 name = "simx-core"
@@ -1641,17 +1649,19 @@ dependencies = [
     "serde",
     "serde_derive",
     "serde_json",
+    "simx-common",
     "tokio",
 ]
 
 [[package]]
 name = "simx-db"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
     "bincode",
     "serde",
     "serde_derive",
     "serde_json",
+    "simx-common",
 ]
 
 [[package]]
@@ -1672,6 +1682,7 @@ dependencies = [
     "serde",
     "serde_derive",
     "serde_json",
+    "simx-common",
     "threadpool",
     "tokio",
     "toml 0.8.19",
@@ -1687,6 +1698,7 @@ dependencies = [
     "serde",
     "serde_derive",
     "serde_json",
+    "simx-common",
     "tokio",
 ]
 

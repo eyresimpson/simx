@@ -1,9 +1,8 @@
 use bincode::config;
-use simx_common::entity::flow::Transition;
+use simx_common::entity::ext::Transition;
 
 mod handler;
 mod tools;
-pub mod entity;
 
 #[no_mangle]
 // 固定的入口函数，所有的调用都从此处开始

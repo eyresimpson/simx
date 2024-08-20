@@ -1,8 +1,6 @@
 use std::fs;
 use std::path::Path;
 
-use serde_json::from_str;
-
 use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::runtime::config::get_simx_config;
@@ -10,9 +8,10 @@ use crate::core::runtime::extension::set_extension_info;
 use crate::core::runtime::flow::set_flow_info;
 use crate::core::runtime::script::set_script_info;
 use crate::core::script::interface::load_and_exec_default_script;
-use crate::entity::ext::Extension;
-use crate::entity::simx::{SimxFlow, SimxScript};
 use crate::tools::log::interface::{fail, info, success, warn};
+use serde_json::from_str;
+use simx_common::entity::ext::Extension;
+use simx_common::entity::simx::{SimxFlow, SimxScript};
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
@@ -97,7 +96,7 @@ pub fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
     let path_exist = Path::new(folder_path).is_dir();
     // 判断给定的路径是否存在
     if !path_exist {
-        warn("folder not found, ignored err and skip.");
+        warn(format!("When initializing {}, folder {:?} not found, ignored err and skip.", traverse_type, folder_path).as_str());
         return;
     }
 

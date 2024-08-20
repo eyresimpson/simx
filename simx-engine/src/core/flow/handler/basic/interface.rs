@@ -1,7 +1,7 @@
 use crate::core::flow::handler::basic::debug::handle_basic_debug;
 use crate::core::flow::handler::basic::flow::handle_basic_flow;
-use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::warn;
+use simx_common::entity::flow::{FlowData, Node};
 
 pub async fn handle_basic(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

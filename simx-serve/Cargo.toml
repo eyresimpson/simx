@@ -4,12 +4,13 @@ version = "0.0.1"
 edition = "2021"
 
 [lib]
-name = "core"
+name = "serve"
 path = "src/lib.rs"
-# 目前本库仅rust的simx调用，如果需要兼容，需要设置为cdylib
-crate-type = ["dylib", "rlib"]
+crate-type = ["cdylib", "rlib", "staticlib"]
 
 [dependencies]
+# 公共模块
+simx-common = { path = "../simx-common" }
 # 用于序列化和反序列化数据
 serde = { version = "1.0.207", features = ["derive"] }
 # serde 的派生宏

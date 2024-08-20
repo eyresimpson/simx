@@ -1,4 +1,4 @@
-use crate::entity::flow::{FlowData, Node};
+use simx_common::entity::flow::{FlowData, Node};
 
 pub fn handle_root(node: Node, flow_data: FlowData) -> FlowData {
     let handler_path: Vec<_> = node.handler.split(".").collect();

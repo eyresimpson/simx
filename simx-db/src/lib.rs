@@ -1,5 +1,5 @@
-use crate::entity::flow::Transition;
 use bincode::config;
+use simx_common::entity::flow::Transition;
 
 mod handler;
 mod tools;

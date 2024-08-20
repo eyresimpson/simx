@@ -6,9 +6,9 @@ use crate::core::flow::handler::net::interface::handle_net;
 use crate::core::flow::handler::os::interface::handle_os;
 use crate::core::flow::handler::script::interface::handle_script;
 use crate::core::runtime::extension::get_extension_info;
-use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::{info, warn};
 use async_recursion::async_recursion;
+use simx_common::entity::flow::{FlowData, Node};
 
 #[async_recursion]
 pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {

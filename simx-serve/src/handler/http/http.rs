@@ -1,4 +1,4 @@
-use crate::entity::flow::{FlowData, Node};
+use simx_common::entity::flow::{FlowData, Node};
 
 pub fn handler_http(node: Node, flow_data: &mut FlowData) {
     match node.handler.as_str() {

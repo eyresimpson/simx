@@ -1,5 +1,5 @@
 use crate::core::script::interface::exec_script;
-use crate::entity::flow::Node;
+use simx_common::entity::flow::Node;
 
 pub fn handle_script(node: Node) {
     // 调用script的执行方法

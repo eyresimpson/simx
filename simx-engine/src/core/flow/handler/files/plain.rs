@@ -1,10 +1,9 @@
+use crate::tools::bytes::string_to_bytes;
+use crate::tools::log::interface::{fail, warn};
+use simx_common::entity::flow::{FlowData, Node};
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::Path;
-
-use crate::entity::flow::{FlowData, Node};
-use crate::tools::bytes::string_to_bytes;
-use crate::tools::log::interface::{fail, warn};
 
 pub fn handle_file_plain(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

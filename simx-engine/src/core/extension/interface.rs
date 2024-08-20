@@ -2,11 +2,11 @@ use crate::core::extension::dll::interface::{call_dll_extension_init, call_dll_e
 use crate::core::extension::dylib::interface::{call_dylib_extension_init, call_dylib_extension_method};
 use crate::core::extension::jar::interface::{call_jar_extension_init, call_jar_extension_method};
 use crate::core::extension::so::interface::{call_so_extension_init, call_so_extension_method};
-use crate::entity::ext::Extension;
-use crate::entity::flow::{FlowData, Node};
 use crate::tools::log::interface::warn;
 use consts::OS;
 use env::consts;
+use simx_common::entity::ext::Extension;
+use simx_common::entity::flow::{FlowData, Node};
 use std::env;
 
 pub fn call(extension: Extension, node: Node, flow_data: &mut FlowData) -> FlowData {

@@ -1,5 +1,5 @@
 pub mod resolve;
-pub(crate) mod entity;
+pub mod entity;
 mod resolve_str;
 mod resolve_num;
 mod resolve_bool;

@@ -1,5 +1,5 @@
-use crate::entity::ext::Extension;
-use crate::entity::flow::{FlowData, Node};
+use simx_common::entity::ext::Extension;
+use simx_common::entity::flow::{FlowData, Node};
 
 // use std::path::Path;
 // 

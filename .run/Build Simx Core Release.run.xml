@@ -2,7 +2,7 @@
   <configuration default="false" name="Build Simx Core Release" type="CargoCommandRunConfiguration"
                  factoryName="Cargo Command">
     <option name="command" value="build --release --lib"/>
-    <option name="workingDirectory" value="file://$PROJECT_DIR$/extension/simx-core"/>
+    <option name="workingDirectory" value="file://$PROJECT_DIR$/simx-core"/>
     <envs/>
     <option name="emulateTerminal" value="true"/>
     <option name="channel" value="DEFAULT"/>

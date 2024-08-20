@@ -1,9 +1,15 @@
 [workspace]
+resolver = "2"
 
 members = [
+    # 引擎主体
     "simx-engine",
+    # 共用部分，simx项目中的插件均引用此模块
     "simx-common",
+    # 核心扩展插件，包含大量的引擎节点handle
     "simx-core",
+    # 服务扩展插件，允许服务监听相关操作
     "simx-serve",
+    # 数据库扩展插件，运行用户对数据库进行操作
     "simx-db",
 ]

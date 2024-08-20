@@ -12,7 +12,7 @@ pub fn set_engine_info(key: &str, value: &str) {
     data.insert(key.to_string(), value.to_string());
 }
 
-pub fn get_engine_info(key: &str) -> Option<String> {
-    let data = RUNTIME_ENGINE.lock().unwrap();
-    data.get(key).cloned()
-}
+// pub fn get_engine_info(key: &str) -> Option<String> {
+//     let data = RUNTIME_ENGINE.lock().unwrap();
+//     data.get(key).cloned()
+// }

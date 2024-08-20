@@ -15,14 +15,14 @@ pub fn set_flow_info(key: &str, value: SimxFlow) {
     data.insert(key.to_string(), value);
 }
 
-// 获取流信息，key是路径，返回流信息
-pub fn get_flow_info(key: &str) -> Option<SimxFlow> {
-    let data = RUNTIME_FLOW.lock().unwrap();
-    data.get(key).cloned()
-}
-
-// 获取所有流的信息，以数组的形式
-pub fn get_all_flow_info() -> Vec<SimxFlow> {
-    let data = RUNTIME_FLOW.lock().unwrap();
-    data.values().cloned().collect()
-}
+// // 获取流信息，key是路径，返回流信息
+// pub fn get_flow_info(key: &str) -> Option<SimxFlow> {
+//     let data = RUNTIME_FLOW.lock().unwrap();
+//     data.get(key).cloned()
+// }
+//
+// // 获取所有流的信息，以数组的形式
+// pub fn get_all_flow_info() -> Vec<SimxFlow> {
+//     let data = RUNTIME_FLOW.lock().unwrap();
+//     data.values().cloned().collect()
+// }

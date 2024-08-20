@@ -1,5 +1,5 @@
 use crate::handler::root::interface::handle_root;
-use simx_common::entity::flow::Transition;
+use simx_common::entity::ext::Transition;
 
 pub fn handler(mut transition: Transition) -> Transition {
     match transition.node.handler.as_str() {

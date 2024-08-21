@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use crate::core::environment::python::check_python;
-use crate::tools::log::interface::{info, success, warn};
+use simx_common::log::interface::{info, success, warn};
 use simx_common::runtime::common::set_runtime_info;
 use simx_common::runtime::config::get_simx_config;
 

@@ -2,13 +2,11 @@ use std::env;
 use std::fs;
 use std::path::Path;
 
-use chrono::prelude::*;
-use tools::log::interface::info;
-
 use crate::core::engine::engine::{run, serve};
-use crate::core::thread::interface::init_thread_pool;
+use simx_common::log::interface::info;
 use simx_common::runtime::config::get_simx_config;
 use simx_common::runtime::engine::set_engine_info;
+use simx_common::thread::interface::init_thread_pool;
 
 mod core;
 mod tools;
@@ -47,10 +45,8 @@ fn init() {
     let engine_version = "1.0.0";
     // 系统支持API的版本
     let support_api_version = "0.0.1";
-    let local: DateTime<Local> = Local::now();
     set_engine_info("engine_version", engine_version);
     set_engine_info("support_api_version", support_api_version);
-    set_engine_info("engine_start_datetime", local.to_string().as_str());
     // 检查日志文件夹
     let engine_conf = get_simx_config().engine;
     init_thread_pool();

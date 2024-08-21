@@ -7,7 +7,7 @@ use futures::FutureExt;
 use tokio::join;
 
 use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
-use crate::tools::log::interface::{info, warn};
+use simx_common::log::interface::{info, warn};
 use simx_common::runtime::config::get_simx_config;
 
 // 加载并执行默认流

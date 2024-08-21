@@ -1,2 +1,0 @@
-# Simx Core Extension Readme
-

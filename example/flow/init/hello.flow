@@ -86,7 +86,7 @@
       }
     },
     {
-      "handler": "core.test",
+      "handler": "db.test",
       "attr": {
         "node_id": "150245215354",
         "node_name": "测试方法",

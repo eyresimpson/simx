@@ -1,0 +1,12 @@
+{
+  "name": "db",
+  "version": "0.0.1",
+  "engine": "0.1.0",
+  "description": "db extension",
+  "license": "MIT",
+  "author": "Eyre Simpson",
+  "keywords": [],
+  "dependencies": [],
+  "entry_lib": "db",
+  "entry_func": "interface"
+}

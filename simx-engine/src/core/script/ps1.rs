@@ -2,8 +2,8 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::tools::log::interface::{info, script_fail, script_log};
-use simx_common::runtime::config::get_simx_config;
+use engine_common::logger::interface::{info, script_fail, script_log};
+use engine_common::runtime::config::get_simx_config;
 
 pub fn exec_powershell_script(path: &Path) {
     let env_config = get_simx_config().env;

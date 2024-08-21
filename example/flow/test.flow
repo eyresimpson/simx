@@ -1,7 +1,7 @@
 {
   "version": "1",
-  "flow_name": "demo-flow",
-  "update_date": "2024-04-26",
+  "flow_name": "test-flow",
+  "update_date": "2024-08-21",
   "create_date": "2024-04-01",
   "developer": "Tine aine",
   "requirements": [
@@ -33,7 +33,7 @@
       }
     },
     {
-      "handler": "core.test",
+      "handler": "db.test",
       "attr": {
         "node_id": "150245215354",
         "node_name": "测试方法",

@@ -75,7 +75,7 @@ through `interface.rs` rather than directly invoking deeper methods.
 - Complete plugin modularization
 - Separate the listening module (HTTP listening)
 - Separate the script execution module (as an independent function)
-- Improve the simx-core part
+- Improve the engine-handler part
 - Improve the simx-ui part
 - Enhance basic built-in operations
 
@@ -112,7 +112,7 @@ through `interface.rs` rather than directly invoking deeper methods.
 | **Project Name** | **Status**     | **Description**                                                                                    |
 |------------------|----------------|----------------------------------------------------------------------------------------------------|
 | simx-engine      | Open-source    | Responsible for running and managing flows and related plugins                                     |
-| simx-core        | Open-source    | Extends built-in system features; recommended to include this plugin                               |
+| engine-handler   | Open-source    | Extends built-in system features; recommended to include this plugin                               |
 | simx-ui          | In development | UI for flow design, developed in Flutter, for graphically designing flows and managing simx-engine |
 | simx-math        | In development | Math extension module, enhancing mathematical processing capabilities                              |
 | simx-net         | In development | Network extension module, adding network communication capabilities                                |

@@ -1,0 +1,21 @@
+[package]
+name = "extension-db"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+name = "db"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# 公共模块
+engine-common = { path = "../engine-common" }
+# 用于序列化和反序列化数据
+serde = { version = "1.0.207", features = ["derive"] }
+# serde 的派生宏
+serde_derive = "1.0.207"
+# 用于处理 JSON 数据
+serde_json = "1.0.124"
+# 用于序列化和反序列化数据
+bincode = "2.0.0-rc.3"

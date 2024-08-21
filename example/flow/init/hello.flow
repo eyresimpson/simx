@@ -49,17 +49,27 @@
         "node_name": "执行脚本",
         "node_type": "raw",
         "ignore": "none",
-        "path": "script/os/windows/test.ps1"
+        "path": "script/os/macos/b.sh"
       }
     },
     {
-      "handler": "simx.basic.flow.subflow",
+      "handler": "simx.basic.flow.sub_flow",
       "attr": {
         "node_id": "150245215359",
         "node_name": "子流程",
         "node_type": "raw",
         "ignore": "none",
         "steps": "[{\"handler\": \"simx.os.shell.println\",\"attr\":{\"node_id\": \"150245215351\",\"node_name\": \"打印信息\",\"node_type\": \"raw\",\"ignore\": \"none\",\"text\": \"hello world in subflow\"}},{\"handler\": \"simx.script\",\"attr\":{\"node_id\": \"150245215352\",\"node_name\": \"执行脚本\",\"node_type\": \"raw\",\"ignore\": \"none\",\"path\": \"script/os/windows/test.ps1\"}}]"
+      }
+    },
+    {
+      "handler": "simx.basic.flow.post_flow",
+      "attr": {
+        "node_id": "150245215351",
+        "node_name": "发起流程",
+        "node_type": "raw",
+        "ignore": "none",
+        "flow_path": "flow/test.flow"
       }
     },
     {
@@ -86,7 +96,7 @@
       }
     },
     {
-      "handler": "core.test",
+      "handler": "db.test",
       "attr": {
         "node_id": "150245215354",
         "node_name": "测试方法",

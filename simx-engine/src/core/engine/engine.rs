@@ -1,8 +1,8 @@
 use crate::core::engine::initialization::engine_init;
-use crate::core::extension::interface::call_init;
-use crate::core::flow::interface::exec_flow;
-use crate::tools::log::interface::{fail, info, success};
-use simx_common::runtime::extension::get_all_extension_info;
+use engine_common::logger::interface::{fail, info, success};
+use engine_common::runtime::extension::get_all_extension_info;
+use engine_common::thread::flow::exec_flow;
+use engine_handler::extension::interface::call_init;
 use std::env;
 use std::path::Path;
 
@@ -37,6 +37,8 @@ pub async fn serve() {
         jobs.push(job);
     }
 
+    exec_flow("/Users/eyresimpson/Code/simx-project/simx/example/flow/test.flow".to_string());
+
     // let (tx_a, rx_a) = mpsc::channel();
     // tx_a.send("1111111").unwrap();
 
@@ -52,7 +54,7 @@ pub async fn serve() {
 
 /// 运行流
 /// 此方法不会开启额外的线程，只是通过流引擎执行目标的流
-pub async fn run() {
+pub fn run() {
     // 获取命令行参数
     let args: Vec<String> = env::args().collect();
     // 判断文件路径是否为空
@@ -76,5 +78,5 @@ pub async fn run() {
 
 
     // 调用流引擎执行该文件
-    exec_flow(path).await;
+    exec_flow(path.to_str().unwrap().to_string());
 }

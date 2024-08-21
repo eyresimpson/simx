@@ -6,8 +6,8 @@ use crate::core::script::bat::exec_bat_script;
 use crate::core::script::ps1::exec_powershell_script;
 use crate::core::script::py::exec_python_script;
 use crate::core::script::sh::exec_shell_script;
-use crate::tools::log::interface::{info, warn};
-use simx_common::runtime::config::get_simx_config;
+use engine_common::logger::interface::{info, warn};
+use engine_common::runtime::config::get_simx_config;
 
 // 加载并执行默认脚本
 pub fn load_and_exec_default_script() {

@@ -5,7 +5,7 @@ use engine_handler::handler::interface::handler;
 // Node 调度
 // Node 需要对应的Handler执行
 // 需要传入标准的handler路径字符串和参数列表，并返回统一传回对象
-pub async fn exec_node(node: Node, data: &mut FlowData) {
+pub fn exec_node(node: Node, data: &mut FlowData) {
     if node.attr.contains_key("node_name") {
         debug(format!("[ Node ( {} ) Exec Start] ", node.attr.get("node_name").unwrap()).as_str());
     } else {
@@ -24,7 +24,7 @@ pub async fn exec_node(node: Node, data: &mut FlowData) {
     // if node.attr.contains_key("vital") && node.attr.get("vital").unwrap() == "true" {
     //     handler(node, data).await.expect("TODO: panic message");
     // } else {
-    handler(node, data).await.expect("TODO: panic message");
+    handler(node, data).unwrap();
     // }
 
     // debug(format!("Node Output -> data: {:?}", data).as_str());

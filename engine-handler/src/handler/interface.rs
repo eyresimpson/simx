@@ -4,14 +4,13 @@ use crate::handler::files::interface::handle_file;
 use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
 use crate::handler::script::interface::handle_script;
-use async_recursion::async_recursion;
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{info, warn};
 use engine_common::runtime::extension::get_extension_info;
 use engine_common::thread::engine::reload_local;
 
-#[async_recursion]
-pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
+// #[async_recursion]
+pub fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {
@@ -24,7 +23,7 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String>
             }
             // 基础网络
             "net" => {
-                handle_net(node, flow_data).await;
+                handle_net(node, flow_data);
             }
             // 系统功能
             "os" => {
@@ -32,7 +31,7 @@ pub async fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String>
             }
             // 基础操作
             "basic" => {
-                handle_basic(node, flow_data).await;
+                handle_basic(node, flow_data);
             }
             // 调用脚本（脚本引擎）
             "script" => {

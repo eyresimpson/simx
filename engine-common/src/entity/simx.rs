@@ -1,4 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
+use std::path::Path;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SimxFlow {
@@ -16,4 +17,14 @@ pub struct SimxScript {
     pub file_name: String,
     pub file_path: String,
     pub file_type: String,
+}
+
+pub struct SimxThreadFunctions {
+    pub exec_script: fn(&Path),
+    pub exec_flow: fn(&Path),
+}
+
+pub struct SimxThreadSenderStringData {
+    pub function: String,
+    pub data: String,
 }

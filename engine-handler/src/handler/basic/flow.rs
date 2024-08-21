@@ -1,8 +1,8 @@
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{debug, fail, info, warn};
-use engine_common::thread::flow::exec_steps;
+use engine_common::thread::flow::{exec_flow, exec_steps};
 
-pub async fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
+pub fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -11,7 +11,12 @@ pub async fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
         // 循环块
 
         // 子流程
-        "subflow" => subflow(node, flow_data).await,
+        "sub_flow" => subflow(node, flow_data),
+
+        // 发起流程
+        "post_flow" => {
+            exec_flow(node.attr["flow_path"].clone());
+        }
 
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
@@ -19,7 +24,7 @@ pub async fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
     }
 }
 
-pub async fn subflow(node: Node, flow_data: &mut FlowData) {
+pub fn subflow(node: Node, flow_data: &mut FlowData) {
     debug(format!("sub flow -> {} has been called", node.attr["node_name"]).as_str());
     // 取出attr中的nodes
     if node.attr.contains_key("steps") {
@@ -33,7 +38,7 @@ pub async fn subflow(node: Node, flow_data: &mut FlowData) {
             }
         };
         let sub_flow_data = flow_data.clone();
-        exec_steps(nodes, sub_flow_data).await;
+        exec_steps(nodes, sub_flow_data);
     } else {
         info("Subflow nodes is none, Skip...");
     }

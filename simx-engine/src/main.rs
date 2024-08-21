@@ -1,12 +1,13 @@
-use std::env;
-use std::fs;
-use std::path::Path;
-
 use crate::core::engine::engine::{run, serve};
+use engine_common::entity::simx::SimxThreadFunctions;
 use engine_common::logger::interface::info;
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::engine::set_engine_info;
-use engine_common::thread::interface::init_thread_pool;
+use engine_common::thread::interface::init_thread_monitor;
+use std::env;
+use std::fs;
+use std::future::Future;
+use std::path::Path;
 
 mod core;
 mod tools;
@@ -26,7 +27,7 @@ async fn main() {
         // 解析输入参数
         match args[1].as_str() {
             "serve" => serve().await,
-            "run" => run().await,
+            "run" => run(),
             _ => println!("无效的参数：{}", args[1]),
         }
         return;
@@ -49,7 +50,19 @@ fn init() {
     set_engine_info("support_api_version", support_api_version);
     // 检查日志文件夹
     let engine_conf = get_simx_config().engine;
-    init_thread_pool();
+    // let exec_script = Box::new(|path|
+    //     exec_script(path)
+    // );
+    // let exec_flow = Box::new(|  path| async {
+    //     exec_flow(path).await;
+    // }
+    // );
+
+    let functions = SimxThreadFunctions {
+        exec_script,
+        exec_flow,
+    };
+    init_thread_monitor(functions);
     // 检查运行目录下是否有日志目录
     let log_path = Path::new(engine_conf.log_path.as_str()).is_dir();
     if !log_path {

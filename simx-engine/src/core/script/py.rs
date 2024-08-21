@@ -1,9 +1,9 @@
 use std::path::Path;
 use std::process::Command;
 
-use simx_common::log::interface::{info, script_fail, script_log, warn};
-use simx_common::runtime::common::get_runtime_info;
-use simx_common::runtime::config::get_simx_config;
+use engine_common::logger::interface::{info, script_fail, script_log, warn};
+use engine_common::runtime::common::get_runtime_info;
+use engine_common::runtime::config::get_simx_config;
 
 pub fn exec_python_script(path: &Path) {
     let env_config = get_simx_config().env;

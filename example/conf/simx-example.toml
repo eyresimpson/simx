@@ -23,7 +23,7 @@ flow_path = "flow"
 # 扫描的脚本目录
 script_path = "script"
 # 扫描的插件目录
-ext_path = "D:/Code/simx-core/release"
+ext_path = "D:/Code/engine-handler/release"
 # 系统日志目录
 log_path = "logs"
 

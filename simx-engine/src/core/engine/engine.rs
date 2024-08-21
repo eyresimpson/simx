@@ -1,8 +1,8 @@
 use crate::core::engine::initialization::engine_init;
 use crate::core::flow::interface::exec_flow;
-use simx_common::log::interface::{fail, info, success};
-use simx_common::runtime::extension::get_all_extension_info;
-use simx_core::extension::interface::call_init;
+use engine_common::logger::interface::{fail, info, success};
+use engine_common::runtime::extension::get_all_extension_info;
+use engine_handler::extension::interface::call_init;
 use std::env;
 use std::path::Path;
 

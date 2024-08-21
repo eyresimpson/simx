@@ -2,9 +2,9 @@ use std::fs;
 use std::path::Path;
 
 use crate::core::environment::python::check_python;
-use simx_common::log::interface::{info, success, warn};
-use simx_common::runtime::common::set_runtime_info;
-use simx_common::runtime::config::get_simx_config;
+use engine_common::logger::interface::{info, success, warn};
+use engine_common::runtime::common::set_runtime_info;
+use engine_common::runtime::config::get_simx_config;
 
 /// 环境检查
 pub fn env_check() -> Result<String, String> {

@@ -3,15 +3,15 @@ use std::path::Path;
 
 use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
-use crate::core::runtime::config::get_simx_config;
-use crate::core::runtime::extension::set_extension_info;
-use crate::core::runtime::flow::set_flow_info;
-use crate::core::runtime::script::set_script_info;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::tools::log::interface::{fail, info, success, warn};
 use serde_json::from_str;
 use simx_common::entity::ext::Extension;
 use simx_common::entity::simx::{SimxFlow, SimxScript};
+use simx_common::runtime::config::get_simx_config;
+use simx_common::runtime::extension::set_extension_info;
+use simx_common::runtime::flow::set_flow_info;
+use simx_common::runtime::script::set_script_info;
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置

@@ -3,7 +3,7 @@
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
-use crate::core::runtime::config::get_simx_config;
+use simx_common::runtime::config::get_simx_config;
 
 // 写文件日志
 pub fn write_log(log_message: &str, num: i64) {

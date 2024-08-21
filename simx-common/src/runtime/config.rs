@@ -2,10 +2,8 @@ use std::fs;
 use std::path::Path;
 use std::sync::Mutex;
 
+use crate::entity::engine::{EngineConfig, EnvConfig, NetConfig, SimxConfig};
 use once_cell::sync::Lazy;
-
-use simx_common::entity::engine::{EngineConfig, EnvConfig, NetConfig, SimxConfig};
-
 // 用于存储运行时配置(Toml)
 // 此处用于加载配置文件，并解析为结构体，注意配置一般不允许动态修改
 

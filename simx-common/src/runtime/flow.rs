@@ -3,7 +3,7 @@ use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 
-use simx_common::entity::simx::SimxFlow;
+use crate::entity::simx::SimxFlow;
 
 lazy_static! {
     static ref RUNTIME_FLOW: Mutex<HashMap<String, SimxFlow>> = Mutex::new(HashMap::new());

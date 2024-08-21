@@ -16,7 +16,8 @@ pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
 }
 
 // 用于显示所有的节点内容，一般用于调试
+#[allow(unused_variables)] 
 fn node_debug(node: Node, flow_data: &mut FlowData) {
-    // let f = (flow_data.data.get("text").unwrap());
-    // warn(bytes_to_string(f).as_str())
+    // let f = flow_data.data.get("text").unwrap();
+    // warn(f.)
 }

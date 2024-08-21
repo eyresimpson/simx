@@ -544,9 +544,9 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
-    "h2",
+ "h2",
  "http 0.2.12",
-    "http-body",
+ "http-body",
  "httparse",
  "httpdate",
  "itoa",
@@ -1097,7 +1097,7 @@ dependencies = [
  "either",
  "futures",
  "http 0.2.12",
-    "hyper",
+ "hyper",
  "indexmap",
  "log",
  "memchr",
@@ -1227,14 +1227,14 @@ name = "simx-common"
 version = "0.1.0"
 dependencies = [
  "bincode",
-    "chrono",
+ "chrono",
  "color-string",
-    "lazy_static",
-    "once_cell",
+ "lazy_static",
+ "once_cell",
  "serde",
  "serde_derive",
  "serde_json",
-    "threadpool",
+ "threadpool",
  "toml 0.8.19",
 ]
 
@@ -1242,10 +1242,10 @@ dependencies = [
 name = "simx-core"
 version = "0.1.0"
 dependencies = [
-    "async-recursion",
+ "async-recursion",
  "bincode",
-    "libloader",
-    "libloading 0.8.5",
+ "libloader",
+ "libloading 0.8.5",
  "rocket",
  "serde",
  "serde_derive",
@@ -1275,7 +1275,7 @@ dependencies = [
  "libloading 0.8.5",
  "serde_json",
  "simx-common",
-    "simx-core",
+ "simx-core",
  "tokio",
  "winres",
 ]

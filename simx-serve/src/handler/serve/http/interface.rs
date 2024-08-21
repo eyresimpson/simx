@@ -1,3 +1,4 @@
+use crate::handler::serve::http::handler::common::welcome_info;
 use crate::handler::serve::http::handler::script::handle_search_script;
 use crate::handler::serve::http::handler::status::{handle_version_current, handle_version_latest, handle_version_list};
 use rocket::config::LogLevel;
@@ -47,7 +48,7 @@ pub async fn start_net_watcher() {
     // 此处阻塞了系统的运行，如果后续需要修改，可以去掉 await
     build().configure(config.clone()).mount("/simx", routes![
         // 系统基础信息
-        // welcome_info,
+        welcome_info,
         handle_version_current,
         handle_version_list,
         handle_version_latest,

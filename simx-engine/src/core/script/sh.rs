@@ -2,8 +2,8 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-use crate::core::runtime::config::get_simx_config;
 use crate::tools::log::interface::{info, script_fail, script_log, warn};
+use simx_common::runtime::config::get_simx_config;
 
 pub fn exec_shell_script(path: &Path) {
     info(format!("Find Shell in path -> {:?}", path).as_str());

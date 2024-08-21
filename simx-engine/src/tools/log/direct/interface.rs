@@ -1,4 +1,3 @@
-use crate::core::runtime::config::get_simx_config;
 use crate::tools::log::direct::shell::basic::debug as b_debug;
 use crate::tools::log::direct::shell::basic::err as b_err;
 use crate::tools::log::direct::shell::basic::info as b_info;
@@ -13,6 +12,7 @@ use crate::tools::log::direct::shell::colourful::script_log as b_script_log;
 use crate::tools::log::direct::shell::colourful::script_log as c_script_log;
 use crate::tools::log::direct::shell::colourful::success as c_success;
 use crate::tools::log::direct::shell::colourful::warn as c_warn;
+use simx_common::runtime::config::get_simx_config;
 
 fn show_colourful() -> bool {
     let conf = get_simx_config().engine;

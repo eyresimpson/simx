@@ -1,9 +1,9 @@
 use std::path::Path;
 use std::process::Command;
 
-use crate::core::runtime::common::get_runtime_info;
-use crate::core::runtime::config::get_simx_config;
 use crate::tools::log::interface::{info, script_fail, script_log, warn};
+use simx_common::runtime::common::get_runtime_info;
+use simx_common::runtime::config::get_simx_config;
 
 pub fn exec_python_script(path: &Path) {
     let env_config = get_simx_config().env;

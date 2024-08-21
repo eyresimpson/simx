@@ -3,7 +3,7 @@ use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 
-use simx_common::entity::simx::SimxScript;
+use crate::entity::simx::SimxScript;
 
 lazy_static! {
     static ref RUNTIME_SCRIPT: Mutex<HashMap<String, SimxScript>> = Mutex::new(HashMap::new());

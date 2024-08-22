@@ -34,7 +34,7 @@ fn traverse_folder(folder_path: &Path) -> BoxFuture<'static, ()> {
                 if let Ok(entry) = entry {
                     let path = entry.path();
                     if path.is_file() {
-                        exec_flow(&path);
+                        exec_flow(&path).await;
                     } else if path.is_dir() {
                         // If it's a directory, recursively traverse its contents
                         traverse_folder(&path).await;

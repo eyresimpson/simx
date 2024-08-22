@@ -73,16 +73,6 @@
       }
     },
     {
-      "handler": "simx.basic.flow.subflow",
-      "attr": {
-        "node_id": "150245215398",
-        "node_name": "子流程",
-        "node_type": "raw",
-        "ignore": "none",
-        "path": "file:///Users/eyresimpson/Code/simx-project/simx/example/flow/test.flow"
-      }
-    },
-    {
       "handler": "simx.files.plain.writer",
       "attr": {
         "node_id": "150245215353",

@@ -1,12 +1,10 @@
 use crate::core::engine::engine::{run, serve};
-use engine_common::entity::simx::SimxThreadFunctions;
+use crate::core::engine::thread::init_thread_monitor;
 use engine_common::logger::interface::info;
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::engine::set_engine_info;
-use engine_common::thread::interface::init_thread_monitor;
 use std::env;
 use std::fs;
-use std::future::Future;
 use std::path::Path;
 
 mod core;
@@ -50,19 +48,10 @@ fn init() {
     set_engine_info("support_api_version", support_api_version);
     // 检查日志文件夹
     let engine_conf = get_simx_config().engine;
-    // let exec_script = Box::new(|path|
-    //     exec_script(path)
-    // );
-    // let exec_flow = Box::new(|  path| async {
-    //     exec_flow(path).await;
-    // }
-    // );
-
-    let functions = SimxThreadFunctions {
-        exec_script,
-        exec_flow,
-    };
-    init_thread_monitor(functions);
+    //
+    // let functions = SimxThreadFunctions { exec_script: exec_script, exec_flow: exec_flow, };
+    //  初始化核心线程池
+    init_thread_monitor();
     // 检查运行目录下是否有日志目录
     let log_path = Path::new(engine_conf.log_path.as_str()).is_dir();
     if !log_path {

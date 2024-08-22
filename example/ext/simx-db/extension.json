@@ -8,5 +8,6 @@
   "keywords": [],
   "dependencies": [],
   "entry_lib": "db",
-  "entry_func": "interface"
+  "entry_func": "interface",
+  "init_func": "init"
 }

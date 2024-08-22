@@ -41,6 +41,7 @@ pub struct Extension {
     pub dependencies: Vec<String>,
     pub entry_lib: String,
     pub entry_func: String,
+    pub init_func: String,
 }
 
 // 与插件交流时传递的数据

@@ -29,6 +29,10 @@ pub async fn serve() {
     let extensions = get_all_extension_info();
     // 遍历插件列表，调用init方法
     for extension in extensions {
+        if extension.init_func.is_empty() {
+            // 如果找不到初始化方法，则跳过插件的初始化（并不强制所有插件必须有初始化方法）
+            continue;
+        }
         // 调用插件的init方法
         // 注意，新线程中执行init，init的执行结果的顺序不能保证
         let job = tokio::spawn(async move {
@@ -36,11 +40,6 @@ pub async fn serve() {
         });
         jobs.push(job);
     }
-
-    exec_flow("/Users/eyresimpson/Code/simx-project/simx/example/flow/test.flow".to_string());
-
-    // let (tx_a, rx_a) = mpsc::channel();
-    // tx_a.send("1111111").unwrap();
 
     for job in jobs {
         // 只要有一个线程没有退出，就阻塞引擎不退出

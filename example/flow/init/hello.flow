@@ -39,7 +39,7 @@
         "node_name": "打印信息",
         "node_type": "raw",
         "ignore": "none",
-        "text": "hello world"
+        "text": "hello world in println"
       }
     },
     {
@@ -59,7 +59,7 @@
         "node_name": "子流程",
         "node_type": "raw",
         "ignore": "none",
-        "steps": "[{\"handler\": \"simx.os.shell.println\",\"attr\":{\"node_id\": \"150245215351\",\"node_name\": \"打印信息\",\"node_type\": \"raw\",\"ignore\": \"none\",\"text\": \"hello world in subflow\"}},{\"handler\": \"simx.script\",\"attr\":{\"node_id\": \"150245215352\",\"node_name\": \"执行脚本\",\"node_type\": \"raw\",\"ignore\": \"none\",\"path\": \"script/os/windows/test.ps1\"}}]"
+        "steps": "[{\"handler\": \"simx.os.shell.println\",\"attr\":{\"node_id\": \"150245215351\",\"node_name\": \"打印信息\",\"node_type\": \"raw\",\"ignore\": \"none\",\"text\": \"hello world in sub---flow\"}},{\"handler\": \"simx.script\",\"attr\":{\"node_id\": \"150245215352\",\"node_name\": \"执行脚本\",\"node_type\": \"raw\",\"ignore\": \"none\",\"path\": \"script/os/windows/test.ps1\"}}]"
       }
     },
     {

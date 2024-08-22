@@ -1,6 +1,6 @@
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::debug;
-use engine_handler::handler::interface::handler;
+use engine_handler::handler::interface::root_handler;
 
 // Node 调度
 // Node 需要对应的Handler执行
@@ -24,7 +24,7 @@ pub fn exec_node(node: Node, data: &mut FlowData) {
     // if node.attr.contains_key("vital") && node.attr.get("vital").unwrap() == "true" {
     //     handler(node, data).await.expect("TODO: panic message");
     // } else {
-    handler(node, data).unwrap();
+    root_handler(node, data).unwrap();
     // }
 
     // debug(format!("Node Output -> data: {:?}", data).as_str());

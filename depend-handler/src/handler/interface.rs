@@ -9,8 +9,7 @@ use engine_common::logger::interface::{info, warn};
 use engine_common::runtime::extension::get_extension_info;
 use engine_common::thread::engine::reload_local;
 
-// #[async_recursion]
-pub fn handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
+pub fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {

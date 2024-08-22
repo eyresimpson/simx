@@ -2,7 +2,7 @@
 /extension-serve/target/
 /simx-engine/target/
 /extension-db/target/
-/engine-handler/target/
+/depend-handler/target/
 /example/tmp/
 /example/logs/
 /simx-engine/.idea/inspectionProfiles/Project_Default.xml

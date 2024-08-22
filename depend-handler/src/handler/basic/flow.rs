@@ -6,18 +6,12 @@ pub fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
-        // 条件语句
-
-        // 循环块
-
         // 子流程
         "sub_flow" => subflow(node, flow_data),
-
         // 发起流程
         "post_flow" => {
             exec_flow(node.attr["flow_path"].clone());
         }
-
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
         }

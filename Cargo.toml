@@ -3,13 +3,15 @@ resolver = "2"
 
 members = [
     # 共用部分，simx项目中的插件均引用此模块
-    "engine-common",
+    "depend-common",
     # 核心扩展插件，包含大量的引擎节点handle
-    "engine-handler",
+    "depend-handler",
     # 引擎主体
     "simx-engine",
     # 服务扩展插件，允许服务监听相关操作
     "extension-serve",
     # 数据库扩展插件，运行用户对数据库进行操作
     "extension-db",
+    # 应用扩展插件，运行用户对一些常见的应用进行管理
+    "extension-app"
 ]

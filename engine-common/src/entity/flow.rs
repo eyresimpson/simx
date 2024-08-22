@@ -61,3 +61,15 @@ pub struct FlowData {
     // 数据统一为二进制，使用时需要根据具体情况判断
     pub data: HashMap<String, Vec<u8>>,
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+pub struct RootData {
+    pub node: Node,
+    pub flow_data: FlowData,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+pub struct SubFlowTransferData {
+    pub nodes: Vec<Node>,
+    pub flow_data: FlowData,
+}

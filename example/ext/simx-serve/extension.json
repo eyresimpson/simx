@@ -8,5 +8,6 @@
   "keywords": [],
   "dependencies": [],
   "entry_lib": "serve",
-  "entry_func": "interface"
+  "entry_func": "interface",
+  "init_func": "init"
 }

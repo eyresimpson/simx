@@ -18,7 +18,7 @@ pub fn call_so_extension_method(extension: Extension, node: Node, flow_data: &mu
         flow_data: flow_data.clone(),
     };
 
-    // dylib路径
+    // so路径
     let dylib_path = Path::new(&function_file).join(extension.entry_lib + ".so");
     let lib = unsafe { Library::new(dylib_path) }.expect("Could not load dylib");
 
@@ -44,7 +44,7 @@ pub fn call_so_extension_init(extension: Extension) -> Result<(), String> {
     // 取方法所在插件文件名（相对于插件根目录）
     let function_file = extension.path.as_ref().unwrap();
 
-    // dylib路径
+    // so径
     let dylib_path = Path::new(&function_file).join(extension.entry_lib + ".so");
     let lib = unsafe { Library::new(dylib_path) }.expect("Could not load dylib");
 

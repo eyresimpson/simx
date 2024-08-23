@@ -20,3 +20,6 @@
 /example/ext/engine-handler/core.dylib
 /example/ext/simx-serve/serve.dylib
 /example/ext/simx-db/db.dylib
+/Cargo.lock
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/runConfigurations/package_mac_sh.xml

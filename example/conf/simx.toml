@@ -1,5 +1,5 @@
 [engine]
-#run_init_script = false
+run_init_script = true
 run_init_flow = true
 # 运行插件的初始化方法，一般不建议关闭
 run_init_extensions_func = true
@@ -22,10 +22,10 @@ instance_communication_type = "share-memory"
 rest_listener_port = 9899
 
 [env]
+python_path = "python"
 enable_python_script = true
 enable_shell_script = true
 enable_batch_script = true
 enable_powershell_script = true
 enable_shell_script_in_mac = true
 enable_shell_script_in_linux = true
-python_path = "python3"

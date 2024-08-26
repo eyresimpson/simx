@@ -7,7 +7,7 @@ pub fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
 
     match handler_path[3] {
         // 子流程
-        "sub_flow" => subflow(node, flow_data),
+        "sub_flow" => sub_flow(node, flow_data),
         // 发起流程
         "post_flow" => {
             exec_flow(node.attr["flow_path"].clone());
@@ -18,7 +18,7 @@ pub fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
     }
 }
 
-pub fn subflow(node: Node, flow_data: &mut FlowData) {
+pub fn sub_flow(node: Node, flow_data: &mut FlowData) {
     debug(format!("sub flow -> {} has been called", node.attr["node_name"]).as_str());
     // 取出attr中的nodes
     if node.attr.contains_key("steps") {

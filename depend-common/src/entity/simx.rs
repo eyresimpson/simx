@@ -1,5 +1,5 @@
+use crate::entity::flow::Flow;
 use serde_derive::{Deserialize, Serialize};
-use std::path::Path;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SimxFlow {
@@ -8,6 +8,8 @@ pub struct SimxFlow {
     pub file_name: String,
     pub file_path: String,
     pub file_type: String,
+    // 流对象，加载时机是执行流前
+    pub flow: Option<Flow>
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -19,10 +21,6 @@ pub struct SimxScript {
     pub file_type: String,
 }
 
-pub struct SimxThreadFunctions {
-    pub exec_script: fn(&Path),
-    pub exec_flow: fn(&Path),
-}
 
 pub struct SimxThreadSenderStringData {
     pub function: String,

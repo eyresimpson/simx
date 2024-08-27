@@ -149,6 +149,7 @@ pub fn load_flow_by_path(path: &Path) {
         file_path: path.to_str().unwrap().to_string(),
         // 目前仅支持flow格式的流文件
         file_type: "flow".to_string(),
+        flow: None,
     });
 }
 

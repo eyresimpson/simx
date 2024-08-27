@@ -21,6 +21,7 @@ pub fn flow_resolver(path: &Path) -> Flow {
                     version: "".to_string(),
                     requirements: vec![],
                     steps: vec![],
+                    runtime: None,
                 };
             }
         }
@@ -35,6 +36,7 @@ pub fn flow_resolver(path: &Path) -> Flow {
             version: "".to_string(),
             requirements: vec![],
             steps: vec![],
+            runtime: None,
         };
     }
 }

@@ -40,6 +40,7 @@ pub fn call_dll_extension_method(extension: Extension, node: Node, flow_data: &m
     }
 }
 
+// 调用插件的初始化函数
 pub fn call_dll_extension_init(extension: Extension) -> Result<(), String> {
     // 取方法所在插件文件名（相对于插件根目录）
     let function_file = extension.path.as_ref().unwrap();

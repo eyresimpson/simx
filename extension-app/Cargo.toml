@@ -6,7 +6,7 @@ edition = "2021"
 [lib]
 name = "app"
 path = "src/lib.rs"
-crate-type = ["cdylib", "rlib"]
+crate-type = ["dylib"]
 
 [dependencies]
 # 公共模块

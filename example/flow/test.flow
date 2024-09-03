@@ -21,8 +21,9 @@
       "ver": "0.1.0"
     }
   ],
-  "steps": [
+  "nodes": [
     {
+      "id": "1",
       "handler": "simx.os.shell.println",
       "attr": {
         "node_id": "150245215351",
@@ -33,6 +34,7 @@
       }
     },
     {
+      "id": "2",
       "handler": "db.test",
       "attr": {
         "node_id": "150245215354",

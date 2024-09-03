@@ -1,6 +1,6 @@
 use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Flow {
@@ -17,9 +17,9 @@ pub struct Flow {
     // 环境要求
     pub requirements: Vec<Environment>,
     // 节点列表
-    pub steps: Vec<Node>,
+    pub nodes: Vec<Node>,
     // 流运行时，此字段在调度器中赋值与管理
-    pub runtime: Option<FlowRuntimeModel>
+    pub runtime: Option<FlowRuntimeModel>,
 }
 
 // 流程状态模型
@@ -37,23 +37,32 @@ pub struct FlowRuntimeModel {
     pub messages: HashMap<String, NodeMessage>,
     // 当前节点
     pub current_node: Option<Node>,
+    // 执行队列
+    pub queue: VecDeque<Node>,
     // 流运行时数据
     pub data: FlowData,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum FlowStatus {
-    // 队列中（用户限制了最大线程数，如果占用的现场超过了，就会进入队列）
+    // 队列中
+    // 以下情况会进入队列：
+    // 1. 生成流状态后，如果用户限制了最大线程数，且占用的线程超过最大线程数
+    // 2. 系统刚刚生成该流程的状态（瞬时状态）
     Queue,
     // 启动中（尝试执行）
+    // 进入exec阶段，会让状态变为starting
     Starting,
     // 正在运行
     Running,
     // 已完成（正常结束）
     Finished,
     // 发生错误终止
+    // 1. 节点不允许错误，会引发此状态
+    // 2. 调度失败（如内存分配等情况）
     Error,
     // 调度暂停
+    // 用户手动暂停，或节点触发暂停，会引发此状态
     Paused,
     // 调度阻塞（超过限制）
     Waiting,
@@ -63,6 +72,8 @@ pub enum FlowStatus {
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct Node {
+    // 节点id，调度依赖此字段，同一个流中不能重复
+    pub id: String,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点所附带的数据，node中的每个opt中都可以访问
@@ -98,7 +109,6 @@ pub struct NodeHistory {
     // 输出流
     pub output_data: FlowData,
 }
-
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum EnvType {

@@ -14,7 +14,7 @@ pub fn exec_standardisation_flow(flow: Flow) {
     };
 
     // 执行流
-    exec_steps(flow.steps, data);
+    exec_steps(flow.nodes, data);
 
     success(format!("flow {{ {} }} has be exec success.", flow.flow_name).as_str());
 }

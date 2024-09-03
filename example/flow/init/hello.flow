@@ -21,8 +21,9 @@
       "ver": "0.1.0"
     }
   ],
-  "steps": [
+  "nodes": [
     {
+      "id": "1",
       "handler": "simx.files.plain.reader",
       "attr": {
         "node_id": "150245215350",
@@ -33,6 +34,7 @@
       }
     },
     {
+      "id": "2",
       "handler": "simx.os.shell.println",
       "attr": {
         "node_id": "150245215351",
@@ -43,6 +45,7 @@
       }
     },
     {
+      "id": "3",
       "handler": "simx.script",
       "attr": {
         "node_id": "150245215352",
@@ -53,6 +56,7 @@
       }
     },
     {
+      "id": "4",
       "handler": "simx.basic.flow.sub_flow",
       "attr": {
         "node_id": "150245215359",
@@ -63,6 +67,7 @@
       }
     },
     {
+      "id": "5",
       "handler": "simx.basic.flow.post_flow",
       "attr": {
         "node_id": "150245215351",
@@ -73,6 +78,7 @@
       }
     },
     {
+      "id": "6",
       "handler": "simx.files.plain.writer",
       "attr": {
         "node_id": "150245215353",
@@ -86,6 +92,7 @@
       }
     },
     {
+      "id": "7",
       "handler": "db.test",
       "attr": {
         "node_id": "150245215354",

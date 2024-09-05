@@ -12,6 +12,19 @@ members = [
     "extension-serve",
     # 数据库扩展插件，运行用户对数据库进行操作
     "extension-db",
-    # 应用扩展插件，运行用户对一些常见的应用进行管理
-    "extension-app"
+    # cron 支持
+
+    # http服务
+
+    # tcp协议（socket）
+
+    # 文件管理
+
+    # 操作系统
+
+    # mysql8 支持
+
+    # sql server支持
+
+    # oracle 支持
 ]

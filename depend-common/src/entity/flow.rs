@@ -45,14 +45,13 @@ pub struct FlowRuntimeModel {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum FlowStatus {
-    // 队列中
-    // 以下情况会进入队列：
-    // 1. 生成流状态后，如果用户限制了最大线程数，且占用的线程超过最大线程数
-    // 2. 系统刚刚生成该流程的状态（瞬时状态）
-    Queue,
     // 启动中（尝试执行）
     // 进入exec阶段，会让状态变为starting
     Starting,
+    // 队列中
+    // 以下情况会进入队列：
+    // 1. 生成流状态后，如果用户限制了最大线程数，且占用的线程超过最大线程数
+    Queue,
     // 正在运行
     Running,
     // 已完成（正常结束）
@@ -74,10 +73,34 @@ pub enum FlowStatus {
 pub struct Node {
     // 节点id，调度依赖此字段，同一个流中不能重复
     pub id: String,
+    // 节点类型
+    pub node_type: Option<Vec<NodeTag>>,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点所附带的数据，node中的每个opt中都可以访问
     pub attr: HashMap<String, String>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+pub enum NodeTag {
+    // 计算节点，具有大量计算负荷
+    Compute,
+    // 命令节点，与操作系统进行命令交互
+    Command,
+    // 逻辑节点，会在节点执行结束后，要求调整执行路径
+    Logic,
+    // 数据节点，与数据库、数据文件进行交互
+    Data,
+    // 测试节点，仅用于调试和开发
+    Debug,
+    // 耗时节点，比如与第三方接口进行交互
+    Delay,
+    // 优先节点，会优先处理此节点
+    Priority,
+    // 阻塞节点，会阻塞调度器，直到被取消
+    Blocking,
+    // 异步节点，不会等待此节点执行
+    Async,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]

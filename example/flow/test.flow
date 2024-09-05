@@ -16,7 +16,7 @@
       "ver": "1.8.0"
     },
     {
-      "name": "core",
+      "name": "serve",
       "env_type": "Ext",
       "ver": "0.1.0"
     }
@@ -35,7 +35,7 @@
     },
     {
       "id": "2",
-      "handler": "db.test",
+      "handler": "serve.test",
       "attr": {
         "node_id": "150245215354",
         "node_name": "测试方法",

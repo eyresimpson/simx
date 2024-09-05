@@ -10,6 +10,12 @@ use std::path::Path;
 /// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
 /// 才会调用引擎方法，发起流程或脚本
 pub async fn serve() {
+    println!(
+        " _______ _______ _______ ___ ___ 
+|     __|_     _|   |   |   |   |
+|__     |_|   |_|       |-     -|
+|_______|_______|__|_|__|___|___|",
+    );
     info("Engine Starting...");
 
     // 执行系统初始化事件
@@ -74,7 +80,6 @@ pub fn run() {
         fail("The flow file must be selected.");
         return;
     }
-
 
     // 调用流引擎执行该文件
     exec_flow(path.to_str().unwrap().to_string());

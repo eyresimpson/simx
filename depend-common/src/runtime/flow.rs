@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 use std::sync::Mutex;
 
 use crate::entity::flow::{Flow, FlowStatus, Node};
@@ -38,11 +38,11 @@ pub fn del_flow_runtime(key: &str) {
 }
 
 // 设置流当前状态
-pub fn set_flow_runtime_status(key: &str, flowStatus: FlowStatus) {
+pub fn set_flow_runtime_status(key: &str, flow_status: FlowStatus) {
     let mut data = RUNTIME_FLOW.lock().unwrap();
     if let Some(flow) = data.get_mut(key) {
         if let Some(ref mut runtime) = flow.runtime {
-            runtime.status = flowStatus;
+            runtime.status = flow_status;
         } else {
             warn(format!("flow {} runtime status is uninitialized!", key).as_str());
         }
@@ -56,10 +56,24 @@ pub fn get_flow_runtime_status(key: &str) -> FlowStatus {
     let data = RUNTIME_FLOW.lock().unwrap();
     data.get(key).cloned().unwrap().runtime.unwrap().status
 }
+
 // 获取流节点列表
 pub fn get_flow_runtime_nodes(key: &str) -> Vec<Node> {
     let data = RUNTIME_FLOW.lock().unwrap();
     data.get(key).cloned().unwrap().nodes
+}
+
+pub fn get_flow_runtime_queue(key: &str) -> VecDeque<Node> {
+    let data = RUNTIME_FLOW.lock().unwrap();
+    let queue: VecDeque<Node> = VecDeque::new();
+    if let Some(flow) = data.get(key) {
+        return if let Some(runtime) = flow.clone().runtime {
+            runtime.queue.clone()
+        } else {
+            queue
+        }
+    }
+    queue
 }
 
 // 压入执行队列（尾部添加）

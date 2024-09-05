@@ -73,15 +73,15 @@ pub enum FlowStatus {
 pub struct Node {
     // 节点id，调度依赖此字段，同一个流中不能重复
     pub id: String,
-    // 节点类型
-    pub node_type: Option<Vec<NodeTag>>,
+    // 节点标签列表
+    pub tags: Option<Vec<NodeTag>>,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点所附带的数据，node中的每个opt中都可以访问
     pub attr: HashMap<String, String>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
 pub enum NodeTag {
     // 计算节点，具有大量计算负荷
     Compute,

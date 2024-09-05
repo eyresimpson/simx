@@ -5,11 +5,14 @@ use engine_common::thread::flow::exec_flow;
 use engine_handler::extension::interface::call_init;
 use std::env;
 use std::path::Path;
+use engine_common::runtime::config::get_simx_config;
+use crate::core::flow::dispatch::interface::dispatch_flow;
 
 /// 引擎核心
 /// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
 /// 才会调用引擎方法，发起流程或脚本
 pub async fn serve() {
+    let simx_config = get_simx_config();
     println!(
         " _______ _______ _______ ___ ___ 
 |     __|_     _|   |   |   |   |
@@ -25,6 +28,9 @@ pub async fn serve() {
         fail(init_ret.err().unwrap().as_str());
         return;
     }
+
+    dispatch_flow("D:\\Code\\simx\\example\\flow\\init\\hello.flow".as_ref(), "".to_string());
+
 
     // 系统启动完成
     success("Engine has started.");
@@ -50,6 +56,16 @@ pub async fn serve() {
     for job in jobs {
         // 只要有一个线程没有退出，就阻塞引擎不退出
         job.await.unwrap();
+    }
+
+    info("Engine is running, If you want to exit, press Ctrl + C");
+
+    // 检查配置中是否需要阻塞进程
+    if simx_config.engine.run_strategy != "once" {
+        // 等待用户 ctrl + c 结束进程
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {}
+        }
     }
 
     // 运行结束

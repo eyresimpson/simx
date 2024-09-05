@@ -56,18 +56,6 @@
       }
     },
     {
-      "id": "4",
-      "handler": "simx.os.shell.println",
-      "tags": ["Logic"],
-      "attr": {
-        "node_id": "150245215351",
-        "node_name": "条件判断",
-        "node_type": "raw",
-        "ignore": "none",
-        "text": "hello world in println"
-      }
-    },
-    {
       "id": "5",
       "handler": "simx.basic.flow.post_flow",
       "attr": {
@@ -90,6 +78,18 @@
         "type": "default",
         "content": "text",
         "override": "force"
+      }
+    },
+    {
+      "id": "7",
+      "handler": "serve.test",
+      "attr": {
+        "node_id": "150245215354",
+        "node_name": "测试方法",
+        "node_type": "ext",
+        "ignore": "err",
+        "a": "30",
+        "b": "20"
       }
     }
   ]

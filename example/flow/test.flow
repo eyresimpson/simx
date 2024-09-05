@@ -32,18 +32,6 @@
         "ignore": "none",
         "text": "hello world"
       }
-    },
-    {
-      "id": "2",
-      "handler": "serve.test",
-      "attr": {
-        "node_id": "150245215354",
-        "node_name": "测试方法",
-        "node_type": "ext",
-        "ignore": "err",
-        "a": "30",
-        "b": "20"
-      }
     }
   ]
 }

@@ -13,30 +13,12 @@ pub fn flow_resolver(path: &Path) -> Flow {
             // 目前拒绝处理其他脚本，直接返回空
             _ => {
                 warn("Cannot resolver this extension file.");
-                return Flow {
-                    flow_name: "".to_string(),
-                    update_date: "".to_string(),
-                    create_date: "".to_string(),
-                    developer: "".to_string(),
-                    version: "".to_string(),
-                    requirements: vec![],
-                    nodes: vec![],
-                    runtime: None,
-                };
+                Flow::default()
             }
         }
     } else {
         // 不解析其他任何后缀名的文件
         warn("Cannot resolver this extension file.");
-        return Flow {
-            flow_name: "".to_string(),
-            update_date: "".to_string(),
-            create_date: "".to_string(),
-            developer: "".to_string(),
-            version: "".to_string(),
-            requirements: vec![],
-            nodes: vec![],
-            runtime: None,
-        };
+        Flow::default()
     }
 }

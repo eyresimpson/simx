@@ -66,6 +66,10 @@ pub struct EngineConfig {
     // 错误的默认handel名称时的操作
     #[serde(default = "default_missing_default_handel_action")]
     pub missing_default_handel_action: String,
+
+    // 错误的默认handel名称时的操作
+    #[serde(default = "default_run_strategy")]
+    pub run_strategy: String,
 }
 
 // 用于为字段提供默认值的实现
@@ -86,6 +90,7 @@ impl Default for EngineConfig {
             file_log_level: default_file_log_level(),
             missing_plugin_action: default_missing_plugin_action(),
             missing_default_handel_action: default_missing_default_handel_action(),
+            run_strategy: default_run_strategy(),
         }
     }
 }
@@ -145,6 +150,10 @@ fn default_missing_plugin_action() -> String {
 
 fn default_missing_default_handel_action() -> String {
     "warn".to_string()
+}
+
+fn default_run_strategy() -> String{
+    "once".to_string()
 }
 
 // 网络配置相关

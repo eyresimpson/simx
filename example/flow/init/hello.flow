@@ -56,17 +56,6 @@
       }
     },
     {
-      "id": "4",
-      "handler": "simx.basic.flow.sub_flow",
-      "attr": {
-        "node_id": "150245215359",
-        "node_name": "子流程",
-        "node_type": "raw",
-        "ignore": "none",
-        "steps": "[{\"handler\": \"simx.os.shell.println\",\"attr\":{\"node_id\": \"150245215351\",\"node_name\": \"打印信息\",\"node_type\": \"raw\",\"ignore\": \"none\",\"text\": \"hello world in sub---flow\"}},{\"handler\": \"simx.script\",\"attr\":{\"node_id\": \"150245215352\",\"node_name\": \"执行脚本\",\"node_type\": \"raw\",\"ignore\": \"none\",\"path\": \"script/os/windows/test.ps1\"}}]"
-      }
-    },
-    {
       "id": "5",
       "handler": "simx.basic.flow.post_flow",
       "attr": {
@@ -93,7 +82,7 @@
     },
     {
       "id": "7",
-      "handler": "db.test",
+      "handler": "serve.test",
       "attr": {
         "node_id": "150245215354",
         "node_name": "测试方法",
@@ -102,6 +91,30 @@
         "a": "30",
         "b": "20"
       }
+    }
+  ],
+  "blueprint": [
+    {
+      "id": "1",
+      "node": "2",
+      "upstream": [],
+      "downstream": [
+        {
+          "id": "2",
+          "node": "2",
+          "upstream": [],
+          "downstream": [],
+          "redress_stream": []
+        },
+        {
+          "id": "3",
+          "node": "3",
+          "upstream": [],
+          "downstream": [],
+          "redress_stream": []
+        }
+      ],
+      "redress_stream": []
     }
   ]
 }

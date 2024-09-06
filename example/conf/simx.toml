@@ -1,5 +1,5 @@
 [engine]
-run_init_script = true
+run_init_script = false
 run_init_flow = true
 # 运行插件的初始化方法，一般不建议关闭
 run_init_extensions_func = true
@@ -17,6 +17,10 @@ missing_default_handel_action = "warn"
 # rustful: 使用rustful接口通信（宿主必须作为serve运行，可执行所有控制操作）
 # id-file: 通过实例的描述文件通信（速度很慢，根据文件交换互相信息，不能执行控制操作）
 instance_communication_type = "share-memory"
+# 引擎执行策略：
+# once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出
+# serve: 阻塞，执行完成或传入流程后阻塞，需要用户手动结束或通过线程/api结束
+run_strategy= "serve"
 
 [net]
 rest_listener_port = 9899

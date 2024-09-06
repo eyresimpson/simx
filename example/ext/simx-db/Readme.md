@@ -1,2 +1,0 @@
-# Simx Db Extension Readme
-

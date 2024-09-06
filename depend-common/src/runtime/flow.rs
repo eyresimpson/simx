@@ -1,7 +1,7 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 use std::sync::Mutex;
 
-use crate::entity::flow::{Flow, FlowStatus, Node};
+use crate::entity::flow::{Blueprint, Flow, FlowData, FlowStatus, Node};
 use crate::entity::simx::SimxFlow;
 use crate::logger::interface::warn;
 use lazy_static::lazy_static;
@@ -38,11 +38,11 @@ pub fn del_flow_runtime(key: &str) {
 }
 
 // 设置流当前状态
-pub fn set_flow_runtime_status(key: &str, flowStatus: FlowStatus) {
+pub fn set_flow_runtime_status(key: &str, flow_status: FlowStatus) {
     let mut data = RUNTIME_FLOW.lock().unwrap();
     if let Some(flow) = data.get_mut(key) {
         if let Some(ref mut runtime) = flow.runtime {
-            runtime.status = flowStatus;
+            runtime.status = flow_status;
         } else {
             warn(format!("flow {} runtime status is uninitialized!", key).as_str());
         }
@@ -56,50 +56,24 @@ pub fn get_flow_runtime_status(key: &str) -> FlowStatus {
     let data = RUNTIME_FLOW.lock().unwrap();
     data.get(key).cloned().unwrap().runtime.unwrap().status
 }
+
 // 获取流节点列表
 pub fn get_flow_runtime_nodes(key: &str) -> Vec<Node> {
     let data = RUNTIME_FLOW.lock().unwrap();
     data.get(key).cloned().unwrap().nodes
 }
 
-// 压入执行队列（尾部添加）
-pub fn push_flow_runtime_queue(key: &str, node: Node) {
-    let mut data = RUNTIME_FLOW.lock().unwrap();
-    if let Some(flow) = data.get_mut(key) {
-        if let Some(ref mut runtime) = flow.runtime {
-            runtime.queue.push_back(node);
-        } else {
-            warn(format!("flow {} runtime status is uninitialized!", key).as_str());
-        }
-    } else {
-        warn(format!("flow {} runtime cannot find.", key).as_str())
-    }
+pub fn get_flow_runtime_node_by_id(key: &str, node_id: &str) -> Option<Node> {
+    let data = RUNTIME_FLOW.lock().unwrap();
+    data.get(key).cloned().unwrap().nodes.iter().find(|node| node.id == node_id).cloned()
 }
-// 压出执行队列（获取首位）
-pub fn pull_flow_runtime_queue(key: &str) -> Option<Node> {
-    let mut data = RUNTIME_FLOW.lock().unwrap();
-    if let Some(flow) = data.get_mut(key) {
-        if let Some(ref mut runtime) = flow.runtime {
-            runtime.queue.pop_front()
-        } else {
-            warn(format!("flow {} runtime status is uninitialized!", key).as_str());
-            None
-        }
-    } else {
-        warn(format!("flow {} runtime cannot find.", key).as_str());
-        None
-    }
+
+pub fn get_flow_runtime_flow_data(key: &str) -> FlowData {
+    let data = RUNTIME_FLOW.lock().unwrap();
+    data.get(key).cloned().unwrap().runtime.unwrap().data
 }
-// 清空执行队列
-pub fn clean_flow_runtime_queue(key: &str) {
-    let mut data = RUNTIME_FLOW.lock().unwrap();
-    if let Some(flow) = data.get_mut(key) {
-        if let Some(ref mut runtime) = flow.runtime {
-            runtime.queue.clear()
-        } else {
-            warn(format!("flow {} runtime status is uninitialized!", key).as_str());
-        }
-    } else {
-        warn(format!("flow {} runtime cannot find.", key).as_str())
-    }
+
+pub fn set_flow_runtime_flow_data(key: &str, data: FlowData) {
+    let mut runtime = RUNTIME_FLOW.lock().unwrap();
+    runtime.get_mut(key).unwrap().runtime.as_mut().unwrap().data = data;
 }

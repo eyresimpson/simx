@@ -2,7 +2,7 @@ use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, VecDeque};
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Flow {
     // 流名称
     pub flow_name: String,
@@ -20,6 +20,9 @@ pub struct Flow {
     pub nodes: Vec<Node>,
     // 流运行时，此字段在调度器中赋值与管理
     pub runtime: Option<FlowRuntimeModel>,
+    // 执行蓝图
+    // 允许同时执行多个蓝图，相当于多线程执行多个事情
+    pub blueprint: Vec<Blueprint>
 }
 
 // 流程状态模型
@@ -37,8 +40,6 @@ pub struct FlowRuntimeModel {
     pub messages: HashMap<String, NodeMessage>,
     // 当前节点
     pub current_node: Option<Node>,
-    // 执行队列
-    pub queue: VecDeque<Node>,
     // 流运行时数据
     pub data: FlowData,
 }
@@ -165,4 +166,20 @@ pub struct FlowData {
 pub struct SubFlowTransferData {
     pub nodes: Vec<Node>,
     pub flow_data: FlowData,
+}
+
+// logical block
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+pub struct Blueprint {
+    // 蓝图节点ID
+    pub id: String,
+    // 上游节点群（暂时留空，后续可能会支持一些特别的操作）
+    pub upstream: Vec<Blueprint>,
+    // 下游节点群（也可以看作是成功执行后的路径）
+    // 注意，蓝图节点中的downstream并非必定全部执行，而是由调度器决定执行哪一些节点
+    pub downstream: Vec<Blueprint>,
+    // 弥补节点群，可选，如果当前蓝图节点执行报错后，要进行的操作
+    pub redress_stream: Vec<Blueprint>,
+    // 对应的流节点的id
+    pub node: String,
 }

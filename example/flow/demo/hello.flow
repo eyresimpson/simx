@@ -92,5 +92,24 @@
         "b": "20"
       }
     }
-  ]
+  ],
+  "blueprint": {
+    "node_cluster": [
+      {
+        "id": "1",
+        "node": 1,
+        "upstream": [],
+        "downstream": [
+          {
+            "id": "2",
+            "node": 2,
+            "upstream": [],
+            "downstream": [],
+            "redress_stream": []
+          }
+        ],
+        "redress_stream": []
+      }
+    ]
+  }
 }

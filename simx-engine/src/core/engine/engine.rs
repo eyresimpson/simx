@@ -1,24 +1,21 @@
 use crate::core::engine::initialization::engine_init;
+use crate::core::flow::dispatch::interface::dispatch_flow;
 use engine_common::logger::interface::{fail, info, success};
+use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::get_all_extension_info;
 use engine_common::thread::flow::exec_flow;
 use engine_handler::extension::interface::call_init;
 use std::env;
 use std::path::Path;
-use engine_common::runtime::config::get_simx_config;
-use crate::core::flow::dispatch::interface::dispatch_flow;
 
 /// 引擎核心
 /// 其实引擎启动主要是启动了系统监听，引擎本身并不会持续运行，否则会占用一些不必要的资源，当有请求抵达监听器时，
 /// 才会调用引擎方法，发起流程或脚本
 pub async fn serve() {
+    // 获取simx基础配置
     let simx_config = get_simx_config();
-    println!(
-        " _______ _______ _______ ___ ___ 
-|     __|_     _|   |   |   |   |
-|__     |_|   |_|       |-     -|
-|_______|_______|__|_|__|___|___|",
-    );
+    // banner
+    println!(" _______ _______ _______ ___ ___\n|     __|_     _|   |   |   |   |\n|__     |_|   |_|       |-     -|\n|_______|_______|__|_|__|___|___|", );
     info("Engine Starting...");
 
     // 执行系统初始化事件
@@ -29,8 +26,11 @@ pub async fn serve() {
         return;
     }
 
-    dispatch_flow("D:\\Code\\simx\\example\\flow\\init\\hello.flow".as_ref(), "".to_string());
-
+    // // TODO：测试代码
+    // dispatch_flow(
+    //     "D:\\Code\\simx\\example\\flow\\init\\hello.flow".as_ref(),
+    //     "".to_string(),
+    // ).await;
 
     // 系统启动完成
     success("Engine has started.");

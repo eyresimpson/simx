@@ -1,19 +1,11 @@
 use std::path::Path;
 
-use crate::core::flow::controller::check::check_require;
-use crate::core::flow::exec::flow::exec_standardisation_flow;
-use crate::core::flow::resolver::interface::flow_resolver;
+use crate::core::flow::dispatch::interface::dispatch_flow;
 use engine_common::logger::interface::info;
 
 // 这个东西其实就是Json（目前来说），后续可能会进行一些加密的操作
 pub async fn exec_fl_flow(path: &Path) {
-    // 解析文件为标准流
-    let flow = flow_resolver(path);
-    // 检查运行要求
-    if !check_require(flow.clone()) { return; }
-    // 执行流
-    exec_standardisation_flow(flow);
-    // info(path.to_str().unwrap())
+    dispatch_flow(path, "".to_string()).await;
 }
 
 // 执行toml流

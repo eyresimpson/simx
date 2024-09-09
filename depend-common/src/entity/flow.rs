@@ -1,6 +1,6 @@
 use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Flow {

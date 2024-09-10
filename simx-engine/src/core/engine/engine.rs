@@ -46,10 +46,12 @@ pub async fn serve() {
         jobs.push(job);
     }
 
-    for job in jobs {
-        // 只要有一个线程没有退出，就阻塞引擎不退出
-        job.await.unwrap();
-    }
+    // 暂时放弃，是否阻塞线程应该由系统配置控制，而不是靠插件
+    // 这样可以让系统配置更准确的控制，避免歧义
+    // for job in jobs {
+    //     // 只要有一个线程没有退出，就阻塞引擎不退出
+    //     job.await.unwrap();
+    // }
 
 
     // 检查配置中是否需要阻塞进程

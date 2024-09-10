@@ -1,5 +1,4 @@
 use crate::core::engine::initialization::engine_init;
-use crate::core::flow::dispatch::interface::dispatch_flow;
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::get_all_extension_info;
@@ -25,12 +24,6 @@ pub async fn serve() {
         fail(init_ret.err().unwrap().as_str());
         return;
     }
-
-    // // TODO：测试代码
-    // dispatch_flow(
-    //     "D:\\Code\\simx\\example\\flow\\init\\hello.flow".as_ref(),
-    //     "".to_string(),
-    // ).await;
 
     // 系统启动完成
     success("Engine has started.");
@@ -58,10 +51,10 @@ pub async fn serve() {
         job.await.unwrap();
     }
 
-    info("Engine is running, If you want to exit, press Ctrl + C");
 
     // 检查配置中是否需要阻塞进程
     if simx_config.engine.run_strategy != "once" {
+        info("Engine is running, If you want to exit, press Ctrl + C");
         // 等待用户 ctrl + c 结束进程
         tokio::select! {
             _ = tokio::signal::ctrl_c() => {}

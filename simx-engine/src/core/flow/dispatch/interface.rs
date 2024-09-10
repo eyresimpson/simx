@@ -3,7 +3,7 @@ use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::flow::{Blueprint, Flow, FlowData, FlowRuntimeModel, FlowStatus};
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::flow::{
-    del_flow_runtime, get_flow_runtime, get_flow_runtime_flow_data, get_flow_runtime_node_by_id,
+    get_flow_runtime, get_flow_runtime_flow_data, get_flow_runtime_node_by_id,
     get_flow_runtime_status, set_flow_runtime, set_flow_runtime_flow_data, set_flow_runtime_status,
 };
 use std::path::Path;

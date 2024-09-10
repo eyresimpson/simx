@@ -9,7 +9,7 @@ use engine_common::entity::simx::{SimxFlow, SimxScript};
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::set_extension_info;
-use engine_common::runtime::flow::{set_flow_info, set_flow_runtime};
+use engine_common::runtime::flow::set_flow_info;
 use engine_common::runtime::script::set_script_info;
 use serde_json::from_str;
 

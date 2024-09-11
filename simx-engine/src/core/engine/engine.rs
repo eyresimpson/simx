@@ -15,7 +15,7 @@ pub async fn serve() {
     let simx_config = get_simx_config();
     // banner
     println!(" _______ _______ _______ ___ ___\n|     __|_     _|   |   |   |   |\n|__     |_|   |_|       |-     -|\n|_______|_______|__|_|__|___|___|", );
-    info("Engine Starting...");
+    info("Engine initializing...");
 
     // 执行系统初始化事件
     // 包括运行初始化脚本和初始化流
@@ -26,7 +26,7 @@ pub async fn serve() {
     }
 
     // 系统启动完成
-    success("Engine has started.");
+    success("Engine initializing done.");
 
     let mut jobs = vec![];
 
@@ -46,10 +46,12 @@ pub async fn serve() {
         jobs.push(job);
     }
 
-    for job in jobs {
-        // 只要有一个线程没有退出，就阻塞引擎不退出
-        job.await.unwrap();
-    }
+    // 暂时放弃，是否阻塞线程应该由系统配置控制，而不是靠插件
+    // 这样可以让系统配置更准确的控制，避免歧义
+    // for job in jobs {
+    //     // 只要有一个线程没有退出，就阻塞引擎不退出
+    //     job.await.unwrap();
+    // }
 
 
     // 检查配置中是否需要阻塞进程
@@ -63,7 +65,7 @@ pub async fn serve() {
 
     // 运行结束
     // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）
-    info("Engine run out.");
+    info("Engine shutdown.");
 }
 
 /// 运行流
@@ -71,13 +73,18 @@ pub async fn serve() {
 pub fn run() {
     // 获取命令行参数
     let args: Vec<String> = env::args().collect();
+    
+    let mut file_path :&str = "";
     // 判断文件路径是否为空
     if args.len() <= 2 {
-        fail("Please input flow file path.");
-        return;
+        file_path = args[1].as_str();
+        // fail("Please input flow file path.");
+        // return;
+    }else { 
+        file_path = args[2].as_str();
     }
     // 分析是否为flow文件（目前直接判断后缀名
-    let path = Path::new(args[2].as_str());
+    let path = Path::new(file_path);
 
     // 判断文件是否存在
     if !path.exists() {

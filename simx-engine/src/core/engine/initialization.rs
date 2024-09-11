@@ -22,7 +22,7 @@ pub async fn engine_init() -> Result<String, String> {
     let env_check_ret = env_check();
     // 判断环境检查是否通过
     if env_check_ret.is_err() {
-        return Err("Check Engine Runtime Env Failed.".to_string());
+        return Err("Check engine runtime env failed.".to_string());
     }
 
     // 尝试扫描并加载流，默认全部

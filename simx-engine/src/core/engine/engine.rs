@@ -15,7 +15,7 @@ pub async fn serve() {
     let simx_config = get_simx_config();
     // banner
     println!(" _______ _______ _______ ___ ___\n|     __|_     _|   |   |   |   |\n|__     |_|   |_|       |-     -|\n|_______|_______|__|_|__|___|___|", );
-    info("Engine Starting...");
+    info("Engine initializing...");
 
     // 执行系统初始化事件
     // 包括运行初始化脚本和初始化流
@@ -26,7 +26,7 @@ pub async fn serve() {
     }
 
     // 系统启动完成
-    success("Engine has started.");
+    success("Engine initializing done.");
 
     let mut jobs = vec![];
 
@@ -65,7 +65,7 @@ pub async fn serve() {
 
     // 运行结束
     // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）
-    info("Engine run out.");
+    info("Engine shutdown.");
 }
 
 /// 运行流

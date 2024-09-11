@@ -47,8 +47,6 @@ fn init() {
     set_engine_info("support_api_version", support_api_version);
     // 检查日志文件夹
     let engine_conf = get_simx_config().engine;
-    //
-    // let functions = SimxThreadFunctions { exec_script: exec_script, exec_flow: exec_flow, };
     //  初始化核心线程池
     init_thread_monitor();
     // 检查运行目录下是否有日志目录
@@ -58,10 +56,10 @@ fn init() {
         fs::create_dir(engine_conf.log_path.as_str()).expect("Engine cannot fix workspace, Please check your environment.");
         // info("Cannot find logs dir, system will automatically rebuild this directory.");
     }
-    info("Simx System Starting...");
+    info("Simx engine ready.");
 }
 
 // 这个是为了后续的内存池清理工作准备的地方，有时间补充一下吧...
 fn clean() {
-    info("Simx System Shutdown.");
+    info("Simx engine jobs complete.");
 }

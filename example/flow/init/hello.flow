@@ -56,6 +56,31 @@
       }
     },
     {
+      "id": "4",
+      "handler": "simx.goto",
+      "tag": ["Logic"],
+      "attr": {
+        "node_id": "150245215511",
+        "node_name": "跳转到",
+        "node_type": "logic",
+        "ignore": "none",
+        "router": [
+          {
+            "target": "5",
+            "expression": "true"
+          },
+          {
+            "target": "6",
+            "expression": "true"
+          },
+          {
+            "target": "7",
+            "expression": "true"
+          }
+        ]
+      }
+    },
+    {
       "id": "5",
       "handler": "simx.basic.flow.post_flow",
       "attr": {

@@ -1,5 +1,6 @@
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::warn;
+use engine_common::logger::interface::{debug, warn};
+use log::debug;
 
 pub fn handle_basic_logic(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -16,11 +17,20 @@ pub fn handle_basic_logic(node: Node, flow_data: &mut FlowData) {
         // 数组循环
         "foreach" => {}
         // 跳转语句
-        "goto" => {}
+        "goto" => {
+            debug("It is generally not recommended to use goto directly, because it may cause structural confusion or a dead loop.");
+            goto(node, flow_data)
+        }
         // 选择语句
         "switch" => {}
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
         }
     }
+}
+
+fn goto(node: Node, flow_data: &mut FlowData){
+    // 获取要跳转到哪一个节点
+    
+    
 }

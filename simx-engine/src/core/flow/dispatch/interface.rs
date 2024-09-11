@@ -73,7 +73,7 @@ async fn dispatch_node(key: &str) {
                 // 循环开始的blueprint列表（开始列表，入口节点群）
                 for bp in blueprint {
                     let key = key.to_string();
-                    // 执行开始的bp中对应的节点
+                    // 执行开始的bp中对应的节点（异步，同时执行所有的入口）
                     let job = tokio::spawn(async move { dispatch_blueprint(key, bp) });
                     jobs.push(job);
                 }
@@ -130,17 +130,25 @@ pub fn dispatch_blueprint(key: String, blueprint: Blueprint) {
                 for bp in redress_stream {
                     // 创建一个新线程并尝试执行节点
                     let key = key.clone();
-                    tokio::spawn(async move { dispatch_blueprint(key, bp) });
+                    // tokio::spawn(async move { dispatch_blueprint(key, bp) });
+                    dispatch_blueprint(key, bp)
                 }
             }
         });
         // 将执行结束的数据写回到runtime中
         set_flow_runtime_flow_data(key_str, flow_data);
+        
+        // 分析节点类型，如果是逻辑节点，就根据逻辑节点的struct确定要流出到哪些downstream，如果不是，则流出到所有的downstream
+
+        // 继续执行后续节点
+        for bp in downstream {
+
+            // goto是个特例，这个节点可以直接跳转到目标，而不需要连线（也就是downstream中可能没有记录）
+
+            let key = key.clone();
+            // tokio::spawn(async move { dispatch_blueprint(key, bp) });
+            dispatch_blueprint(key, bp)
+        }
     }
-    // 继续执行后续节点
-    for bp in downstream {
-        // 创建一个新线程并尝试执行节点
-        let key = key.clone();
-        tokio::spawn(async move { dispatch_blueprint(key, bp) });
-    }
+
 }

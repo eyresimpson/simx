@@ -21,13 +21,11 @@ async fn main() {
     let args: Vec<String> = env::args().collect();
     // 如果没有输入参数
     if args.len() > 1 {
-        // serve            启动监听服务，无参数也会作为server启动,serve是指进程监听，如果没有serve lib，仍然会自动退出
-        // run [file path]  通过流引擎运行目标flow文件
         // 解析输入参数
         match args[1].as_str() {
             "serve" => serve().await,
             "run" => run(),
-            _ => println!("无效的参数：{}", args[1]),
+            _ => run(),
         }
         return;
     } else {

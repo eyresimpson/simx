@@ -73,13 +73,18 @@ pub async fn serve() {
 pub fn run() {
     // 获取命令行参数
     let args: Vec<String> = env::args().collect();
+    
+    let mut file_path :&str = "";
     // 判断文件路径是否为空
     if args.len() <= 2 {
-        fail("Please input flow file path.");
-        return;
+        file_path = args[1].as_str();
+        // fail("Please input flow file path.");
+        // return;
+    }else { 
+        file_path = args[2].as_str();
     }
     // 分析是否为flow文件（目前直接判断后缀名
-    let path = Path::new(args[2].as_str());
+    let path = Path::new(file_path);
 
     // 判断文件是否存在
     if !path.exists() {

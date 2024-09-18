@@ -13,10 +13,10 @@ pub fn resolver_flow(path: &Path) -> Flow {
     let ret = serde_json::from_str(&flow_str);
     if ret.is_err() {
         fail("Cannot resolver flow file, please check your flow file.");
+        fail(ret.err().unwrap().to_string().as_str());
+        return Flow::default();
     }
-    let flow = ret.unwrap();
-
-    return flow;
+    ret.unwrap()
 }
 
 // 将Flow编码为flow文件

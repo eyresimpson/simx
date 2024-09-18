@@ -183,3 +183,9 @@ pub struct Blueprint {
     // 对应的流节点的id
     pub node: String,
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+pub struct RouterItem {
+    target: String,
+    expression: String,
+}

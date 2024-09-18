@@ -1,6 +1,5 @@
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{debug, warn};
-use log::debug;
 
 pub fn handle_basic_logic(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();

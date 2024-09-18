@@ -8,7 +8,7 @@ allow_load_extension_config = true
 extensions_init_list = ["engine-handler", "engine_common"]
 auto_refresh_local_data = true
 ext_path = "ext"
-shell_log_level = "info"
+shell_log_level = "debug"
 file_log_level = "info"
 missing_plugin_action = "warn"
 missing_default_handel_action = "warn"
@@ -21,7 +21,16 @@ instance_communication_type = "share-memory"
 # 引擎执行策略：
 # once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出
 # serve: 阻塞，执行完成或传入流程后阻塞，需要用户手动结束或通过线程/api结束
-run_strategy= "serve"
+run_strategy = "serve"
+# 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true
+blueprint_multi_entry_parallel = true
+# 蓝图多下游并行，如果蓝图节点有多个下游，并行执行，默认为false
+blueprint_multi_downstream_parallel = false
+
+# 蓝图最大执行循环，防止各种原因引起的死循环
+# 此配置含义是，蓝图最多执行（ blueprint_max_loop * 蓝图节点数 ）次跳转，如果超过x次，则退出
+# 默认5，-1则不限制（非常不建议，特别是goto之类的功能很容易引起死循环）
+blueprint_max_loop_multiple = 5
 
 [net]
 rest_listener_port = 9899

@@ -70,6 +70,14 @@ pub struct EngineConfig {
     // 错误的默认handel名称时的操作
     #[serde(default = "default_run_strategy")]
     pub run_strategy: String,
+
+    // # 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true
+    #[serde(default = "default_blueprint_multi_entry_parallel")]
+    pub blueprint_multi_entry_parallel: bool,
+
+    // # 蓝图多下游并行，如果蓝图节点有多个下游，并行执行，默认为false
+    #[serde(default = "default_blueprint_multi_downstream_parallel")]
+    pub blueprint_multi_downstream_parallel: bool,
 }
 
 // 用于为字段提供默认值的实现
@@ -91,6 +99,8 @@ impl Default for EngineConfig {
             missing_plugin_action: default_missing_plugin_action(),
             missing_default_handel_action: default_missing_default_handel_action(),
             run_strategy: default_run_strategy(),
+            blueprint_multi_entry_parallel: default_blueprint_multi_entry_parallel(),
+            blueprint_multi_downstream_parallel: default_blueprint_multi_downstream_parallel(),
         }
     }
 }
@@ -152,8 +162,14 @@ fn default_missing_default_handel_action() -> String {
     "warn".to_string()
 }
 
-fn default_run_strategy() -> String{
+fn default_run_strategy() -> String {
     "once".to_string()
+}
+fn default_blueprint_multi_entry_parallel() -> bool {
+    true
+}
+fn default_blueprint_multi_downstream_parallel() -> bool {
+    false
 }
 
 // 网络配置相关
@@ -258,7 +274,6 @@ impl Default for EnvConfig {
         }
     }
 }
-
 
 // 默认值函数
 fn default_enable_python_script() -> bool {

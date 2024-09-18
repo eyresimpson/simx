@@ -58,7 +58,9 @@
     {
       "id": "4",
       "handler": "simx.goto",
-      "tag": ["Logic"],
+      "tag": [
+        "Logic"
+      ],
       "attr": {
         "node_id": "150245215511",
         "node_name": "跳转到",
@@ -105,28 +107,39 @@
       }
     }
   ],
-  "blueprint": [
-    {
-      "id": "1",
-      "node": "2",
-      "upstream": [],
-      "downstream": [
-        {
-          "id": "2",
-          "node": "2",
-          "upstream": [],
-          "downstream": [],
-          "redress_stream": []
-        },
-        {
-          "id": "3",
-          "node": "3",
-          "upstream": [],
-          "downstream": [],
-          "redress_stream": []
-        }
-      ],
-      "redress_stream": []
-    }
-  ]
+  "blueprint": {
+    "parallel_endpoints": true,
+    "parallel_routes": false,
+    "endpoints": [
+      "1"
+    ],
+    "routes": [
+      {
+        "id": "1",
+        "node": "2",
+        "downstream": [
+          "2",
+          "3"
+        ],
+        "redress_stream": []
+      },
+      {
+        "id": "2",
+        "node": "2",
+        "downstream": [
+          "3"
+        ],
+        "redress_stream": []
+      },
+      {
+        "id": "3",
+        "node": "2",
+        "downstream": [],
+        "redress_stream": [
+          "1",
+          "2"
+        ]
+      }
+    ]
+  }
 }

@@ -26,7 +26,6 @@ script_path = "script"
 ext_path = "D:/Code/engine-handler/release"
 # 系统日志目录
 log_path = "logs"
-
 # 控制台输出样式，默认为true(部分Linux系统下可能无法显示彩色字符，将其关掉即可)
 console_log_style = true
 # 控制台日志等级
@@ -46,6 +45,10 @@ missing_plugin_action = "warn"
 # warn：仅显示警告信息
 # fail：报错并中止流
 missing_default_handel_action = "warn"
+# 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true
+blueprint_multi_entry_parallel = true
+# 蓝图多下游并行，如果蓝图节点有多个下游，并行执行，默认为false
+blueprint_multi_downstream_parallel = false
 
 [env]
 # 是否允许执行python 脚本

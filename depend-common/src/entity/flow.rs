@@ -32,12 +32,8 @@ pub struct FlowRuntimeModel {
     pub status: FlowStatus,
     // 执行历史（记录节点的id）
     pub history: HashMap<String, NodeHistory>,
-    // 错误记录
-    pub errors: HashMap<String, NodeMessage>,
-    // 警告记录
-    pub warnings: HashMap<String, NodeMessage>,
-    // 消息记录
-    pub messages: HashMap<String, NodeMessage>,
+    // 流日志
+    pub logs: Vec<NodeMessage>,
     // 当前节点
     pub current_node: Option<Node>,
     // 流运行时数据

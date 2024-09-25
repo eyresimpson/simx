@@ -1,7 +1,5 @@
 use crate::core::flow::exec::node::exec_node;
 use crate::core::flow::resolver::interface::flow_resolver;
-use bincode::{Decode, Encode};
-use engine_common::entity::expression::Expression;
 use engine_common::entity::flow::{
     Blueprint, Flow, FlowData, FlowRuntimeModel, FlowStatus, NodeTag, RouterItem,
 };
@@ -11,7 +9,6 @@ use engine_common::runtime::flow::{
     del_flow_runtime, get_flow_runtime, get_flow_runtime_flow_data, get_flow_runtime_node_by_id,
     get_flow_runtime_status, set_flow_runtime, set_flow_runtime_flow_data, set_flow_runtime_status,
 };
-use serde_json::Map;
 use std::path::Path;
 
 // 调度执行流
@@ -24,7 +21,7 @@ pub async fn dispatch_flow(path: &Path, content: String) {
         // 加载流文件并解析为Flow对象
         flow = flow_resolver(path);
     } else {
-        // TODO: 暂不实现，其实很简单，就是懒
+        // 暂不实现
         flow = Flow::default();
     }
 
@@ -33,9 +30,11 @@ pub async fn dispatch_flow(path: &Path, content: String) {
     flow.runtime = Some(FlowRuntimeModel {
         status: FlowStatus::Starting,
         history: Default::default(),
-        errors: Default::default(),
-        warnings: Default::default(),
-        messages: Default::default(),
+
+        // errors: Default::default(),
+        // warnings: Default::default(),
+        // messages: Default::default(),
+        logs: vec![],
         current_node: None,
         data: FlowData {
             basics: Default::default(),

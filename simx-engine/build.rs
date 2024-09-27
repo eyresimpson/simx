@@ -16,9 +16,9 @@ fn main() {
             // 设置公司名称
             .set("CompanyName", "Noah Jones")
             // 设置产品版本
-            .set("ProductVersion", "0.1.0")
+            .set("ProductVersion", "0.1.1")
             // 设置文件版本
-            .set("FileVersion", "0.1.0");
+            .set("FileVersion", "0.1.1");
         // 编译资源
         res.compile().expect("Failed to compile resources");
     }

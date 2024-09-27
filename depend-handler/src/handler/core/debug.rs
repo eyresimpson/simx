@@ -1,11 +1,11 @@
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::warn;
+use engine_common::logger::interface::{debug, warn};
 
-pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
-        "node" => {
+        "debug" => {
             // 普通文本
             node_debug(node, flow_data)
         }
@@ -16,8 +16,7 @@ pub fn handle_basic_debug(node: Node, flow_data: &mut FlowData) {
 }
 
 // 用于显示所有的节点内容，一般用于调试
-#[allow(unused_variables)]
 fn node_debug(node: Node, flow_data: &mut FlowData) {
-    // let f = flow_data.data.get("text").unwrap();
-    // warn(f.)
+    debug(format!("Debug Node: {:?}", node).as_str());
+    debug(format!("Debug flow_data: {:?}", flow_data).as_str());
 }

@@ -2,7 +2,7 @@ use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{debug, fail, info, warn};
 use engine_common::thread::flow::{exec_flow, exec_steps};
 
-pub fn handle_basic_flow(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_flow(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {

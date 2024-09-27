@@ -1,7 +1,7 @@
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::warn;
 
-pub fn handle_basic_var(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_var(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {

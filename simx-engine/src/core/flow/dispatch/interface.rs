@@ -17,8 +17,6 @@ pub async fn dispatch_flow(path: &Path) {
         // 加载流文件并解析为Flow对象
         flow = flow_resolver(path);
     } else {
-        // 暂不实现
-        // flow = Flow::default();
         fail("cannot find or open flow file.");
         return;
     }

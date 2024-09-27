@@ -5,24 +5,21 @@ use std::collections::HashMap;
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Flow {
     // 流名称
-    pub flow_name: String,
+    pub name: String,
     // 修改日期
     pub update_date: String,
     // 创建日期
     pub create_date: String,
     // 开发者
     pub developer: String,
-    // 版本
+    // 流文件版本
     pub version: String,
     // 环境要求
     pub requirements: Vec<Environment>,
-    // 节点列表
-    pub nodes: Vec<Node>,
+    // 执行蓝图
+    pub blueprint: Blueprint,
     // 流运行时，此字段在调度器中赋值与管理
     pub runtime: Option<FlowRuntimeModel>,
-    // 执行蓝图
-    // 允许同时执行多个蓝图，相当于多线程执行多个事情
-    pub blueprint: Vec<Blueprint>
 }
 
 // 流程状态模型
@@ -68,14 +65,17 @@ pub enum FlowStatus {
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct Node {
-    // 节点id，调度依赖此字段，同一个流中不能重复
-    pub id: String,
+    pub name: String,
     // 节点标签列表
     pub tags: Option<Vec<NodeTag>>,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
-    // 当前节点所附带的数据，node中的每个opt中都可以访问
+    // 当前节点的配置
     pub attr: HashMap<String, String>,
+    // 下游节点id列表
+    pub downstream: Vec<String>,
+    // 补偿流id列表
+    pub redress_stream: Vec<String>
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
@@ -148,7 +148,7 @@ pub struct Environment {
 }
 
 // 流程数据
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
 pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
     pub basics: HashMap<String, String>,
@@ -167,21 +167,9 @@ pub struct SubFlowTransferData {
 // logical block
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
 pub struct Blueprint {
-    // 蓝图节点ID
-    pub id: String,
-    // 上游节点群（暂时留空，后续可能会支持一些特别的操作）
-    pub upstream: Vec<Blueprint>,
-    // 下游节点群（也可以看作是成功执行后的路径）
-    // 注意，蓝图节点中的downstream并非必定全部执行，而是由调度器决定执行哪一些节点
-    pub downstream: Vec<Blueprint>,
-    // 弥补节点群，可选，如果当前蓝图节点执行报错后，要进行的操作
-    pub redress_stream: Vec<Blueprint>,
-    // 对应的流节点的id
-    pub node: String,
+    pub parallel_endpoints: bool,
+    pub parallel_routes: bool,
+    pub endpoints: Vec<String>,
+    pub routes: HashMap<String, Node>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
-pub struct RouterItem {
-    target: String,
-    expression: String,
-}

@@ -21,6 +21,7 @@ bincode = "2.0.0-rc.3"
 # 用于线程池
 threadpool = "1.8.1"
 serde = { version = "1.0.209", features = ["derive"] }
+log = "0.4.22"
 
 [build-dependencies]
 # Windows 下资源打包

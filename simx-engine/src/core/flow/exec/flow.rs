@@ -14,6 +14,6 @@ pub fn exec_steps(steps: Vec<Node>, mut flow_data: FlowData) {
         node.attr.insert("node_index".parse().unwrap(), i.to_string());
         // let mut data: FlowData = flow_data.clone();
         // 将执行的结果保存到流对象中
-        exec_node(node, &mut flow_data).unwrap();
+        exec_node(node, &mut flow_data);
     }
 }

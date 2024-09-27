@@ -54,23 +54,23 @@
       "3": {
         "name": "执行脚本",
         "handler": "simx.script",
-        "downstream": [],
+        "downstream": [
+          "4"
+        ],
         "redress_stream": [],
         "attr": {
           "path": "script/os/macos/b.sh"
         }
       },
       "4": {
-        "name": "goto",
-        "handler": "simx.core.route.goto",
+        "name": "执行shell命令",
+        "handler": "simx.os.shell",
         "downstream": [],
         "redress_stream": [],
-        "tags": [
-          "Route"
-        ],
+        "tags": [],
         "attr": {
-          "overrun_fault": "超出goto跳跃限制，流已强制停止",
-          "router": "[{\"target\": \"2\", \"expression\": \"true\"}]"
+          "command": "java",
+          "args": "-version"
         }
       }
     }

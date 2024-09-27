@@ -84,8 +84,8 @@ pub enum NodeTag {
     Compute,
     // 命令节点，与操作系统进行命令交互
     Command,
-    // 逻辑节点，会在节点执行结束后，要求调整执行路径
-    Logic,
+    // 路由节点，会在节点执行结束后，要求调整执行路径
+    Route,
     // 数据节点，与数据库、数据文件进行交互
     Data,
     // 测试节点，仅用于调试和开发
@@ -151,11 +151,20 @@ pub struct Environment {
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
 pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
-    pub basics: HashMap<String, String>,
+    pub basics: SystemFlowData,
     // 用户参数域，可以理解为声明的变量
     pub params: HashMap<String, String>,
     // 数据统一为二进制，使用时需要根据具体情况判断
     pub data: HashMap<String, Vec<u8>>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+pub struct SystemFlowData {
+    // 下游数据，一般由逻辑节点控制，用于控制节点的跳转
+    pub downstream: Vec<String>,
+    // 最大重复次数，默认为可索引节点数量 + 10，每执行一个节点，会使此数量-1，超出后强制停止流的执行
+    // 可以有效避免死循环的产生，如果设置为-1，则不会对执行次数进行限制
+    pub maximum_repetition: i32,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
@@ -169,6 +178,7 @@ pub struct SubFlowTransferData {
 pub struct Blueprint {
     pub parallel_endpoints: bool,
     pub parallel_routes: bool,
+    pub maximum_repetition: i32,
     pub endpoints: Vec<String>,
     pub routes: HashMap<String, Node>,
 }

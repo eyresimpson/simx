@@ -24,8 +24,9 @@
   "blueprint": {
     "parallel_endpoints": true,
     "parallel_routes": false,
+    "maximum_repetition": 60,
     "endpoints": [
-      "1"
+      "2"
     ],
     "routes": {
       "1": {
@@ -61,16 +62,15 @@
       },
       "4": {
         "name": "goto",
-        "handler": "simx.goto",
+        "handler": "simx.core.route.goto",
         "downstream": [],
         "redress_stream": [],
-        "tag": [
-          "Logic"
+        "tags": [
+          "Route"
         ],
         "attr": {
-          "max_jump": "3",
           "overrun_fault": "超出goto跳跃限制，流已强制停止",
-          "router": "[{\"target\": \"5\", \"expression\": \"true\"}, {\"target\": \"6\", \"expression\": \"true\"}, {\"target\": \"7\", \"expression\": \"true\"}]"
+          "router": "[{\"target\": \"2\", \"expression\": \"true\"}]"
         }
       }
     }

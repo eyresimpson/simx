@@ -1,5 +1,5 @@
 use crate::extension::interface::call;
-use crate::handler::basic::interface::handle_basic;
+use crate::handler::core::interface::handle_core;
 use crate::handler::files::interface::handle_file;
 use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
@@ -29,8 +29,8 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), St
                 handle_os(node, flow_data);
             }
             // 基础操作
-            "basic" => {
-                handle_basic(node, flow_data);
+            "core" => {
+                handle_core(node, flow_data);
             }
             // 调用脚本（脚本引擎）
             "script" => {

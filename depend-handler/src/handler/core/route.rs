@@ -1,7 +1,8 @@
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{debug, warn};
+use std::collections::HashMap;
 
-pub fn handle_basic_logic(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_route(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -28,8 +29,20 @@ pub fn handle_basic_logic(node: Node, flow_data: &mut FlowData) {
     }
 }
 
+// goto可以同时跳转到多个节点上（多线程或等待线程）
 fn goto(node: Node, flow_data: &mut FlowData){
-    // 获取要跳转到哪一个节点
-    
-    
+    // 取表达式
+    let router_str = node.attr.get("router").expect("cannot get router");
+    let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str).expect("cannot parse router, check your conf");
+    for router in routers {
+        // 取出表达式部分
+        let expr = router.get("expression").expect("cannot get expr");
+        // 取出目标节点
+        let target = router.get("target").expect("cannot get target");
+        // 这里应该处理下表达式的
+        if expr == "true" {
+            // flow_data.basics.downstream.clear();
+            flow_data.basics.downstream.push(target.to_string());
+        }
+    }
 }

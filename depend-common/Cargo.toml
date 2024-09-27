@@ -25,3 +25,5 @@ chrono = "0.4.38"
 # 线程池
 threadpool = "1.8.1"
 log = { version = "0.4.22", features = [] }
+# 用于计算表达式
+evalexpr = "11.3.0"

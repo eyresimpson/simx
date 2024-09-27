@@ -24,25 +24,25 @@
   "blueprint": {
     "parallel_endpoints": true,
     "parallel_routes": false,
-    "maximum_repetition": 60,
+    "maximum_repetition": 30,
     "endpoints": [
-      "2"
+      "1"
     ],
     "routes": {
       "1": {
-        "name": "读取文件",
-        "handler": "simx.files.plain.reader",
+        "name": "打印信息",
+        "handler": "simx.core.debug.print",
         "downstream": [
           "2"
         ],
         "redress_stream": [],
         "attr": {
-          "path": "conf/simx.toml"
+          "text": "hello world in println"
         }
       },
       "2": {
         "name": "打印信息",
-        "handler": "simx.os.shell.println",
+        "handler": "simx.core.debug.print",
         "downstream": [
           "3"
         ],
@@ -52,25 +52,40 @@
         }
       },
       "3": {
-        "name": "执行脚本",
-        "handler": "simx.script",
+        "name": "goto",
+        "handler": "simx.core.route.goto",
         "downstream": [
           "4"
         ],
         "redress_stream": [],
+        "tags": [
+          "Route"
+        ],
         "attr": {
-          "path": "script/os/macos/b.sh"
+          "router": "[{\"target\": \"2\", \"expression\": \"1==2\"}]"
         }
       },
       "4": {
-        "name": "执行shell命令",
-        "handler": "simx.os.shell",
+        "name": "if",
+        "handler": "simx.core.route.if",
+        "downstream": [
+          "5"
+        ],
+        "redress_stream": [],
+        "tags": [
+          "Route"
+        ],
+        "attr": {
+          "router": "[{\"target\": \"5\", \"expression\": \"1==2\"}]"
+        }
+      },
+      "5": {
+        "name": "打印信息",
+        "handler": "simx.core.debug.print",
         "downstream": [],
         "redress_stream": [],
-        "tags": [],
         "attr": {
-          "command": "java",
-          "args": "-version"
+          "text": "hello world in println 5"
         }
       }
     }

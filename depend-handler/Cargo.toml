@@ -22,3 +22,5 @@ tokio = { version = "1.39.2", features = ["full"] }
 libloader = "0.1.4"
 # 加载 so和dylib
 libloading = "0.8.5"
+evalexpr = "11.3.0"
+log = "0.4.22"

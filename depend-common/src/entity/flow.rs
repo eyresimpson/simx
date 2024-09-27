@@ -75,7 +75,7 @@ pub struct Node {
     // 下游节点id列表
     pub downstream: Vec<String>,
     // 补偿流id列表
-    pub redress_stream: Vec<String>
+    pub redress_stream: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
@@ -178,8 +178,10 @@ pub struct SubFlowTransferData {
 pub struct Blueprint {
     pub parallel_endpoints: bool,
     pub parallel_routes: bool,
+    #[serde(default = "default_maximum_repetition")]
     pub maximum_repetition: i32,
     pub endpoints: Vec<String>,
     pub routes: HashMap<String, Node>,
 }
 
+fn default_maximum_repetition() -> i32 { 99 }

@@ -8,6 +8,9 @@ pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) {
         "debug" => {
             // 普通文本
             node_debug(node, flow_data)
+        },
+        "print" => {
+            println!("{}", node.attr.get("text").unwrap())
         }
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());

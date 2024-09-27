@@ -1,5 +1,5 @@
 use crate::extension::interface::call;
-use crate::handler::basic::interface::handle_basic;
+use crate::handler::core::interface::handle_core;
 use crate::handler::files::interface::handle_file;
 use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
@@ -9,30 +9,30 @@ use engine_common::logger::interface::{info, warn};
 use engine_common::runtime::extension::get_extension_info;
 use engine_common::thread::engine::reload_local;
 
-pub fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
+pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), String> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     // 判断是否为内置 handler，内置的handler必然以simx开头
     if handler_path[0] == "simx" {
         // 此处采用match方式直接匹配，可以大幅度增加速度
         // 此处的功能并不多，引擎主体本身希望增加速度，所以采用match方式
         match handler_path[1] {
-            // 基础文件
+            // 文件系统
             "files" => {
                 handle_file(node, flow_data);
             }
-            // 基础网络
+            // 网络系统
             "net" => {
-                handle_net(node, flow_data);
+                handle_net(node, flow_data).await;
             }
-            // 系统功能
+            // 操作系统
             "os" => {
                 handle_os(node, flow_data);
             }
-            // 基础操作
-            "basic" => {
-                handle_basic(node, flow_data);
+            // 核心操作
+            "core" => {
+                handle_core(node, flow_data);
             }
-            // 调用脚本（脚本引擎）
+            // 脚本引擎
             "script" => {
                 handle_script(node);
             }

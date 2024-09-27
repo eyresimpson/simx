@@ -73,13 +73,11 @@ pub async fn serve() {
 pub fn run() {
     // 获取命令行参数
     let args: Vec<String> = env::args().collect();
-    
-    let mut file_path :&str = "";
+
+    let file_path: &str;
     // 判断文件路径是否为空
     if args.len() <= 2 {
         file_path = args[1].as_str();
-        // fail("Please input flow file path.");
-        // return;
     }else { 
         file_path = args[2].as_str();
     }

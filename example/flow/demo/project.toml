@@ -2,7 +2,7 @@
 # 项目名称
 name = "demo"
 # 项目版本
-version = "0.1.0"
+version = "0.1.1"
 # 作者
 author = "Noah Jones"
 # 项目描述
@@ -18,6 +18,6 @@ engine = ">=0.1.0"
 
 # 依赖列表
 [dependencies]
-simx-restful = "0.1.0"
+simx-restful = "0.1.1"
 simx-mysql8 = "0.1.0"
 simx-math = "0.1.0"

@@ -8,8 +8,6 @@ pub fn flow_resolver(path: &Path) -> Flow {
         match extension.to_str().unwrap().to_lowercase().as_str() {
             "flow" => resolver_flow(path),
             "json" => resolver_flow(path),
-            "toml" => resolver_flow(path),
-            "xml" => resolver_flow(path),
             // 目前拒绝处理其他脚本，直接返回空
             _ => {
                 warn("Cannot resolver this extension file.");

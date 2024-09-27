@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Simx Engine" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="run --package simx-engine --bin simx-engine --release" />
+    <option name="buildProfileId" value="release"/>
+    <option name="command" value="run"/>
     <option name="workingDirectory" value="file://$PROJECT_DIR$/example" />
     <envs />
     <option name="emulateTerminal" value="true" />

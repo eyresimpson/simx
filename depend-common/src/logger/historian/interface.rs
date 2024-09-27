@@ -1,4 +1,4 @@
 // 获取记录者，注意获取到的记录者是独特的，会向自己所在的日志文件中记录日志
 // 多个获取的记录者记录的文件路径是不一致的
-pub fn invite_historian() {}
-
+// pub fn invite_historian() {}
+//

@@ -5,24 +5,21 @@ use std::collections::HashMap;
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Flow {
     // 流名称
-    pub flow_name: String,
+    pub name: String,
     // 修改日期
     pub update_date: String,
     // 创建日期
     pub create_date: String,
     // 开发者
     pub developer: String,
-    // 版本
+    // 流文件版本
     pub version: String,
     // 环境要求
     pub requirements: Vec<Environment>,
-    // 节点列表
-    pub nodes: Vec<Node>,
+    // 执行蓝图
+    pub blueprint: Blueprint,
     // 流运行时，此字段在调度器中赋值与管理
     pub runtime: Option<FlowRuntimeModel>,
-    // 执行蓝图
-    // 允许同时执行多个蓝图，相当于多线程执行多个事情
-    pub blueprint: Vec<Blueprint>
 }
 
 // 流程状态模型
@@ -32,12 +29,8 @@ pub struct FlowRuntimeModel {
     pub status: FlowStatus,
     // 执行历史（记录节点的id）
     pub history: HashMap<String, NodeHistory>,
-    // 错误记录
-    pub errors: HashMap<String, NodeMessage>,
-    // 警告记录
-    pub warnings: HashMap<String, NodeMessage>,
-    // 消息记录
-    pub messages: HashMap<String, NodeMessage>,
+    // 流日志
+    pub logs: Vec<NodeMessage>,
     // 当前节点
     pub current_node: Option<Node>,
     // 流运行时数据
@@ -72,14 +65,17 @@ pub enum FlowStatus {
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct Node {
-    // 节点id，调度依赖此字段，同一个流中不能重复
-    pub id: String,
+    pub name: String,
     // 节点标签列表
     pub tags: Option<Vec<NodeTag>>,
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
-    // 当前节点所附带的数据，node中的每个opt中都可以访问
+    // 当前节点的配置
     pub attr: HashMap<String, String>,
+    // 下游节点id列表
+    pub downstream: Vec<String>,
+    // 补偿流id列表
+    pub redress_stream: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
@@ -88,8 +84,8 @@ pub enum NodeTag {
     Compute,
     // 命令节点，与操作系统进行命令交互
     Command,
-    // 逻辑节点，会在节点执行结束后，要求调整执行路径
-    Logic,
+    // 路由节点，会在节点执行结束后，要求调整执行路径
+    Route,
     // 数据节点，与数据库、数据文件进行交互
     Data,
     // 测试节点，仅用于调试和开发
@@ -152,14 +148,23 @@ pub struct Environment {
 }
 
 // 流程数据
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
 pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
-    pub basics: HashMap<String, String>,
+    pub basics: SystemFlowData,
     // 用户参数域，可以理解为声明的变量
     pub params: HashMap<String, String>,
     // 数据统一为二进制，使用时需要根据具体情况判断
     pub data: HashMap<String, Vec<u8>>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+pub struct SystemFlowData {
+    // 下游数据，一般由逻辑节点控制，用于控制节点的跳转
+    pub downstream: Vec<String>,
+    // 最大重复次数，默认为可索引节点数量 + 10，每执行一个节点，会使此数量-1，超出后强制停止流的执行
+    // 可以有效避免死循环的产生，如果设置为-1，则不会对执行次数进行限制
+    pub maximum_repetition: i32,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
@@ -171,21 +176,12 @@ pub struct SubFlowTransferData {
 // logical block
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
 pub struct Blueprint {
-    // 蓝图节点ID
-    pub id: String,
-    // 上游节点群（暂时留空，后续可能会支持一些特别的操作）
-    pub upstream: Vec<Blueprint>,
-    // 下游节点群（也可以看作是成功执行后的路径）
-    // 注意，蓝图节点中的downstream并非必定全部执行，而是由调度器决定执行哪一些节点
-    pub downstream: Vec<Blueprint>,
-    // 弥补节点群，可选，如果当前蓝图节点执行报错后，要进行的操作
-    pub redress_stream: Vec<Blueprint>,
-    // 对应的流节点的id
-    pub node: String,
+    pub parallel_endpoints: bool,
+    pub parallel_routes: bool,
+    #[serde(default = "default_maximum_repetition")]
+    pub maximum_repetition: i32,
+    pub endpoints: Vec<String>,
+    pub routes: HashMap<String, Node>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
-pub struct RouterItem {
-    target: String,
-    expression: String,
-}
+fn default_maximum_repetition() -> i32 { 99 }

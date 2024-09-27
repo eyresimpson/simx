@@ -41,7 +41,7 @@ pub fn init_thread_monitor() {
                         "exec_steps" => {
                             // 序列化出对象
                             let transfer = serde_json::from_str::<SubFlowTransferData>(msg.data.as_ref()).unwrap();
-                            exec_steps(transfer.nodes, transfer.flow_data);
+                            exec_steps(transfer.nodes, transfer.flow_data).await.expect("Cannot exec your flow.");
                         }
                         _ => {
                             warn("Unparsable thread message function!");

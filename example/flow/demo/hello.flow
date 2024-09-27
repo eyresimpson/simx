@@ -18,7 +18,7 @@
     {
       "name": "core",
       "env_type": "Ext",
-      "ver": "0.1.0"
+      "ver": "0.1.1"
     }
   ],
   "nodes": [
@@ -45,6 +45,20 @@
       }
     },
     {
+      "id": "4",
+      "handler": "simx.basic.logic.goto",
+      "tag": [
+        "Logic"
+      ],
+      "attr": {
+        "node_id": "150241215511",
+        "node_name": "跳转到",
+        "node_type": "logic",
+        "ignore": "none",
+        "router": "[{\"target\": \"5\", \"expression\": \"true\"}, {\"target\": \"6\", \"expression\": \"true\"}, {\"target\": \"7\", \"expression\": \"true\"}]"
+      }
+    },
+    {
       "id": "3",
       "handler": "simx.script",
       "attr": {
@@ -53,6 +67,20 @@
         "node_type": "raw",
         "ignore": "none",
         "path": "script/os/macos/b.sh"
+      }
+    },
+    {
+      "id": "4",
+      "handler": "simx.goto",
+      "tag": [
+        "Logic"
+      ],
+      "attr": {
+        "node_id": "150245215511",
+        "node_name": "跳转到",
+        "node_type": "logic",
+        "ignore": "none",
+        "router": "[{\"target\": \"5\", \"expression\": \"true\"}, {\"target\": \"6\", \"expression\": \"true\"}, {\"target\": \"7\", \"expression\": \"true\"}]"
       }
     },
     {
@@ -93,23 +121,25 @@
       }
     }
   ],
-  "blueprint": {
-    "node_cluster": [
-      {
-        "id": "1",
-        "node": 1,
-        "upstream": [],
-        "downstream": [
-          {
-            "id": "2",
-            "node": 2,
-            "upstream": [],
-            "downstream": [],
-            "redress_stream": []
-          }
-        ],
-        "redress_stream": []
-      }
-    ]
-  }
+  "blueprint": [
+    {
+      "id": "1",
+      "node": "2",
+      "downstream": [
+        {
+          "id": "2",
+          "node": "2",
+          "downstream": [],
+          "redress_stream": []
+        },
+        {
+          "id": "3",
+          "node": "3",
+          "downstream": [],
+          "redress_stream": []
+        }
+      ],
+      "redress_stream": []
+    }
+  ]
 }

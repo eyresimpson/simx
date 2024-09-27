@@ -5,7 +5,7 @@ use std::sync::Arc;
 use futures::future::BoxFuture;
 use futures::FutureExt;
 
-use crate::core::flow::controller::interface::{exec_fl_flow, exec_toml_flow, exec_xml_flow};
+use crate::core::flow::controller::interface::exec_fl_flow;
 use engine_common::logger::interface::{info, warn};
 use engine_common::runtime::config::get_simx_config;
 
@@ -53,8 +53,6 @@ pub async fn exec_flow(path: &Path) {
             // 目前其实flow也是json类型，但是后续flow可能会有加密之类的功能加上去
             // 系统不关系流的组织形式，只要能转化为标准流对象即可
             "flow" => exec_fl_flow(path).await,
-            "xml" => exec_xml_flow(path),
-            "toml" => exec_toml_flow(path),
             // 目前拒绝处理其他类型的流程
             _ => {
                 warn("Unparsable process file format! Check your flow file format.");

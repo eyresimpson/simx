@@ -1,3 +1,4 @@
+use crate::core::flow::controller::interface::check_require;
 use crate::core::flow::exec::node::exec_node;
 use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::flow::{Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
@@ -20,6 +21,9 @@ pub async fn dispatch_flow(path: &Path) {
         fail("cannot find or open flow file.");
         return;
     }
+
+    // 检查流文件的环境要求
+    check_require(flow.clone().requirements).expect("Check flow require failed!");
 
 
     info(format!("flow {{ {} }} will be exec.", flow.name).as_str());

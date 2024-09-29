@@ -132,19 +132,23 @@ pub struct NodeHistory {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum EnvType {
-    // 基本
+    // 基本（引擎相关）
     Base,
-    // 运行时
-    RT,
-    // 扩展插件
-    Ext,
+    // 运行时（系统运行时，如Java、Python）
+    Runtime,
+    // 插件（引擎扩展插件）
+    Plugin,
+    // 扩展（功能扩展）
+    Extend,
+    // 运载服务（运行时服务，如rust、db等）
+    Service,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Environment {
     pub name: String,
     pub env_type: EnvType,
-    pub ver: String,
+    pub version: String,
 }
 
 // 流程数据

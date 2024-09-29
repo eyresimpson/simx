@@ -12,7 +12,7 @@
     },
     {
       "name": "java",
-      "env_type": "RT",
+      "env_type": "Runtime",
       "ver": "1.8.0"
     }
   ],

@@ -16,6 +16,10 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), St
         // 此处采用match方式直接匹配，可以大幅度增加速度
         // 此处的功能并不多，引擎主体本身希望增加速度，所以采用match方式
         match handler_path[1] {
+            // 核心操作
+            "core" => {
+                handle_core(node, flow_data);
+            }
             // 文件系统
             "files" => {
                 handle_file(node, flow_data);
@@ -28,10 +32,7 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), St
             "os" => {
                 handle_os(node, flow_data);
             }
-            // 核心操作
-            "core" => {
-                handle_core(node, flow_data);
-            }
+            "random" => {}
             // 脚本引擎
             "script" => {
                 handle_script(node);

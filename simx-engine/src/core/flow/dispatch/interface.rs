@@ -3,6 +3,7 @@ use crate::core::flow::exec::node::exec_node;
 use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::flow::{Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
 use engine_common::logger::interface::{fail, info, success, warn};
+use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
 use std::path::Path;
 use std::string::String;
 
@@ -13,18 +14,28 @@ use std::string::String;
 pub async fn dispatch_flow(path: &Path) {
     // 流对象
     let mut flow: Flow;
-    // 尝试解析流文件
-    if path.exists() && path.is_file() {
-        // 加载流文件并解析为Flow对象
-        flow = flow_resolver(path);
+
+    // 在缓存中搜索路径是否存在，如果存在就不再走文件系统
+    let test_cache = get_flow_runtime(path.to_str().unwrap());
+
+    // TODO：这个判断并不稳定，有可能flow会发生改变，因此需要监视该文件，这个是后续的功能
+    if test_cache.is_some() {
+        flow = test_cache.unwrap();
     } else {
-        fail("cannot find or open flow file.");
-        return;
+        // 尝试解析流文件
+        if path.exists() && path.is_file() {
+            // 加载流文件并解析为Flow对象
+            flow = flow_resolver(path);
+            // 将当前流加入到缓存
+            set_flow_runtime(path.to_str().unwrap(), flow.clone());
+        } else {
+            fail("cannot find or open flow file.");
+            return;
+        }
     }
 
     // 检查流文件的环境要求
     check_require(flow.clone().requirements).expect("Check flow require failed!");
-
 
     info(format!("flow {{ {} }} will be exec.", flow.name).as_str());
     // 创建流运行时

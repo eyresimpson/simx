@@ -19,9 +19,10 @@ missing_default_handel_action = "warn"
 # id-file: 通过实例的描述文件通信（速度很慢，根据文件交换互相信息，不能执行控制操作）
 instance_communication_type = "share-memory"
 # 引擎执行策略：
+# 对于项目而言，会无视此处的配置，默认就是阻塞等待
 # once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出
 # serve: 阻塞，执行完成或传入流程后阻塞，需要用户手动结束或通过线程/api结束
-run_strategy = "serve"
+run_strategy = "once"
 # 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true
 blueprint_multi_entry_parallel = true
 # 蓝图多下游并行，如果蓝图节点有多个下游，并行执行，默认为false
@@ -31,6 +32,18 @@ blueprint_multi_downstream_parallel = false
 # 此配置含义是，蓝图最多执行（ blueprint_max_loop * 蓝图节点数 ）次跳转，如果超过x次，则退出
 # 默认5，-1则不限制（非常不建议，特别是goto之类的功能很容易引起死循环）
 blueprint_max_loop_multiple = 5
+
+# 最大内存缓存容量（默认1GB）
+# 缓存flow文件到内存中，如果为0，则不缓存
+# 单位：B、KB、MB、GB、TB
+max_cache_size = "100MB"
+
+# 缓存权重依据
+# usage: 根据使用量总计（哪个流用的多，优先存储在内存中，目前仅实现这种方式）
+# usage-last: 优先缓存最近使用的（最近使用较多的）
+# size-s: 优先缓存小文件
+# size-l: 优先缓存大文件
+cache_weight_by = "usage"
 
 [net]
 rest_listener_port = 9899

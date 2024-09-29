@@ -5,7 +5,7 @@ pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
-        "debug" => {
+        "node" => {
             // 普通文本
             node_debug(node, flow_data)
         },

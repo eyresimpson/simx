@@ -3,6 +3,7 @@ use crate::entity::simx::SimxThreadSenderStringData;
 use crate::runtime::thread::get_engine_sender;
 
 pub fn exec_flow(path: String) {
+    println!("=====> ");
     let data = SimxThreadSenderStringData {
         function: "exec_flow".to_string(),
         data: path,

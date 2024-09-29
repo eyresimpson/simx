@@ -1,5 +1,5 @@
 {
-  "version": "2",
+  "version": "1",
   "name": "测试流",
   "update_date": "2024-09-29",
   "create_date": "2024-09-27",
@@ -8,12 +8,12 @@
     {
       "name": "engine",
       "env_type": "Base",
-      "ver": "1.0.0"
+      "version": "1.0.0"
     },
     {
       "name": "java",
       "env_type": "Runtime",
-      "ver": "1.8.0"
+      "version": "1.8.0"
     }
   ],
   "blueprint": {

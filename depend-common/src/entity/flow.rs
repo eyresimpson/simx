@@ -4,6 +4,8 @@ use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Flow {
+    // 流文件版本
+    pub version: String,
     // 流名称
     pub name: String,
     // 修改日期
@@ -12,8 +14,6 @@ pub struct Flow {
     pub create_date: String,
     // 开发者
     pub developer: String,
-    // 流文件版本
-    pub version: String,
     // 环境要求
     pub requirements: Vec<Environment>,
     // 执行蓝图

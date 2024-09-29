@@ -12,7 +12,6 @@ mod tools;
 
 #[tokio::main]
 async fn main() {
-    // it_works();
     // 引擎运行前的准备和初始化动作
     init();
     // 分析用户输入参数，如果没有输入参数，就代表默认的启动方式

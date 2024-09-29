@@ -5,6 +5,5 @@ pub fn serve() {
         start_net_watcher().await;
     };
     println!("Simx serve has started.");
-
     tokio::runtime::Runtime::new().unwrap().block_on(future);
 }

@@ -1,9 +1,9 @@
 {
   "version": "2",
-  "name": "demo-flow",
-  "update_date": "2024-09-27",
-  "create_date": "2024-04-01",
-  "developer": "Tine aine",
+  "name": "测试流",
+  "update_date": "2024-09-29",
+  "create_date": "2024-09-27",
+  "developer": "Noah Jones",
   "requirements": [
     {
       "name": "engine",
@@ -14,11 +14,6 @@
       "name": "java",
       "env_type": "RT",
       "ver": "1.8.0"
-    },
-    {
-      "name": "core",
-      "env_type": "Ext",
-      "ver": "0.1.1"
     }
   ],
   "blueprint": {

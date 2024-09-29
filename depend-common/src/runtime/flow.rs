@@ -10,6 +10,8 @@ lazy_static! {
     static ref FLOW_INFO: Mutex<HashMap<String, SimxFlow>> = Mutex::new(HashMap::new());
     // 运行时集合
     static ref RUNTIME_FLOW: Mutex<HashMap<String, Flow>> = Mutex::new(HashMap::new());
+    // 流运行时状态
+    static ref FLOW_RUNTIME_STATUS: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
 }
 
 // 设置流信息，key是路径，value是流信息
@@ -20,6 +22,7 @@ pub fn set_flow_info(key: &str, value: SimxFlow) {
 
 // 设置流运行时
 pub fn set_flow_runtime(key: &str, value: Flow) {
+    // TODO：检查缓存大小
     let mut data = RUNTIME_FLOW.lock().unwrap();
     data.insert(key.to_string(), value);
 }

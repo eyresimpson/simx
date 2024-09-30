@@ -55,9 +55,10 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
         let extension = get_extension_info(handler_path[0]);
         if extension.is_none() {
             // 提示找不到插件
-            return Err(NodeError::ExtNotFound(handler_path[0].to_string()))
+            Err(NodeError::ExtNotFound(handler_path[0].to_string()))
         } else {
             // 调用方法
+            // TODO: 检查扩展返回的结果是否是执行成功
             call(extension.unwrap(), node, flow_data);
             Ok(())
         }

@@ -41,10 +41,13 @@ pub fn create_dir(node: Node) -> Result<(), NodeError> {
         Ok(())
     } else {
         // 创建目录
-        fs::create_dir(path).expect("Make dir failed");
-        success(format!("path {} make success", path.display()).as_str());
-        // flow_data.nodes.insert(node., "true".as_bytes().to_vec());
-        Ok(())
+        match fs::create_dir(path) {
+            Ok(_) => {
+                success(format!("path {} make success", path.display()).as_str());
+                Ok(())
+            }
+            Err(_) => Err(NodeError::PathCreateError)
+        }
     }
 }
 
@@ -57,7 +60,7 @@ pub fn exist_dir(node: Node) -> Result<(), NodeError> {
     let path = path_opt.unwrap();
     let path = Path::new(path);
     // 检查目录是否存在
-    if fs::metadata(path).is_ok() {
+    if metadata(path).is_ok() {
         info(format!("Path {} is exist.", path.display()).as_str());
         Ok(())
     } else { Ok(()) }
@@ -68,20 +71,18 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
     let source_path_opt = node.attr.get("source");
     let target_path_opt = node.attr.get("target");
     let overwrite_opt = node.attr.get("overwrite");
-    node.attr.get("force");
 
     if source_path_opt.is_none() || target_path_opt.is_none() {
         return Err(NodeError::ParamNotFound("source or target".to_string()));
     }
-    let ret = move_directory(
+    match move_directory(
         source_path_opt.unwrap(),
         target_path_opt.unwrap(),
-        if (overwrite_opt.is_none()) { false } else if overwrite_opt.unwrap() == "true" { true } else { false },
-    );
-    if ret.is_err() {
-        return Err(NodeError::PathMoveError);
+        if overwrite_opt.is_none() { false } else if overwrite_opt.unwrap() == "true" { true } else { false },
+    ) {
+        Ok(_) => Ok(()),
+        Err(_) => Err(NodeError::PathMoveError("try to move dir failed.".to_string()))
     }
-    Ok(())
 }
 
 // 复制目录到新位置
@@ -100,11 +101,10 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
     if path_opt.is_none() {
         return Err(NodeError::ParamNotFound("path".to_string()));
     }
-    let ret = remove_dir_all(path_opt.unwrap().as_ref());
-    if ret.is_err() {
-        return Err(NodeError::PathDeleteError);
+    match remove_dir_all(path_opt.unwrap().as_ref()) {
+        Ok(_) => Ok(()),
+        Err(_) => Err(NodeError::PathDeleteError)
     }
-    Ok(())
 }
 
 fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<(), NodeError> {
@@ -120,9 +120,9 @@ fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<()
     if metadata(destination_path).is_ok() {
         if overwrite {
             // 强制模式下删除目标位置的内容
-            let ret = remove_dir_all(destination_path);
-            if ret.is_err() {
-                return ret
+            match remove_dir_all(destination_path) {
+                Ok(_) => {}
+                Err(e) => { return Err(e) }
             }
         } else {
             // 警告即可，无需退出
@@ -131,11 +131,10 @@ fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<()
     }
 
     // 执行移动操作
-    let ret = rename(source_path, destination_path);
-    if ret.is_err() {
-        return Err(NodeError::PathMoveError);
+    match rename(source_path, destination_path) {
+        Ok(_) => Ok(()),
+        Err(e) => { Err(NodeError::PathMoveError(e.to_string())) }
     }
-    Ok(())
 }
 
 // 用于递归删除目录
@@ -146,10 +145,8 @@ fn remove_dir_all(path: &Path) -> Result<(), NodeError> {
             remove_dir_all(&entry.path())?;
         }
     }
-    let ret = fs::remove_dir(path);
-    if ret.is_err() {
-        Err(NodeError::PathDeleteError)
-    } else {
-        Ok(())
+    match fs::remove_dir(path) {
+        Ok(_) => Ok(()),
+        Err(_) => Err(NodeError::PathDeleteError)
     }
 }

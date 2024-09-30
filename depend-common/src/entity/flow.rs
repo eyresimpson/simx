@@ -75,7 +75,7 @@ pub struct Node {
     // 下游节点id列表
     pub downstream: Vec<String>,
     // 补偿流id列表
-    pub redress_stream: Vec<String>,
+    pub redress_stream: Option<Vec<String>>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]

@@ -1,3 +1,24 @@
+// pub enum EngineError {
+//
+// }
+
+#[derive(Debug)]
+pub enum DispatchErr {
+    // 找不到流文件
+    FlowNotFound(String),
+    // 找不到节点
+    NodeNotFound(String),
+    // 运行超限（死循环异常）
+    RunOverLimit,
+    // 补偿流执行失败
+    RedressFailed,
+    // 流执行失败
+    FlowFailed(String),
+    // 流运行需求不满足
+    RequireError(String),
+
+}
+#[derive(Debug)]
 pub enum NodeError {
     // 找不到第三方的处理器
     ExtNotFound(String),
@@ -22,7 +43,7 @@ pub enum NodeError {
     // 删除目录失败
     PathDeleteError,
     // 移动目录失败
-    PathMoveError,
+    PathMoveError(String),
     // 复制目录失败
     PathCopyError,
     // 改变文件权限失败

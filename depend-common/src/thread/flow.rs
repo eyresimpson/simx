@@ -2,14 +2,14 @@ use crate::entity::flow::{FlowData, Node, SubFlowTransferData};
 use crate::entity::simx::SimxThreadSenderStringData;
 use crate::runtime::thread::get_engine_sender;
 
-pub fn exec_flow(path: String) {
-    println!("=====> ");
+pub fn exec_flow(path: String) -> Result<(), String> {
     let data = SimxThreadSenderStringData {
         function: "exec_flow".to_string(),
         data: path,
     };
     let sender = get_engine_sender("engine_sender");
     sender.unwrap().send(data).unwrap();
+    Ok(())
 }
 
 #[allow(unused_variables)]

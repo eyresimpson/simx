@@ -158,6 +158,8 @@ pub struct FlowData {
     pub basics: SystemFlowData,
     // 用户参数域，可以理解为声明的变量
     pub params: HashMap<String, String>,
+    // 节点数据域，有的节点会将处理结果放到此处
+    pub nodes: HashMap<String, Vec<u8>>,
     // 数据统一为二进制，使用时需要根据具体情况判断
     pub data: HashMap<String, Vec<u8>>,
 }

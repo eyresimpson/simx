@@ -50,6 +50,7 @@ pub async fn dispatch_flow(path: &Path) {
                 maximum_repetition: flow.blueprint.maximum_repetition,
             },
             params: Default::default(),
+            nodes: Default::default(),
             data: Default::default(),
         },
     });

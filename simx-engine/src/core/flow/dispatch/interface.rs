@@ -100,8 +100,11 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
         Err(e) => {
             // 根据流节点配置或系统默认配置决定下一步操作
             // 如果返回的是false，将终止流的执行
-            node_expect_dispose(e);
+            if !node_expect_dispose(e) {
+                return Err(DispatchErr::FlowFailed("Node execution failed".to_string()))
+            }
             if current_node.redress_stream.is_some() {
+                // 这部分需要根据配置进行，可以分线程或阻塞进行
                 let redress_stream = current_node.redress_stream.unwrap();
                 for stream_id in redress_stream {
                     let stream = c_flow.blueprint.routes.get(&stream_id).expect("cannot find stream in router.");
@@ -149,7 +152,7 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
     })
 }
 
-// 节点异常统一处理机
+// 节点异常统一处理
 // 如果返回了false，将断开流的执行
 fn node_expect_dispose(node_err: NodeError) -> bool {
     match node_err {

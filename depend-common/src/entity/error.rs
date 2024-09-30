@@ -1,3 +1,7 @@
+// pub enum EngineError {
+//
+// }
+#[derive(Debug)]
 pub enum NodeError {
     // 找不到第三方的处理器
     ExtNotFound(String),

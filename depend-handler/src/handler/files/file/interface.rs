@@ -30,9 +30,6 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
         // 删除文件
         "del" => { Ok(()) }
         _ => {
-            // 找不到，一般是用户写错了，或者设计器和引擎版本不兼容
-            // warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
-            // Err("Engine cannot find handler".to_string())
             Err(NodeError::HandleNotFound(node.handler))
         }
     }

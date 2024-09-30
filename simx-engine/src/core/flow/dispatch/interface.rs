@@ -86,6 +86,15 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
     // 判断执行结果，决定是否执行补偿流
     if ret.is_err() {
         // TODO: 根据流节点配置或系统默认配置决定下一步操作
+
+        if current_node.redress_stream.is_some() {
+            let redress_stream = current_node.redress_stream.unwrap();
+            for stream_id in redress_stream {
+                let stream = c_flow.blueprint.routes.get(&stream_id).expect("cannot find stream in router.");
+                // 尝试执行补偿流
+                Box::pin(dispatch_nodes(c_flow.clone(), stream.clone(), data)).await;
+            }
+        }
     }
 
     // 如果节点为Route类型的节点，就从节点参数中取新的downstream

@@ -1,7 +1,9 @@
+use engine_common::entity::error::NodeError;
+use engine_common::entity::error::NodeError::{HandleNotFound, ParamNotFound};
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::warn;
 
-pub fn handle_core_var(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_var(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -12,8 +14,10 @@ pub fn handle_core_var(node: Node, flow_data: &mut FlowData) {
                 let key = node.attr.get("var_name").unwrap().clone();
                 let val = node.attr.get("var_value").unwrap().clone();
                 flow_data.params.insert(key, val);
+                Ok(())
             } else {
                 warn("Cannot find variable name, Skip...");
+                Err(ParamNotFound("var_name".to_string()))
             }
         }
         // 删除变量（使其失效）
@@ -23,23 +27,30 @@ pub fn handle_core_var(node: Node, flow_data: &mut FlowData) {
                 let key = node.attr.get("var_name").unwrap().clone();
                 if flow_data.params.get(&key).is_some() {
                     flow_data.params.remove(&key);
+                    Ok(())
                 } else {
+                    // 不拦截此错误
                     warn(format!("Cannot find variable by {}, Skip...", key).as_str());
+                    Ok(())
                 }
             } else {
-                warn("Cannot find variable name, Skip...");
+                Err(ParamNotFound("var_name".to_string()))
             }
         }
         // 删除所有变量
         "remove_all" => {
             flow_data.params.clear();
+            Ok(())
         }
 
         // 监听变量变化
-        "watch" => {}
+        "watch" => {
+            warn("Watch variable is not supported yet.");
+            Ok(())
+        }
 
         _ => {
-            warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
+            Err(HandleNotFound(node.handler))
         }
     }
 }

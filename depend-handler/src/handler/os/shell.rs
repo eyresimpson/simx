@@ -1,12 +1,12 @@
+use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::{fail, success};
+use engine_common::logger::interface::success;
 
 // 控制台/命令行相关（如打印）
-pub fn handle_os_shell_println(node: Node, _flow_data: &mut FlowData) {
+pub fn handle_os_shell_println(node: Node, _flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 获取命令名称
     if !node.attr.contains_key("command") {
-        fail("Command name not found.");
-        return;
+        return Err(NodeError::ParamNotFound("command".to_string()))
     }
     let name = node.attr.get("command").unwrap();
     // 获取命令参数列表
@@ -28,7 +28,8 @@ pub fn handle_os_shell_println(node: Node, _flow_data: &mut FlowData) {
             vec = result.stdout;
         }
         success(format!("{:?}", String::from_utf8_lossy(&vec)).as_str());
+        Ok(())
     } else {
-        fail(format!("{:?}", result.err()).as_str())
+        Err(NodeError::HandleRuntimeError(result.err().unwrap().to_string()))
     }
 }

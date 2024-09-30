@@ -1,9 +1,11 @@
+use engine_common::entity::error::NodeError;
+use engine_common::entity::error::NodeError::{HandleNotFound, RouteError};
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{fail, warn};
 use evalexpr::eval_boolean;
 use std::collections::HashMap;
 
-pub fn handle_core_route(node: Node, flow_data: &mut FlowData) {
+pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -12,27 +14,29 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) {
             if_handler(node, flow_data)
         }
         // 循环语句
-        "for" => {}
+        "for" => {
+            Ok(())
+        }
         // 数组循环
-        "foreach" => {}
+        "foreach" => { Ok(()) }
         // 跳转语句
         "goto" => {
             warn("It is generally not recommended to use goto directly, because it may cause structural confusion or a dead loop.");
             goto(node, flow_data)
         }
         // 选择语句
-        "switch" => {}
+        "switch" => { Ok(()) }
         _ => {
-            warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());
+            Err(HandleNotFound(node.handler))
         }
     }
 }
 
-fn if_handler(node: Node, flow_data: &mut FlowData) {
+fn if_handler(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 取表达式
     let router_str = node.attr.get("router").expect("cannot get router");
     let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str).expect("cannot parse router, check your conf");
-    for router in routers {
+    Ok(for router in routers {
         // 取出表达式部分
         let expr = router.get("expression").expect("cannot get expr");
         // 取出目标节点
@@ -41,15 +45,15 @@ fn if_handler(node: Node, flow_data: &mut FlowData) {
         // if和goto的差别之一就是是否判断目标存在于downstream中
         if !node.downstream.contains(&target.to_string()) {
             fail(format!("Target node {} does not exist in the downstream list, please check your conf.", target).as_str());
-            return;
+            return Err(RouteError(format!("Target node {} does not exist in the downstream list, please check your conf.", target)));
         }
         // 执行跳跃判断
         jump(expr, target.to_string(), flow_data);
-    }
+    })
 }
 
 // goto可以同时跳转到多个节点上（多线程或等待线程）
-fn goto(node: Node, flow_data: &mut FlowData) {
+fn goto(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 取表达式
     let router_str = node.attr.get("router").expect("cannot get router");
     let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str).expect("cannot parse router, check your conf");
@@ -65,6 +69,7 @@ fn goto(node: Node, flow_data: &mut FlowData) {
     if flow_data.basics.downstream.is_empty() {
         flow_data.basics.downstream = node.downstream;
     }
+    Ok(())
 }
 
 fn jump(expr: &str, target: String, data: &mut FlowData) {

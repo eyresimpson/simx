@@ -1,34 +1,34 @@
 use crate::handler::os::shell::handle_os_shell_println;
+use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::warn;
 
-pub fn handle_os(node: Node, flow_data: &mut FlowData) {
+pub fn handle_os(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[2] {
         // 执行shell命令
         "shell" => handle_os_shell_println(node, flow_data),
         // 获取所有进程
-        "process" => {}
+        "process" => { Ok(()) }
         // 查询指定进程是否存活
-        "alive" => {}
+        "alive" => { Ok(()) }
         // 启动指定进程
-        "start" => {}
+        "start" => { Ok(()) }
         // 停止指定进程
-        "kill" => {}
+        "kill" => { Ok(()) }
         // 获取操作系统信息
-        "info" => {}
+        "info" => { Ok(()) }
         // 锁定系统
-        "lock" => {}
+        "lock" => { Ok(()) }
         // 进入睡眠模式
-        "sleep" => {}
+        "sleep" => { Ok(()) }
         // 注销当前用户
-        "logout" => {}
+        "logout" => { Ok(()) }
         // 重启系统
-        "reboot" => {}
+        "reboot" => { Ok(()) }
         // 关闭系统
-        "shutdown" => {}
+        "shutdown" => { Ok(()) }
         _ => {
-            warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[2]).as_str());
+            Err(NodeError::HandleNotFound(node.handler))
         }
     }
 }

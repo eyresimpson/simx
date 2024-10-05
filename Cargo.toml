@@ -3,26 +3,9 @@ resolver = "2"
 
 members = [
     # 共用部分，simx项目中的插件均引用此模块
-    "depend-common",
+    "common",
     # 核心扩展插件，包含大量的引擎节点handle
-    "depend-handler",
+    "handler",
     # 引擎主体
-    "simx-engine",
-    # 服务扩展插件，允许服务监听相关操作
-    "extension-serve",
-    # cron 支持
-
-    # http服务
-
-    # tcp协议（socket）
-
-    # 文件管理
-
-    # 操作系统
-
-    # mysql8 支持
-
-    # sql server支持
-
-    # oracle 支持
+    "engine",
 ]

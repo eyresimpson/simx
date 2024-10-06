@@ -3,6 +3,7 @@ use crate::handler::core::interface::handle_core;
 use crate::handler::files::interface::handle_file;
 use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
+use crate::handler::random::interface::handle_random;
 use crate::handler::script::interface::handle_script;
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
@@ -32,7 +33,8 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
             "os" =>
                 handle_os(node, flow_data),
 
-            "random" => { Ok(()) }
+            // 随机生成器
+            "random" => handle_random(node, flow_data),
             // 脚本引擎
             "script" =>
                 handle_script(node),

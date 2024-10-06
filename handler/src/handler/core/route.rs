@@ -15,7 +15,7 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
         }
         // 循环语句
         "for" => {
-            Ok(())
+            while_handle(node, flow_data)
         }
         // 数组循环
         "foreach" => { Ok(()) }
@@ -24,8 +24,6 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
             warn("It is generally not recommended to use goto directly, because it may cause structural confusion or a dead loop.");
             goto(node, flow_data)
         }
-        // 选择语句
-        "switch" => { Ok(()) }
         _ => {
             Err(HandleNotFound(node.handler))
         }
@@ -69,6 +67,11 @@ fn goto(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     if flow_data.basics.downstream.is_empty() {
         flow_data.basics.downstream = node.downstream;
     }
+    Ok(())
+}
+
+// while循环
+fn while_handle(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     Ok(())
 }
 

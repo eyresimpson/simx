@@ -19,7 +19,7 @@
   "blueprint": {
     "parallel_endpoints": true,
     "parallel_routes": false,
-    "maximum_repetition": 30,
+    "maximum_repetition": 20,
     "endpoints": [
       "1"
     ],
@@ -32,7 +32,7 @@
         ],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println"
+          "text": "hello world in println 1"
         }
       },
       "2": {
@@ -43,7 +43,7 @@
         ],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println"
+          "text": "hello world in println 2"
         }
       },
       "3": {
@@ -57,7 +57,7 @@
           "Route"
         ],
         "attr": {
-          "router": "[{\"target\": \"2\", \"expression\": \"1==2\"}]"
+          "router": "[{\"target\": \"2\", \"expression\": \"1==0\"}]"
         }
       },
       "4": {
@@ -71,7 +71,7 @@
           "Route"
         ],
         "attr": {
-          "router": "[{\"target\": \"5\", \"expression\": \"1==2\"}]"
+          "router": "[{\"target\": \"5\", \"expression\": \"1==1\"}]"
         }
       },
       "5": {

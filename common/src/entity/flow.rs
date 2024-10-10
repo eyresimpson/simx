@@ -65,6 +65,9 @@ pub enum FlowStatus {
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
 pub struct Node {
+    // 节点ID，在蓝图调度时赋值
+    pub id: Option<String>,
+    // 节点名称
     pub name: String,
     // 节点标签列表
     pub tags: Option<Vec<NodeTag>>,
@@ -95,9 +98,11 @@ pub enum NodeTag {
     // 优先节点，会优先处理此节点
     Priority,
     // 阻塞节点，会阻塞调度器，直到被取消
-    Blocking,
+    Sync,
     // 异步节点，不会等待此节点执行
     Async,
+    // IO密集型节点
+    IO
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]

@@ -69,8 +69,10 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
     for endpoint in endpoints {
         // 根据入口节点id获取节点对象
         let node = flow.blueprint.routes.get(&endpoint).expect("cannot find endpoint in router.");
+        let mut node = node.clone();
+        node.id = Some(endpoint.as_str().to_string());
         // 执行节点
-        match dispatch_nodes(flow.clone(), node.clone(), &mut runtime.data.clone()).await {
+        match dispatch_nodes(flow.clone(), node, &mut runtime.data.clone()).await {
             Ok(_) => {}
             Err(e) => {
                 return flow_dispatch_err_handler(e)
@@ -108,6 +110,8 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
                 let redress_stream = current_node.redress_stream.unwrap();
                 for stream_id in redress_stream {
                     let stream = c_flow.blueprint.routes.get(&stream_id).expect("cannot find stream in router.");
+                    let mut stream = stream.clone();
+                    stream.id = Some(stream_id.as_str().to_string());
                     // 尝试执行补偿流
                     match Box::pin(dispatch_nodes(c_flow.clone(), stream.clone(), data)).await {
                         Ok(_) => {}
@@ -141,6 +145,8 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
     }
     Ok(for node_id in downstream {
         let node = flow.blueprint.routes.get(&node_id).expect("cannot find endpoint in router.");
+        let mut node = node.clone();
+        node.id = Some(node_id.as_str().to_string());
         // 将递归调用的结果装箱
         match Box::pin(dispatch_nodes(c_flow.clone(), node.clone(), data)).await {
             Ok(_) => {}

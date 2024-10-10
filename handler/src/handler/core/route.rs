@@ -14,7 +14,7 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
             if_handler(node, flow_data)
         }
         // 循环语句
-        "for" => {
+        "while" => {
             while_handle(node, flow_data)
         }
         // 数组循环
@@ -72,6 +72,14 @@ fn goto(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
 
 // while循环
 fn while_handle(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    println!("-------");
+    // 取条件
+    let expression = node.attr.get("expression").expect("cannot get expr");
+    // 取调度等待间隔
+    let interval = node.attr.get("interval").expect("cannot get expr");
+    // 取目标路由数组
+    let router = node.attr.get("router").expect("cannot get expr");
+
     Ok(())
 }
 

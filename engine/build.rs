@@ -4,7 +4,7 @@ fn main() {
     if cfg!(target_os = "windows") {
         let mut res = winres::WindowsResource::new();
         // 设置图标
-        res.set_icon("resource/logo.ico")
+        res.set_icon("resource/SimxIcon.ico")
             // 设置内部名称
             .set("InternalName", "Simx")
             // 设置

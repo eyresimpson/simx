@@ -2,6 +2,7 @@ use engine_common::entity::error::NodeError;
 use engine_common::entity::error::NodeError::{HandleNotFound, RouteError};
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{fail, warn};
+use engine_common::tools::format::u8_to_str;
 use evalexpr::eval_boolean;
 use std::collections::HashMap;
 
@@ -14,7 +15,7 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
             if_handler(node, flow_data)
         }
         // 循环语句
-        "for" => {
+        "while" => {
             while_handle(node, flow_data)
         }
         // 数组循环
@@ -33,7 +34,8 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
 fn if_handler(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 取表达式
     let router_str = node.attr.get("router").expect("cannot get router");
-    let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str).expect("cannot parse router, check your conf");
+    let router_str = u8_to_str(router_str.to_vec());
+    let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str.as_str()).expect("cannot parse router, check your conf");
     Ok(for router in routers {
         // 取出表达式部分
         let expr = router.get("expression").expect("cannot get expr");
@@ -54,7 +56,8 @@ fn if_handler(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
 fn goto(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 取表达式
     let router_str = node.attr.get("router").expect("cannot get router");
-    let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str).expect("cannot parse router, check your conf");
+    let router_str = u8_to_str(router_str.to_vec());
+    let routers: Vec<HashMap<String, String>> = serde_json::from_str(router_str.as_str()).expect("cannot parse router, check your conf");
     for router in routers {
         // 取出表达式部分
         let expr = router.get("expression").expect("cannot get expr");
@@ -72,6 +75,14 @@ fn goto(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
 
 // while循环
 fn while_handle(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    println!("-------");
+    // 取条件
+    let expression = node.attr.get("expression").expect("cannot get expr");
+    // 取调度等待间隔
+    let interval = node.attr.get("interval").expect("cannot get expr");
+    // 取目标路由数组
+    let router = node.attr.get("router").expect("cannot get expr");
+
     Ok(())
 }
 

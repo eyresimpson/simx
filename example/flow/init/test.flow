@@ -36,8 +36,8 @@
         }
       },
       "2": {
-        "name": "打印信息",
-        "handler": "simx.core.debug.print",
+        "name": "生成随机数",
+        "handler": "simx.random.getNum",
         "downstream": [
           "3"
         ],
@@ -47,8 +47,8 @@
         }
       },
       "3": {
-        "name": "goto",
-        "handler": "simx.core.route.goto",
+        "name": "while",
+        "handler": "simx.core.route.while",
         "downstream": [
           "4"
         ],
@@ -57,7 +57,9 @@
           "Route"
         ],
         "attr": {
-          "router": "[{\"target\": \"2\", \"expression\": \"1==2\"}]"
+          "expression": "1==1",
+          "interval": "3s",
+          "router": "[\"5\"]"
         }
       },
       "4": {

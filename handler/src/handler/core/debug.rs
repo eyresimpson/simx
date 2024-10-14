@@ -1,6 +1,7 @@
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{debug, warn};
+use engine_common::tools::format::u8_to_str;
 
 pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -11,8 +12,14 @@ pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
             node_debug(node, flow_data)
         },
         "print" => {
-            println!("{}", node.attr.get("text").unwrap());
-            Ok(())
+            match node.attr.get("text") {
+                None => Err(NodeError::ParamNotFound("text".to_string())),
+                Some(text) => {
+                    let param = u8_to_str(text.to_vec());
+                    println!("{}", param);
+                    Ok(())
+                }
+            }
         }
         _ => {
             warn(format!("Engine cannot find handler string by {}, Skip...", handler_path[3]).as_str());

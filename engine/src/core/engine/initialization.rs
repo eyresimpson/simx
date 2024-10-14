@@ -52,6 +52,11 @@ pub async fn engine_init() -> Result<String, String> {
         info("Skip init flow running.");
     }
 
+    // 扫描并尝试加载所有流项目
+    info("Scan and load local project...");
+    // load_project_by_path();
+    
+
     // 返回成功信息
     Ok("Engine init success.".parse().unwrap())
 }
@@ -163,4 +168,18 @@ pub fn load_script_by_path(path: &Path) {
         file_path: path.to_str().unwrap().to_string(),
         file_type: path.extension().unwrap().to_str().unwrap().to_string(),
     });
+}
+
+// 将项目加载到内存中
+pub async fn load_project_by_path(path: &Path) {
+    // 获取项目路径
+    let project_path = path.to_str().unwrap();
+    // 获取项目路径下的所有文件
+    let entries = fs::read_dir(project_path).unwrap();
+    // 遍历文件
+    for entry in entries {
+        // 获取文件路径
+        let path = entry.unwrap().path();
+        println!("{:?}", path)
+    }
 }

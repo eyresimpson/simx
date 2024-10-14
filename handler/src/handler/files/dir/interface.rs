@@ -1,6 +1,7 @@
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::{info, success, warn};
+use engine_common::logger::interface::{info, warn};
+use engine_common::tools::format::u8_to_str;
 use std::fs;
 use std::fs::{metadata, rename};
 use std::path::Path;
@@ -9,9 +10,9 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[3] {
         // 创建目录
-        "create" => create_dir(node),
+        "create" => create_dir(node, flow_data),
         // 判断目录是否存在
-        "exist" => exist_dir(node),
+        "exist" => exist_dir(node, flow_data),
         // 移动目录
         "mv" => mv_dir(node),
         // 复制目录
@@ -27,61 +28,83 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
 }
 
 // 创建目录
-pub fn create_dir(node: Node) -> Result<(), NodeError> {
-    let path_opt = node.attr.get("path");
-    if path_opt.is_none() {
-        return Err(NodeError::ParamNotFound("path".to_string()));
-    }
-    let path = path_opt.unwrap();
-    let path = Path::new(path);
-
-    // 检查目录是否存在
-    if metadata(path).is_ok() {
-        info(format!("Path {} exist, skip...", path.display()).as_str());
-        Ok(())
-    } else {
-        // 创建目录
-        match fs::create_dir(path) {
-            Ok(_) => {
-                success(format!("path {} make success", path.display()).as_str());
+pub fn create_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    match node.attr.get("path") {
+        Some(path) => {
+            let path = u8_to_str((*path.clone()).to_owned());
+            let path = Path::new(&path);
+            // 检查目录是否存在
+            if metadata(path).is_ok() {
+                info(format!("Path {} exist, skip...", path.display()).as_str());
                 Ok(())
+            } else {
+                // 创建目录
+                match fs::create_dir(path) {
+                    Ok(_) => {
+                        // 写到节点数据域
+                        flow_data.nodes.insert(node.id.unwrap(), path.display().to_string().into_bytes());
+                        Ok(())
+                    }
+                    // 目录创建失败
+                    Err(_) => Err(NodeError::PathCreateError)
+                }
             }
-            Err(_) => Err(NodeError::PathCreateError)
+        }
+        None => {
+            // 找不到参数
+            Err(NodeError::ParamNotFound("path".to_string()))
         }
     }
 }
 
 // 判断指定文件夹是否存在
-pub fn exist_dir(node: Node) -> Result<(), NodeError> {
-    let path_opt = node.attr.get("path");
-    if path_opt.is_none() {
-        return Err(NodeError::ParamNotFound("path".to_string()));
+pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    match node.attr.get("path") {
+        Some(path) => {
+            let path = u8_to_str((*path.clone()).to_owned());
+            let path = Path::new(&path);
+            // 检查目录是否存在
+            if metadata(path).is_ok() {
+                // 目录存在
+                // info(format!("Path {} is exist.", path.display()).as_str());
+                flow_data.nodes.insert(node.id.unwrap(), "true".as_bytes().to_vec());
+                Ok(())
+            } else {
+                // 目录不存在
+                flow_data.nodes.insert(node.id.unwrap(), "false".as_bytes().to_vec());
+                Ok(())
+            }
+        }
+        None => {
+            // 找不到参数
+            Err(NodeError::ParamNotFound("path".to_string()))
+        }
     }
-    let path = path_opt.unwrap();
-    let path = Path::new(path);
-    // 检查目录是否存在
-    if metadata(path).is_ok() {
-        info(format!("Path {} is exist.", path.display()).as_str());
-        Ok(())
-    } else { Ok(()) }
 }
 
 // 移动目录到新位置
 pub fn mv_dir(node: Node) -> Result<(), NodeError> {
-    let source_path_opt = node.attr.get("source");
-    let target_path_opt = node.attr.get("target");
-    let overwrite_opt = node.attr.get("overwrite");
+    let source_path = match node.attr.get("source") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("source".to_string())),
+    };
 
-    if source_path_opt.is_none() || target_path_opt.is_none() {
-        return Err(NodeError::ParamNotFound("source or target".to_string()));
-    }
-    match move_directory(
-        source_path_opt.unwrap(),
-        target_path_opt.unwrap(),
-        if overwrite_opt.is_none() { false } else if overwrite_opt.unwrap() == "true" { true } else { false },
-    ) {
+    let target_path = match node.attr.get("target") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("target".to_string())),
+    };
+
+    // 将 Vec<u8> 转换为 String，并确保其生命周期足够长
+    let source_path_str = u8_to_str(source_path.clone());
+    let target_path_str = u8_to_str(target_path.clone());
+
+    // 使用 as_str() 获取 &str，并确保生命周期足够长
+    let source_path = source_path_str.as_str();
+    let target_path = target_path_str.as_str();
+
+    match move_directory(source_path, target_path, true) {
         Ok(_) => Ok(()),
-        Err(_) => Err(NodeError::PathMoveError("try to move dir failed.".to_string()))
+        Err(err) => Err(err),
     }
 }
 
@@ -97,14 +120,23 @@ pub fn chmod_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
 
 // 删除目录
 pub fn del_dir(node: Node) -> Result<(), NodeError> {
-    let path_opt = node.attr.get("path");
-    if path_opt.is_none() {
-        return Err(NodeError::ParamNotFound("path".to_string()));
+    match node.attr.get("path") {
+        Some(path) => {
+            let path = u8_to_str((*path.clone()).to_owned());
+            match remove_dir_all(path.as_ref()) {
+                Ok(_) => Ok(()),
+                Err(err) => Err(err)
+            }
+        }
+        None => {
+            Err(NodeError::ParamNotFound("path".to_string()))
+        }
     }
-    match remove_dir_all(path_opt.unwrap().as_ref()) {
-        Ok(_) => Ok(()),
-        Err(_) => Err(NodeError::PathDeleteError)
-    }
+    // let path_opt = node.attr.get("path");
+    // if path_opt.is_none() {
+    //     return Err(NodeError::ParamNotFound("path".to_string()));
+    // }
+
 }
 
 fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<(), NodeError> {

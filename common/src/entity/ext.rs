@@ -1,4 +1,5 @@
 use crate::entity::flow::{FlowData, Node};
+use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -44,7 +45,7 @@ pub struct Extension {
 }
 
 // 与插件交流时传递的数据
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, Decode, Encode)]
 pub struct Transition {
     pub version: i16,
     pub node: Node,

@@ -1,6 +1,5 @@
 use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
-use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -73,7 +72,7 @@ pub struct Node {
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点的配置
-    pub attr: HashMap<String, Value>,
+    pub attr: HashMap<String, Vec<u8>>,
     // 下游节点id列表
     pub downstream: Vec<String>,
     // 补偿流id列表

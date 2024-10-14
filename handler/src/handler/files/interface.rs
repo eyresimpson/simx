@@ -1,6 +1,5 @@
 use crate::handler::files::dir::interface::handle_files_dir;
 use crate::handler::files::file::interface::handle_files_file;
-use crate::handler::files::format::interface::handle_file_format;
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 
@@ -11,8 +10,6 @@ pub fn handle_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError
         "dir" => handle_files_dir(node, flow_data),
         // 文件相关（创建、重命名、删除、移动）
         "file" => handle_files_file(node, flow_data),
-        // 格式文件处理（读取、写出、同步读取、同步写出）
-        "format" => handle_file_format(node, flow_data),
         // Json文件处理
         "json" => { Ok(()) }
         // Xml文件处理

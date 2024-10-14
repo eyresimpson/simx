@@ -25,15 +25,3 @@ pub struct SimxResponse {
     // 数据，建议为Json字符串
     pub data: String,
 }
-
-// pub struct FlowListResponse {
-//     pub code: i32,
-//     pub message: String,
-//     pub data: Vec<SimxFlow>,
-// }
-
-// pub struct ScriptListResponse {
-//     pub code: i32,
-//     pub message: String,
-//     pub data: Vec<SimxFlow>,
-// }

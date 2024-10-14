@@ -1,5 +1,6 @@
 use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
+use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -27,8 +28,6 @@ pub struct Flow {
 pub struct FlowRuntimeModel {
     //  流当前状态
     pub status: FlowStatus,
-    // 执行历史（记录节点的id）
-    pub history: HashMap<String, NodeHistory>,
     // 流日志
     pub logs: Vec<NodeMessage>,
     // 当前节点
@@ -74,7 +73,7 @@ pub struct Node {
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点的配置
-    pub attr: HashMap<String, String>,
+    pub attr: HashMap<String, Value>,
     // 下游节点id列表
     pub downstream: Vec<String>,
     // 补偿流id列表
@@ -123,18 +122,6 @@ pub enum NodeMessageType {
     Debug,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
-pub struct NodeHistory {
-    // 节点处理器路径，引擎会根据这个路径找到对应的handler
-    pub id: String,
-    // 当前节点所附带的数据，node中的每个opt中都可以访问
-    pub attr: HashMap<String, String>,
-    // 输入流
-    pub input_data: FlowData,
-    // 输出流
-    pub output_data: FlowData,
-}
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum EnvType {
     // 基本（引擎相关）
@@ -162,7 +149,7 @@ pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
     pub basics: SystemFlowData,
     // 用户参数域，可以理解为声明的变量
-    pub params: HashMap<String, String>,
+    pub params: HashMap<String, Vec<u8>>,
     // 节点数据域，有的节点会将处理结果放到此处
     pub nodes: HashMap<String, Vec<u8>>,
     // 数据统一为二进制，使用时需要根据具体情况判断

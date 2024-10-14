@@ -49,7 +49,6 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
     // 创建流运行时
     flow.runtime = Some(FlowRuntimeModel {
         status: FlowStatus::Starting,
-        history: Default::default(),
         logs: vec![],
         current_node: None,
         data: FlowData {

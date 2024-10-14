@@ -1,7 +1,3 @@
-// pub enum EngineError {
-//
-// }
-
 #[derive(Debug)]
 pub enum DispatchErr {
     // 找不到流文件
@@ -16,8 +12,8 @@ pub enum DispatchErr {
     FlowFailed(String),
     // 流运行需求不满足
     RequireError(String),
-
 }
+
 #[derive(Debug)]
 pub enum NodeError {
     // 找不到第三方的处理器

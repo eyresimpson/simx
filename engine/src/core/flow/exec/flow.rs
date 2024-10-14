@@ -11,7 +11,7 @@ pub async fn exec_steps(steps: Vec<Node>, mut flow_data: FlowData) -> Result<(),
     Ok(for mut node in steps {
         i = i + 1;
         // 当前节点索引
-        node.attr.insert("node_index".parse().unwrap(), i.to_string());
+        node.attr.insert("node_index".parse().unwrap(), Vec::from(i.to_string()));
         // 将执行的结果保存到流对象中
         let ret = exec_node(node, &mut flow_data).await;
         if ret.is_err() {

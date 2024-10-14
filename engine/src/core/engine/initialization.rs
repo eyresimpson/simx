@@ -180,5 +180,6 @@ pub async fn load_project_by_path(path: &Path) {
     for entry in entries {
         // 获取文件路径
         let path = entry.unwrap().path();
+        println!("{:?}", path)
     }
 }

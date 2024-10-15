@@ -1,6 +1,5 @@
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::tools::format::u8_to_str;
 use std::fs::{File, OpenOptions};
 use std::io;
 use std::path::Path;
@@ -38,16 +37,16 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
 
 fn make_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let path = match node.attr.get("path") {
-        Some(path) => u8_to_str((*path.clone()).to_owned()),
+        Some(path) => path.as_str().unwrap(),
         None => return Err(NodeError::ParamNotFound("path".to_string()))
     };
 
-    let result = touch_file(path.as_str());
+    let result = touch_file(path);
     if result.is_err() {
         result
     } else {
         // 如果执行成功，就将路径写入到节点数据域
-        flow_data.nodes.insert(node.id.unwrap(), path.into_bytes());
+        flow_data.nodes.insert(node.id.unwrap(), path.parse().unwrap());
         Ok(())
     }
 }

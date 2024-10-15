@@ -1,7 +1,6 @@
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::{debug, warn};
-use engine_common::tools::format::u8_to_str;
+use engine_common::logger::interface::{debug, fail, info, warn};
 
 pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -15,8 +14,21 @@ pub fn handle_core_debug(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
             match node.attr.get("text") {
                 None => Err(NodeError::ParamNotFound("text".to_string())),
                 Some(text) => {
-                    let param = u8_to_str(text.to_vec());
-                    println!("{}", param);
+                    // 这个方法不论传入了什么东西，都作为String方式输出
+                    let level = match node.attr.get("level") {
+                        None => "debug",
+                        Some(level) => {
+                            level.as_str().expect("level must be string")
+                        }
+                    };
+                    match level {
+                        "debug" => debug(format!("Node [{}] Print Output: {}", node.id.unwrap(), text.to_string()).as_str()),
+                        "info" => info(format!("Node [{}] Print Output: {}", node.id.unwrap(), text.to_string()).as_str()),
+                        "warn" => warn(format!("Node [{}] Print Output: {}", node.id.unwrap(), text.to_string()).as_str()),
+                        "fail" => fail(format!("Node [{}] Print Output: {}", node.id.unwrap(), text.to_string()).as_str()),
+                        // 就算用户乱填，也可以通过debug的方式打印
+                        _ => debug(format!("Node [{}] Print Output: {}", node.id.unwrap(), text.to_string()).as_str()),
+                    }
                     Ok(())
                 }
             }

@@ -1,5 +1,6 @@
 use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
+use serde_json::Value;
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -61,7 +62,7 @@ pub enum FlowStatus {
     Unknown,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Node {
     // 节点ID，在蓝图调度时赋值
     pub id: Option<String>,
@@ -72,12 +73,13 @@ pub struct Node {
     // 节点处理器路径，引擎会根据这个路径找到对应的handler
     pub handler: String,
     // 当前节点的配置
-    pub attr: HashMap<String, Vec<u8>>,
+    pub attr: HashMap<String, Value>,
     // 下游节点id列表
     pub downstream: Vec<String>,
     // 补偿流id列表
     pub redress_stream: Option<Vec<String>>,
 }
+
 
 #[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
 pub enum NodeTag {
@@ -143,14 +145,14 @@ pub struct Environment {
 }
 
 // 流程数据
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct FlowData {
     // 系统参数域，不要手动在代码里对其修改，属于系统自带的变量
     pub basics: SystemFlowData,
-    // 用户参数域，可以理解为声明的变量
-    pub params: HashMap<String, Vec<u8>>,
-    // 节点数据域，有的节点会将处理结果放到此处
-    pub nodes: HashMap<String, Vec<u8>>,
+    // 用户参数域，可以理解为声明的变量，为一个有效的Json值
+    pub params: HashMap<String, Value>,
+    // 节点数据域，有的节点会将处理结果放到此处，为一个有效的Json值
+    pub nodes: HashMap<String, Value>,
     // 数据统一为二进制，使用时需要根据具体情况判断
     pub data: HashMap<String, Vec<u8>>,
 }
@@ -164,14 +166,14 @@ pub struct SystemFlowData {
     pub maximum_repetition: i32,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SubFlowTransferData {
     pub nodes: Vec<Node>,
     pub flow_data: FlowData,
 }
 
 // logical block
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct Blueprint {
     pub parallel_endpoints: bool,
     pub parallel_routes: bool,

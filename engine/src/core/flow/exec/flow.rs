@@ -1,5 +1,6 @@
 use crate::core::flow::exec::node::exec_node;
 use engine_common::entity::flow::{FlowData, Node};
+use serde_json::Value;
 
 // 执行节点列表
 // 拆分出来的目的是为了便于子节点的调用
@@ -11,7 +12,7 @@ pub async fn exec_steps(steps: Vec<Node>, mut flow_data: FlowData) -> Result<(),
     Ok(for mut node in steps {
         i = i + 1;
         // 当前节点索引
-        node.attr.insert("node_index".parse().unwrap(), Vec::from(i.to_string()));
+        node.attr.insert("node_index".parse().unwrap(), Value::from(i.to_string()));
         // 将执行的结果保存到流对象中
         let ret = exec_node(node, &mut flow_data).await;
         if ret.is_err() {

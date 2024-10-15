@@ -32,7 +32,8 @@
         ],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println"
+          "text": 123,
+          "level": "info"
         }
       },
       "2": {

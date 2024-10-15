@@ -2,7 +2,6 @@ use engine_common::entity::error::NodeError;
 use engine_common::entity::error::NodeError::{HandleNotFound, ParamNotFound};
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::warn;
-use engine_common::tools::format::u8_to_str;
 
 pub fn handle_core_var(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -13,9 +12,9 @@ pub fn handle_core_var(node: Node, flow_data: &mut FlowData) -> Result<(), NodeE
             // 判断用户也没有写进去变量数据，有可能编辑器没有拦截
             if node.attr.get("var_name").is_some() && node.attr.get("var_value").is_some() {
                 let key = node.attr.get("var_name").unwrap().clone();
-                let key = u8_to_str(key.to_vec());
+                let key = key.as_str().expect("Cannot convert var_name to str").to_string();
                 let val = node.attr.get("var_value").unwrap().clone();
-                flow_data.params.insert(key, Vec::from(val));
+                flow_data.params.insert(key, val);
                 Ok(())
             } else {
                 warn("Cannot find variable name, Skip...");
@@ -27,9 +26,9 @@ pub fn handle_core_var(node: Node, flow_data: &mut FlowData) -> Result<(), NodeE
             // 判断用户也没有写进去变量数据，有可能编辑器没有拦截
             if node.attr.get("var_name").is_some() {
                 let key = node.attr.get("var_name").unwrap().clone();
-                let key = u8_to_str(key.to_vec());
-                if flow_data.params.get(&key).is_some() {
-                    flow_data.params.remove(&key);
+                let key = key.as_str().expect("Cannot convert var_name to str");
+                if flow_data.params.get(key).is_some() {
+                    flow_data.params.remove(key);
                     Ok(())
                 } else {
                     // 不拦截此错误

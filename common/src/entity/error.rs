@@ -12,6 +12,8 @@ pub enum DispatchErr {
     FlowFailed(String),
     // 流运行需求不满足
     RequireError(String),
+    // 表达式执行失败
+    EvalExprFailed(String)
 }
 
 #[derive(Debug)]

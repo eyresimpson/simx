@@ -52,9 +52,9 @@ pub async fn engine_init() -> Result<String, String> {
         info("Skip init flow running.");
     }
 
-    // 扫描并尝试加载所有流项目
+    // 加载工作空间（项目集）
     info("Scan and load local project...");
-    // load_project_by_path();
+    invork_workspace(engine_conf.workspace_path.as_ref()).await;
     
 
     // 返回成功信息
@@ -171,7 +171,7 @@ pub fn load_script_by_path(path: &Path) {
 }
 
 // 将项目加载到内存中
-pub async fn load_project_by_path(path: &Path) {
+pub async fn invork_workspace(path: &Path) {
     // 获取项目路径
     let project_path = path.to_str().unwrap();
     // 获取项目路径下的所有文件

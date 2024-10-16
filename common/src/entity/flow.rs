@@ -75,7 +75,10 @@ pub struct Node {
     // 当前节点的配置
     pub attr: HashMap<String, Value>,
     // 下游节点id列表
-    pub downstream: Vec<String>,
+    // 可以为以下的任意类型：
+    // 1. id: String：直接指定下游节点id
+    // 2. Map<expr: String，target: String>：指定下游节点id列表
+    pub downstream: Vec<Value>,
     // 补偿流id列表
     pub redress_stream: Option<Vec<String>>,
 }
@@ -157,10 +160,10 @@ pub struct FlowData {
     pub data: HashMap<String, Vec<u8>>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct SystemFlowData {
     // 下游数据，一般由逻辑节点控制，用于控制节点的跳转
-    pub downstream: Vec<String>,
+    pub downstream: Vec<Value>,
     // 最大重复次数，默认为可索引节点数量 + 10，每执行一个节点，会使此数量-1，超出后强制停止流的执行
     // 可以有效避免死循环的产生，如果设置为-1，则不会对执行次数进行限制
     pub maximum_repetition: i32,

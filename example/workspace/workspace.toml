@@ -1,0 +1,19 @@
+# 此文件由SIMX 前端设计器管理与维护，尽可能不要手动修改
+
+# 工作区配置
+# 工作区是多个项目的集合，其中可以包含配置
+# 在Simx中，工作区可以包含多个项目，工作区也可以包含一份配置文件，其生效优先级如下：
+# Simx引擎配置 < Simx工作区配置 < Simx项目配置 < Simx流配置 < Simx节点配置
+[workspace]
+# 工作区版本
+version = "0.2.0"
+config_path = "config"
+
+# 默认执行的项目列表
+init_projects = ["test"]
+
+# 全局预加载运行时
+preload_runtimes = [
+    "simx.runtime.http_server",
+    "simx.runtime.mysql_client"
+]

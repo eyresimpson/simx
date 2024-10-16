@@ -5,8 +5,9 @@ use engine_common::entity::error::{DispatchErr, NodeError};
 use engine_common::entity::flow::{Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
+use evalexpr::eval_boolean;
+use serde_json::Value;
 use std::path::Path;
-use std::string::String;
 
 // 流调度执行器
 // 此方法会根据流文件的path，生成Flow运行时并调度执行
@@ -93,7 +94,7 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
     }
     let c_flow = flow.clone();
 
-    let downstream: Vec<String>;
+    let downstream: Vec<Value>;
     let current_data = data.clone();
 
     match exec_node(current_node.clone(), &mut data).await {
@@ -102,7 +103,7 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
             // 根据流节点配置或系统默认配置决定下一步操作
             // 如果返回的是false，将终止流的执行
             if !node_expect_dispose(e) {
-                return Err(DispatchErr::FlowFailed("Node execution failed".to_string()))
+                return Err(DispatchErr::FlowFailed("Node execution failed".to_string()));
             }
             if current_node.redress_stream.is_some() {
                 // 这部分需要根据配置进行，可以分线程或阻塞进行
@@ -143,9 +144,34 @@ async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData)
         return Ok(());
     }
     Ok(for node_id in downstream {
-        let node = flow.blueprint.routes.get(&node_id).expect("cannot find endpoint in router.");
-        let mut node = node.clone();
-        node.id = Some(node_id.as_str().to_string());
+        let mut node: Node;
+        match node_id.is_string() {
+            true => {
+                let node_id = node_id.as_str().expect("Downstream id must be string");
+                // println!("----- {}", node_id);
+                // 直接就是一个String，没有表达式
+                node = flow.blueprint.routes.get(node_id).expect("cannot find endpoint in router.").clone();
+                node.id = Some(node_id.to_string());
+            }
+            false => {
+                // 非string，需要进行表达式判断
+                let downstream_expr = node_id.as_object().expect("Downstream expr must be object or string");
+                let expr = downstream_expr.get("expr").expect("Downstream expr must have expr field").as_str().expect("Downstream expr expr must be string");
+
+                match eval_boolean(expr) {
+                    Ok(result) => {
+                        if !result {
+                            // 相对于直接掉这个调度线，这个downstream不执行
+                            return Ok(());
+                        }
+                    }
+                    Err(err) => { return Err(DispatchErr::EvalExprFailed(err.to_string())) }
+                }
+                let node_id = downstream_expr.get("target").expect("Downstream expr must have target field").as_str().expect("Downstream expr target must be string");
+                node = flow.blueprint.routes.get(node_id).expect("cannot find endpoint in router.").clone();
+                node.id = Some(node_id.to_string());
+            }
+        }
         // 将递归调用的结果装箱
         match Box::pin(dispatch_nodes(c_flow.clone(), node.clone(), data)).await {
             Ok(_) => {}

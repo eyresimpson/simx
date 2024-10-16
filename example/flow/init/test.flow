@@ -28,7 +28,10 @@
         "name": "打印信息",
         "handler": "simx.core.debug.print",
         "downstream": [
-          "2"
+          {
+            "expr": "1==1",
+            "target": "2"
+          }
         ],
         "redress_stream": [],
         "attr": {

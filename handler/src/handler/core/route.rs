@@ -9,7 +9,7 @@ pub fn handle_core_route(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
-        // 条件语句
+        // 条件语句（暂时废弃）
         // "if" => {
         //     if_handler(node, flow_data)
         // }
@@ -77,9 +77,18 @@ fn while_handle(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     // 取条件
     let expression = node.attr.get("expression").expect("cannot get expr");
     // 取调度等待间隔
-    let interval = node.attr.get("interval").expect("cannot get expr");
+    let interval = match node.attr.get("interval") {
+        None => {}
+        Some(interval) => {}
+    };
     // 取目标路由数组
-    let router = node.attr.get("router").expect("cannot get expr");
+    let router = node.attr.get("router").expect("cannot get expr").as_array().expect("router must be array object");
+    // 取最大重试次数
+    let loop_restriction = match node.attr.get("loop_restriction") {
+        Some(v) => v.as_i64().expect("loop_restriction must be number"),
+        None => 30
+    };
+    // flow_data.
 
     Ok(())
 }

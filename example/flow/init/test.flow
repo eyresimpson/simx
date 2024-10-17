@@ -17,7 +17,7 @@
     }
   ],
   "blueprint": {
-    "parallel_endpoints": true,
+    "parallel_endpoints": false,
     "parallel_routes": false,
     "maximum_repetition": 30,
     "endpoints": [
@@ -51,31 +51,45 @@
         }
       },
       "3": {
-        "name": "while",
-        "handler": "simx.core.route.while",
+        "name": "while 循环",
+        "handler": "",
         "downstream": [
-          "5"
+          "6"
         ],
         "redress_stream": [],
         "tags": [
-          "Route"
+          "Route",
+          "Loop"
         ],
         "attr": {
           "expression": "1==1",
-          "interval": "1s",
-          "router": [
-            5
-          ],
-          "loop_restriction": 30
+          "interval": 1,
+          "parallel_endpoints": false,
+          "parallel_routes": false,
+          "maximum_repetition": 10,
+          "endpoints": [
+            "5"
+          ]
         }
       },
       "5": {
-        "name": "打印信息",
+        "name": "打印信息1",
+        "handler": "simx.core.debug.print",
+        "downstream": [
+          "6"
+        ],
+        "redress_stream": [],
+        "attr": {
+          "text": "hello world in println 5"
+        }
+      },
+      "6": {
+        "name": "打印信息2",
         "handler": "simx.core.debug.print",
         "downstream": [],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println 5"
+          "text": "hello world in println 6"
         }
       }
     }

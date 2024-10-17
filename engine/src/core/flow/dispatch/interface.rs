@@ -1,12 +1,13 @@
 use crate::core::flow::controller::interface::check_require;
-use crate::core::flow::exec::node::exec_node;
+use crate::core::flow::dispatch::common::redress_stream_dispatch;
+use crate::core::flow::dispatch::dispatch_general::dispatch_general;
+use crate::core::flow::dispatch::dispatch_loop::dispatch_loop;
+use crate::core::flow::dispatch::exception::flow_dispatch_err_handler;
 use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::entity::flow::{Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
-use engine_common::logger::interface::{fail, info, success, warn};
+use engine_common::entity::flow::{Blueprint, Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
+use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
-use evalexpr::eval_boolean;
-use serde_json::Value;
 use std::path::Path;
 
 // 流调度执行器
@@ -54,8 +55,7 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
         current_node: None,
         data: FlowData {
             basics: SystemFlowData {
-                downstream: vec![],
-                maximum_repetition: flow.blueprint.maximum_repetition,
+                route: Default::default(),
             },
             params: Default::default(),
             nodes: Default::default(),
@@ -72,7 +72,7 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
         let mut node = node.clone();
         node.id = Some(endpoint.as_str().to_string());
         // 执行节点
-        match dispatch_nodes(flow.clone(), node, &mut runtime.data.clone()).await {
+        match dispatch_nodes(flow.blueprint.clone(), node, &mut runtime.data.clone()).await {
             Ok(_) => {}
             Err(e) => {
                 return flow_dispatch_err_handler(e)
@@ -83,165 +83,36 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
     Ok(())
 }
 
-async fn dispatch_nodes(flow: Flow, current_node: Node, mut data: &mut FlowData) -> Result<(), DispatchErr> {
-    if data.basics.maximum_repetition != -1 {
-        if data.basics.maximum_repetition > 0 {
-            data.basics.maximum_repetition -= 1;
-        } else if data.basics.maximum_repetition <= 0 {
-            // 直接跳出调用
-            return Err(DispatchErr::RunOverLimit);
-        }
-    }
-    let c_flow = flow.clone();
-
-    let downstream: Vec<Value>;
-    let current_data = data.clone();
-
-    match exec_node(current_node.clone(), &mut data).await {
-        Ok(_) => {}
-        Err(e) => {
-            // 根据流节点配置或系统默认配置决定下一步操作
-            // 如果返回的是false，将终止流的执行
-            if !node_expect_dispose(e) {
-                return Err(DispatchErr::FlowFailed("Node execution failed".to_string()));
-            }
-            if current_node.redress_stream.is_some() {
-                // 这部分需要根据配置进行，可以分线程或阻塞进行
-                let redress_stream = current_node.redress_stream.unwrap();
-                for stream_id in redress_stream {
-                    let stream = c_flow.blueprint.routes.get(&stream_id).expect("cannot find stream in router.");
-                    let mut stream = stream.clone();
-                    stream.id = Some(stream_id.as_str().to_string());
-                    // 尝试执行补偿流
-                    match Box::pin(dispatch_nodes(c_flow.clone(), stream.clone(), data)).await {
-                        Ok(_) => {}
-                        Err(_) => {
-                            // 流执行失败
-                            return Err(DispatchErr::RedressFailed);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // 如果节点为Route类型的节点，就从节点参数中取新的downstream
-    if current_node.tags.is_some() && current_node.tags.unwrap().contains(&NodeTag::Route) {
-        if current_data.basics.downstream.is_empty() {
-            warn("The logical node does not process the downstream link, downstream is empty, Skip...");
-            // 相对于直接结束了流的运行
-            downstream = vec![];
-        } else {
-            // 将新的downstream赋值给流数据
-            downstream = current_data.basics.downstream;
-        }
-        // 主动清空路由节点的下游数据，防止影响到后续节点的执行
-        data.basics.downstream.clear();
-    } else {
-        downstream = current_node.downstream;
-    }
-    if downstream.is_empty() {
-        return Ok(());
-    }
-    Ok(for node_id in downstream {
-        let mut node: Node;
-        match node_id.is_string() {
-            true => {
-                let node_id = node_id.as_str().expect("Downstream id must be string");
-                // println!("----- {}", node_id);
-                // 直接就是一个String，没有表达式
-                node = flow.blueprint.routes.get(node_id).expect("cannot find endpoint in router.").clone();
-                node.id = Some(node_id.to_string());
-            }
-            false => {
-                // 非string，需要进行表达式判断
-                let downstream_expr = node_id.as_object().expect("Downstream expr must be object or string");
-                let expr = downstream_expr.get("expr").expect("Downstream expr must have expr field").as_str().expect("Downstream expr expr must be string");
-
-                match eval_boolean(expr) {
-                    Ok(result) => {
-                        if !result {
-                            // 相对于直接掉这个调度线，这个downstream不执行
-                            return Ok(());
-                        }
-                    }
-                    Err(err) => { return Err(DispatchErr::EvalExprFailed(err.to_string())) }
-                }
-                let node_id = downstream_expr.get("target").expect("Downstream expr must have target field").as_str().expect("Downstream expr target must be string");
-                node = flow.blueprint.routes.get(node_id).expect("cannot find endpoint in router.").clone();
-                node.id = Some(node_id.to_string());
-            }
-        }
-        // 将递归调用的结果装箱
-        match Box::pin(dispatch_nodes(c_flow.clone(), node.clone(), data)).await {
-            Ok(_) => {}
+// 调度节点（蓝图）
+// 蓝图、首节点（从这个节点开始执行）、数据
+pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut FlowData) -> Result<(), DispatchErr> {
+    // 当前节点的标签列表
+    let tags = match current_node.tags {
+        None => { Vec::new() }
+        Some(ref tags) => { tags.clone() }
+    };
+    // 当前节点是否为loop
+    let is_loop = tags.contains(&NodeTag::Loop);
+    // 是否为Jump节点
+    let is_jump = tags.contains(&NodeTag::Jump);
+    // Loop节点、Jump节点、Opt节点（操作节点）
+    // Loop、Jump、Opt不参与exec_node调度，直接在此处实现
+    if !current_node.handler.is_empty() {
+        // 作为普通节点进行调度
+        dispatch_general(blueprint, current_node, data).await
+    } else if is_loop {
+        match Box::pin(dispatch_loop(blueprint.clone(), current_node.clone(), data)).await {
+            Ok(_) => { Ok(()) }
             Err(_) => {
-                // 流执行失败
-                return Err(DispatchErr::FlowFailed("Recursive processing of blueprints times errors".to_string()));
+                fail("The implicated compensation mechanism is triggered".to_string().as_str());
+                // 执行当前节点的Redress_stream，如果节点报错，会依次执行之前所有节点的Redress_stream
+                return redress_stream_dispatch(NodeError::Redress, &current_node, &blueprint, data).await;
             }
         }
-    })
+    } else if is_jump {
+        // 作为Jump节点进行处理
+        Ok(())
+    } else { Ok(()) }
 }
 
-// 节点异常统一处理
-// 如果返回了false，将断开流的执行
-fn node_expect_dispose(node_err: NodeError) -> bool {
-    match node_err {
-        NodeError::ExtNotFound(ext) => {
-            fail(format!("extension {} could not be found.", ext).as_str());
-            // TODO: 根据配置决定是否要退出执行
-            return false;
-        }
-        // 扩展中的方法执行失败
-        NodeError::ExtError(ext) => {
-            fail(format!("extension {} method execution failed.", ext).as_str());
-            return false;
-        }
-        NodeError::HandleRuntimeError(_) => {}
-        NodeError::HandleNotFound(_) => {}
-        NodeError::RouteError(_) => {}
-        NodeError::ParamNotFound(_) => {}
-        NodeError::ParamFormatError(_) => {}
-        NodeError::ParamParseError(_) => {}
-        NodeError::PathNotFound => {}
-        NodeError::PathCreateError => {}
-        NodeError::PathDeleteError => {}
-        NodeError::PathMoveError(_) => {}
-        NodeError::PathCopyError => {}
-        NodeError::PathChmodError => {}
-        NodeError::PathOtherError(_) => {}
-        NodeError::FileNotFound => {}
-        NodeError::FileTypeError => {}
-        NodeError::FileReadError => {}
-        NodeError::FileWriteError(_) => {}
-        NodeError::FileCreateError => {}
-        NodeError::FileDeleteError => {}
-        NodeError::FileMoveError => {}
-        NodeError::FileCopyError => {}
-        NodeError::FileChmodError => {}
-        NodeError::FileOtherError(_) => {}
-        NodeError::RequirePermission => {}
-        NodeError::ScriptExecError(_) => {}
-        NodeError::ScriptExecTimeout => {}
-        NodeError::ScriptExecFailed => {}
-        NodeError::ScriptExecRejected => {}
-        NodeError::NetworkUrlNotFound => {}
-        NodeError::NetworkConnectError => {}
-        NodeError::NetworkRequestError => {}
-        NodeError::NetworkResponseError => {}
-        NodeError::NetworkTimeoutError => {}
-        NodeError::NetworkRejectedError => {}
-        NodeError::NetworkOtherError(_) => {}
-    }
-    true
-}
 
-// 流调度错误统一处理器
-fn flow_dispatch_err_handler(err: DispatchErr) -> Result<(), DispatchErr> {
-    match err {
-        DispatchErr::FlowFailed(_) => { Ok(()) }
-        DispatchErr::RedressFailed => { Ok(()) }
-        DispatchErr::RunOverLimit => { Ok(()) }
-        _ => { Ok(()) }
-    }
-}

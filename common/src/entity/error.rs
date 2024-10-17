@@ -92,4 +92,10 @@ pub enum NodeError {
     NetworkRejectedError,
     // 其他网络错误
     NetworkOtherError(String),
+    // 流程循环限制超额
+    LoopLimitExceeded,
+    // 循环执行错误
+    LoopError(String),
+    // 回滚异常
+    Redress,
 }

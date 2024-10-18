@@ -30,7 +30,7 @@ pub async fn dispatch_general(blueprint: Blueprint, current_node: Node, mut data
             Err(_) => {
                 fail(format!("The implicated compensation mechanism is triggered, and the current node is {}", node_id).as_str());
                 // 执行当前节点的Redress_stream，如果节点报错，会依次执行之前所有节点的Redress_stream
-                return redress_stream_dispatch(NodeError::Redress, &current_node, &blueprint, data).await;
+                return redress_stream_dispatch(NodeError::Redress(format!("The implicated compensation mechanism is triggered, and the current node is {}", node_id)), &current_node, &blueprint, data).await;
             }
         }
     })

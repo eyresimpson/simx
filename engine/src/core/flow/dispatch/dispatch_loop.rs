@@ -1,11 +1,13 @@
 use crate::core::flow::dispatch::common::match_node_id;
 use crate::core::flow::dispatch::interface::dispatch_nodes;
-use engine_common::entity::error::DispatchErr;
+use engine_common::entity::error::{DispatchErr, NodeError};
 use engine_common::entity::flow::{Blueprint, FlowData, Node};
-use engine_common::logger::interface::fail;
+use engine_common::logger::interface::{debug, fail};
 use evalexpr::eval_boolean;
 
 pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut FlowData) -> Result<(), DispatchErr> {
+    let node_id = node.clone().id.expect("node id must be set");
+    debug(format!("Loop start : {}", node_id).as_str());
     // 取开始列表
     let endpoints = node.attr.get("endpoints").expect("endpoints must be set").as_array().expect("endpoints must be array object");
     // 循环条件
@@ -49,7 +51,7 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
     // 取目标路由数组
     // let router = node.attr.get("router").expect("cannot get expr").as_array().expect("router must be array object");
     // 取最大重试次数
-    let mut loop_restriction: i64;
+    let loop_restriction: i64;
     // 首先判断node中有没有数据
     match flow_data.nodes.get(&node_id) {
         Some(value) => {
@@ -73,42 +75,44 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
     let mut result = match eval_boolean(expression.as_str().unwrap()) {
         Ok(value) => { value }
         Err(err) => {
-            fail(format!("Cannot parse expression {}, err: {}", expression, err).as_str());
-            false
+            // 表达式执行出错
+            return Err(DispatchErr::NodeRuntimeError(NodeError::ExpressionError(format!("Cannot parse expression {}, err: {}", expression, err))))
         }
     };
-
+    // 循环计数器
+    let mut index = 0;
     // 循环所有的开始节点
     for node_id in endpoints {
         let node = match match_node_id(node_id, &blueprint) {
             Ok(node) => { node }
             Err(err) => { return Err(err) }
         };
+
         // TODO：这个判断在并发下非常危险，临时使用
-        while result && loop_restriction != 0 {
+        while result && loop_restriction > index {
+            debug(format!("Loop main struct start : {}, now in {}", node_id, index + 1).as_str());
+            index += 1;
             // 执行表达式
             result = match eval_boolean(expression.as_str().unwrap()) {
                 Ok(value) => { value }
                 Err(err) => {
-                    fail(format!("Cannot parse expression {}, err: {}", expression, err).as_str());
-                    false
+                    // 表达式执行出错
+                    return Err(DispatchErr::NodeRuntimeError(NodeError::ExpressionError(format!("Cannot parse expression {}, err: {}", expression, err))))
                 }
             };
-            println!("result: {}, loop_restriction: {}", result, loop_restriction);
 
             // 执行跳转逻辑
             dispatch_nodes(blueprint.clone(), node.clone(), flow_data).await?;
-            loop_restriction -= 1;
-            println!("loop_restriction: {}", loop_restriction);
             // 执行等待间隙
             if interval != -1f64 {
                 tokio::time::sleep(std::time::Duration::from_secs_f64(interval)).await;
             }
         }
     }
-    if loop_restriction == 0 {
-        fail("Loop run over limit.");
+    if loop_restriction == index {
+        fail("Loop run over limit, compulsory commutation!");
         return Err(DispatchErr::RunOverLimit);
     }
+    debug(format!("Loop end : {}", node_id).as_str());
     Ok(())
 }

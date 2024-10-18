@@ -52,7 +52,8 @@ pub fn node_expect_dispose(node_err: NodeError) -> bool {
         NodeError::NetworkOtherError(_) => {}
         NodeError::LoopLimitExceeded => {}
         NodeError::LoopError(_) => todo!(),
-        NodeError::Redress => {}
+        NodeError::Redress(_) => {},
+        NodeError::ExpressionError(_) => todo!()
     }
     true
 }

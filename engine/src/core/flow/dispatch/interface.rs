@@ -106,7 +106,7 @@ pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut
             Err(_) => {
                 fail("The implicated compensation mechanism is triggered".to_string().as_str());
                 // 执行当前节点的Redress_stream，如果节点报错，会依次执行之前所有节点的Redress_stream
-                return redress_stream_dispatch(NodeError::Redress, &current_node, &blueprint, data).await;
+                return redress_stream_dispatch(NodeError::Redress("The implicated compensation mechanism is triggered".to_string()), &current_node, &blueprint, data).await;
             }
         }
     } else if is_jump {

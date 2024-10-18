@@ -13,7 +13,9 @@ pub enum DispatchErr {
     // 流运行需求不满足
     RequireError(String),
     // 表达式执行失败
-    EvalExprFailed(String)
+    EvalExprFailed(String),
+    // 节点执行错误
+    NodeRuntimeError(NodeError),
 }
 
 #[derive(Debug)]
@@ -96,6 +98,8 @@ pub enum NodeError {
     LoopLimitExceeded,
     // 循环执行错误
     LoopError(String),
-    // 回滚异常
-    Redress,
+    // 回滚异常（代表不是本节点的错误，是被其他节点牵连，会出现这个错误
+    Redress(String),
+    // 表达式执行错误
+    ExpressionError(String),
 }

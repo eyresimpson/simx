@@ -35,9 +35,10 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
 
             // 随机生成器
             "random" => handle_random(node, flow_data),
+
             // 脚本引擎
-            "script" =>
-                handle_script(node),
+            "script" => handle_script(node),
+
             _ => {
                 Err(NodeError::HandleNotFound(node.handler))
             }

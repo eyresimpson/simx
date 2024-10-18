@@ -2,9 +2,9 @@ use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::{info, warn};
 use serde_json::Value;
-use std::fs;
 use std::fs::{metadata, rename};
 use std::path::Path;
+use std::{fs, io};
 
 pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -17,8 +17,6 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
         "mv" => mv_dir(node),
         // 复制目录
         "cp" => cp_dir(node, flow_data),
-        // 目录授权
-        "chmod" => chmod_dir(node, flow_data),
         // 删除目录
         "del" => del_dir(node),
         _ => {
@@ -106,12 +104,20 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
 
 // 复制目录到新位置
 pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    println!("handler not support yet.{:?},{:?}", node, flow_data);
-    Ok(())
-}
+    let source_path = match node.attr.get("source") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("source".to_string())),
+    };
 
-// 为目录授权（仅Linux）
-pub fn chmod_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let target_path = match node.attr.get("target") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("target".to_string())),
+    };
+
+    let source_path: &Path = source_path.as_str().expect("source must be string").as_ref();
+    let target_path: &Path = target_path.as_str().expect("target must be string").as_ref();
+
+    copy_dir(source_path, target_path).expect("Cannot cp dir");
     println!("handler not support yet.{:?},{:?}", node, flow_data);
     Ok(())
 }
@@ -175,4 +181,27 @@ fn remove_dir_all(path: &Path) -> Result<(), NodeError> {
         Ok(_) => Ok(()),
         Err(_) => Err(NodeError::PathDeleteError)
     }
+}
+
+// 用于递归复制文件或文件夹
+fn copy_dir(source_path: &Path, target_path: &Path) -> io::Result<()> {
+    if source_path.is_dir() {
+        // 如果源路径是一个目录，则递归复制目录及其内容
+        fs::create_dir_all(target_path)?;
+        for entry in fs::read_dir(source_path)? {
+            let entry = entry?;
+            let file_type = entry.file_type()?;
+            if file_type.is_dir() {
+                // 递归复制子目录
+                copy_dir(&entry.path(), &target_path.join(entry.file_name()))?;
+            } else if file_type.is_file() {
+                // 复制文件
+                fs::copy(&entry.path(), &target_path.join(entry.file_name()))?;
+            }
+        }
+    } else if source_path.is_file() {
+        // 如果源路径是一个文件，直接复制文件
+        fs::copy(source_path, target_path)?;
+    }
+    Ok(())
 }

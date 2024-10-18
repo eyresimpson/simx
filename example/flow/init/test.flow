@@ -77,6 +77,18 @@
         }
       },
       "7": {
+        "name": "复制文件夹",
+        "handler": "simx.files.dir.cp",
+        "downstream": [
+          "8"
+        ],
+        "redress_stream": [],
+        "attr": {
+          "source": "./script",
+          "target": "./test"
+        }
+      },
+      "8": {
         "name": "流等待",
         "handler": "simx.core.flow.timeout",
         "downstream": [],

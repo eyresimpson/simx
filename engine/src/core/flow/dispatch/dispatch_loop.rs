@@ -1,3 +1,4 @@
+use crate::core::expression::interface::preliminary_analysis_string;
 use crate::core::flow::dispatch::common::match_node_id;
 use crate::core::flow::dispatch::interface::dispatch_nodes;
 use engine_common::entity::error::{DispatchErr, NodeError};
@@ -71,8 +72,9 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
     }
 
 
+    let expr = preliminary_analysis_string(expression.as_str().unwrap().to_string(), flow_data.clone().params);
     // 执行表达式
-    let mut result = match eval_boolean(expression.as_str().unwrap()) {
+    let mut result = match eval_boolean(expr.as_str()) {
         Ok(value) => { value }
         Err(err) => {
             // 表达式执行出错
@@ -93,7 +95,8 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
             debug(format!("Loop main struct start : {}, now in {}", node_id, index + 1).as_str());
             index += 1;
             // 执行表达式
-            result = match eval_boolean(expression.as_str().unwrap()) {
+            let expr = preliminary_analysis_string(expression.as_str().unwrap().to_string(), flow_data.clone().params);
+            result = match eval_boolean(expr.as_str()) {
                 Ok(value) => { value }
                 Err(err) => {
                     // 表达式执行出错

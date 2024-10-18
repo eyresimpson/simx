@@ -57,8 +57,6 @@ pub fn match_node_id(node_id: &Value, blueprint: &Blueprint, params: HashMap<Str
             // 非string，需要进行表达式判断
             let downstream_expr = node_id.as_object().expect("Downstream expr must be object or string");
             let expr = downstream_expr.get("expr").expect("Downstream expr must have expr field").as_str().expect("Downstream expr expr must be string");
-            // let mut params: HashMap<String, Value> = HashMap::new();
-            // params.insert("aaa".to_string(), Value::String(2.to_string()));
             let expr = preliminary_analysis_string(expr.to_string(), params);
             println!("-----> {}", expr);
             match eval_boolean(expr.as_str()) {

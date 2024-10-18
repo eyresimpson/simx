@@ -5,11 +5,10 @@ use engine_common::entity::flow::{Blueprint, FlowData, Node};
 use engine_common::logger::interface::fail;
 use evalexpr::eval_boolean;
 
-pub async fn dispatch_loop(blueprint: Blueprint, node: Node, mut flow_data: &mut FlowData) -> Result<(), DispatchErr> {
-    // 取条件
-    let expression = node.attr.get("expression").expect("expression must be set");
+pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut FlowData) -> Result<(), DispatchErr> {
     // 取开始列表
     let endpoints = node.attr.get("endpoints").expect("endpoints must be set").as_array().expect("endpoints must be array object");
+    // 循环条件
     let expression = node.attr.get("expression").expect("expression must be set");
     // 取调度等待间隔
     let interval: f64 = match node.attr.get("interval") {
@@ -79,8 +78,6 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, mut flow_data: &mut
         }
     };
 
-    let loop_result: Result<(), DispatchErr>;
-
     // 循环所有的开始节点
     for node_id in endpoints {
         let node = match match_node_id(node_id, &blueprint) {
@@ -100,7 +97,7 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, mut flow_data: &mut
             println!("result: {}, loop_restriction: {}", result, loop_restriction);
 
             // 执行跳转逻辑
-            dispatch_nodes(blueprint.clone(), node.clone(), flow_data).await.unwrap();
+            dispatch_nodes(blueprint.clone(), node.clone(), flow_data).await?;
             loop_restriction -= 1;
             println!("loop_restriction: {}", loop_restriction);
             // 执行等待间隙

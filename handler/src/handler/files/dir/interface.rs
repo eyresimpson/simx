@@ -1,10 +1,11 @@
+use crate::handler::files::common::operation::{copy_dir, move_directory, remove_dir_all};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::{info, warn};
+use engine_common::logger::interface::info;
 use serde_json::Value;
-use std::fs::{metadata, rename};
+use std::fs;
+use std::fs::metadata;
 use std::path::Path;
-use std::{fs, io};
 
 pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -137,71 +138,4 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
         }
     }
 
-}
-
-fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<(), NodeError> {
-    let source_path = Path::new(source);
-    let destination_path = Path::new(destination);
-
-    // 检查源目录是否存在
-    if !metadata(source_path).is_ok() {
-        return Err(NodeError::PathNotFound);
-    }
-
-    // 检查目标位置是否已存在
-    if metadata(destination_path).is_ok() {
-        if overwrite {
-            // 强制模式下删除目标位置的内容
-            match remove_dir_all(destination_path) {
-                Ok(_) => {}
-                Err(e) => { return Err(e) }
-            }
-        } else {
-            // 警告即可，无需退出
-            warn(format!("target dir {} exist, skip...", destination).as_str())
-        }
-    }
-
-    // 执行移动操作
-    match rename(source_path, destination_path) {
-        Ok(_) => Ok(()),
-        Err(e) => { Err(NodeError::PathMoveError(e.to_string())) }
-    }
-}
-
-// 用于递归删除目录
-fn remove_dir_all(path: &Path) -> Result<(), NodeError> {
-    if path.is_dir() {
-        for entry in fs::read_dir(path).unwrap() {
-            let entry = entry.unwrap();
-            remove_dir_all(&entry.path())?;
-        }
-    }
-    match fs::remove_dir(path) {
-        Ok(_) => Ok(()),
-        Err(_) => Err(NodeError::PathDeleteError)
-    }
-}
-
-// 用于递归复制文件或文件夹
-fn copy_dir(source_path: &Path, target_path: &Path) -> io::Result<()> {
-    if source_path.is_dir() {
-        // 如果源路径是一个目录，则递归复制目录及其内容
-        fs::create_dir_all(target_path)?;
-        for entry in fs::read_dir(source_path)? {
-            let entry = entry?;
-            let file_type = entry.file_type()?;
-            if file_type.is_dir() {
-                // 递归复制子目录
-                copy_dir(&entry.path(), &target_path.join(entry.file_name()))?;
-            } else if file_type.is_file() {
-                // 复制文件
-                fs::copy(&entry.path(), &target_path.join(entry.file_name()))?;
-            }
-        }
-    } else if source_path.is_file() {
-        // 如果源路径是一个文件，直接复制文件
-        fs::copy(source_path, target_path)?;
-    }
-    Ok(())
 }

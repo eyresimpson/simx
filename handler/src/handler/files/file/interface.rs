@@ -1,3 +1,4 @@
+use crate::handler::files::common::operation::remove_dir_all;
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use std::fs::{File, OpenOptions};
@@ -25,10 +26,27 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
         "mv" => { Ok(()) }
         // 复制文件
         "cp" => { Ok(()) }
-        // 文件授权
-        "chmod" => { Ok(()) }
         // 删除文件
-        "del" => { Ok(()) }
+        "del" => {
+            match node.attr.get("path") {
+                Some(path) => {
+                    let path = path.as_str().expect("path must be string");
+                    match remove_dir_all(path.as_ref()) {
+                        Ok(_) => {
+                            println!("File deleted successfully.{}", path);
+                            Ok(())
+                        },
+                        Err(err) => {
+                            println!("File deleted F.{:?}", err);
+                            Err(err)
+                        }
+                    }
+                }
+                None => {
+                    Err(NodeError::ParamNotFound("path".to_string()))
+                }
+            }
+        }
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
         }

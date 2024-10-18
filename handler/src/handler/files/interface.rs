@@ -14,10 +14,6 @@ pub fn handle_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError
         "json" => { Ok(()) }
         // Xml文件处理
         "xml" => { Ok(()) }
-        // Toml文件处理
-        "toml" => { Ok(()) }
-        // Yaml文件处理
-        "yaml" => { Ok(()) }
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
         }

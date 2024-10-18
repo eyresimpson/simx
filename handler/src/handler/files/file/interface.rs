@@ -1,4 +1,4 @@
-use crate::handler::files::common::operation::{common_move, common_remove};
+use crate::handler::files::common::operation::{common_copy, common_move, common_remove};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use std::fs::{File, OpenOptions};
@@ -23,30 +23,12 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
         // 判断文件是否存在
         "exist" => { Ok(()) }
         // 移动文件
-        "mv" => { mv_file(node) }
+        "mv" => mv_file(node),
         // 复制文件
-        "cp" => { Ok(()) }
+        "cp" => cp_file(node),
         // 删除文件
-        "del" => {
-            match node.attr.get("path") {
-                Some(path) => {
-                    let path = path.as_str().expect("path must be string");
-                    match common_remove(path.as_ref()) {
-                        Ok(_) => {
-                            println!("File deleted successfully.{}", path);
-                            Ok(())
-                        }
-                        Err(err) => {
-                            println!("File deleted F.{:?}", err);
-                            Err(err)
-                        }
-                    }
-                }
-                None => {
-                    Err(NodeError::ParamNotFound("path".to_string()))
-                }
-            }
-        }
+        "del" => del_file(node),
+
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
         }
@@ -111,4 +93,43 @@ fn mv_file(node: Node) -> Result<(), NodeError> {
         Ok(_) => Ok(()),
         Err(err) => Err(err),
     }
+}
+
+fn del_file(node: Node) -> Result<(), NodeError> {
+    match node.attr.get("path") {
+        Some(path) => {
+            let path = path.as_str().expect("path must be string");
+            match common_remove(path.as_ref()) {
+                Ok(_) => {
+                    println!("File deleted successfully.{}", path);
+                    Ok(())
+                }
+                Err(err) => {
+                    println!("File deleted F.{:?}", err);
+                    Err(err)
+                }
+            }
+        }
+        None => {
+            Err(NodeError::ParamNotFound("path".to_string()))
+        }
+    }
+}
+
+fn cp_file(node: Node) -> Result<(), NodeError> {
+    let source_path = match node.attr.get("source") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("source".to_string())),
+    };
+
+    let target_path = match node.attr.get("target") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("target".to_string())),
+    };
+
+    let source_path: &Path = source_path.as_str().expect("source must be string").as_ref();
+    let target_path: &Path = target_path.as_str().expect("target must be string").as_ref();
+
+    common_copy(source_path, target_path).expect("Cannot cp dir");
+    Ok(())
 }

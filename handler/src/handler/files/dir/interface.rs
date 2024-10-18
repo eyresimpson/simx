@@ -119,7 +119,6 @@ pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let target_path: &Path = target_path.as_str().expect("target must be string").as_ref();
 
     common_copy(source_path, target_path).expect("Cannot cp dir");
-    println!("handler not support yet.{:?},{:?}", node, flow_data);
     Ok(())
 }
 

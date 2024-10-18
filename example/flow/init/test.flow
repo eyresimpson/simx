@@ -77,15 +77,15 @@
         }
       },
       "7": {
-        "name": "移动文件",
-        "handler": "simx.files.file.mv",
+        "name": "复制文件",
+        "handler": "simx.files.file.cp",
         "downstream": [
           "8"
         ],
         "redress_stream": [],
         "attr": {
-          "source": "./script/a2.txt",
-          "target": "./script/a111.txt"
+          "source": "./script/a111.txt",
+          "target": "./script/a111111.txt"
         }
       },
       "8": {

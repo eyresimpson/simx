@@ -19,7 +19,7 @@ pub async fn dispatch_general(blueprint: Blueprint, current_node: Node, mut data
     }
     // 下游节点处理
     Ok(for node_id in &current_node.downstream {
-        let node = match match_node_id(node_id, &blueprint) {
+        let node = match match_node_id(node_id, &blueprint, data.clone().params) {
             Ok(node) => { node }
             Err(err) => { return Err(err) }
         };

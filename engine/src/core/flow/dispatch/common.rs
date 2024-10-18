@@ -1,9 +1,12 @@
+use crate::core::expression::interface::preliminary_analysis_string;
 use crate::core::flow::dispatch::exception::node_expect_dispose;
 use crate::core::flow::dispatch::interface::dispatch_nodes;
 use engine_common::entity::error::{DispatchErr, NodeError};
 use engine_common::entity::flow::{Blueprint, FlowData, Node};
 use evalexpr::eval_boolean;
 use serde_json::Value;
+use std::collections::HashMap;
+use std::string::String;
 
 // 流补偿机制
 pub async fn redress_stream_dispatch(err: NodeError, current_node: &Node, blueprint: &Blueprint, data: &mut FlowData) -> Result<(), DispatchErr> {
@@ -32,7 +35,7 @@ pub async fn redress_stream_dispatch(err: NodeError, current_node: &Node, bluepr
     Ok(())
 }
 
-pub fn match_node_id(node_id: &Value, blueprint: &Blueprint) -> Result<Node, DispatchErr> {
+pub fn match_node_id(node_id: &Value, blueprint: &Blueprint, params: HashMap<String, Value>) -> Result<Node, DispatchErr> {
     let mut node: Node = Node {
         id: None,
         name: "".to_string(),
@@ -54,8 +57,11 @@ pub fn match_node_id(node_id: &Value, blueprint: &Blueprint) -> Result<Node, Dis
             // 非string，需要进行表达式判断
             let downstream_expr = node_id.as_object().expect("Downstream expr must be object or string");
             let expr = downstream_expr.get("expr").expect("Downstream expr must have expr field").as_str().expect("Downstream expr expr must be string");
-
-            match eval_boolean(expr) {
+            // let mut params: HashMap<String, Value> = HashMap::new();
+            // params.insert("aaa".to_string(), Value::String(2.to_string()));
+            let expr = preliminary_analysis_string(expr.to_string(), params);
+            println!("-----> {}", expr);
+            match eval_boolean(expr.as_str()) {
                 Ok(result) => {
                     if !result {
                         // 相对于直接掉这个调度线，这个downstream不执行

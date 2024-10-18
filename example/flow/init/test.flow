@@ -40,21 +40,25 @@
         }
       },
       "2": {
-        "name": "生成随机数",
-        "handler": "simx.random.getNum",
+        "name": "设置变量",
+        "handler": "simx.core.var.set",
         "downstream": [
           "5"
         ],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println"
+          "key": "aaa",
+          "val": "1"
         }
       },
       "5": {
         "name": "打印信息1",
         "handler": "simx.core.debug.print",
         "downstream": [
-          "6"
+          {
+            "expr": "1==${aaa}",
+            "target": "6"
+          }
         ],
         "redress_stream": [],
         "attr": {

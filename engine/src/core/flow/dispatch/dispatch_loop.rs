@@ -83,7 +83,7 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
     let mut index = 0;
     // 循环所有的开始节点
     for node_id in endpoints {
-        let node = match match_node_id(node_id, &blueprint) {
+        let node = match match_node_id(node_id, &blueprint, flow_data.clone().params) {
             Ok(node) => { node }
             Err(err) => { return Err(err) }
         };

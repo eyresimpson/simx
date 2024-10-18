@@ -1,7 +1,7 @@
 {
   "version": "1",
   "name": "测试流",
-  "update_date": "2024-09-29",
+  "update_date": "2024-10-18",
   "create_date": "2024-09-27",
   "developer": "Noah Jones",
   "requirements": [
@@ -43,33 +43,11 @@
         "name": "生成随机数",
         "handler": "simx.random.getNum",
         "downstream": [
-          "3"
+          "5"
         ],
         "redress_stream": [],
         "attr": {
           "text": "hello world in println"
-        }
-      },
-      "3": {
-        "name": "while 循环",
-        "handler": "",
-        "downstream": [
-          "6"
-        ],
-        "redress_stream": [],
-        "tags": [
-          "Route",
-          "Loop"
-        ],
-        "attr": {
-          "expression": "1==1",
-          "interval": 1,
-          "parallel_endpoints": false,
-          "parallel_routes": false,
-          "maximum_repetition": 10,
-          "endpoints": [
-            "5"
-          ]
         }
       },
       "5": {

@@ -58,7 +58,7 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
             loop_restriction = value.as_i64().unwrap();
         }
         None => {
-            loop_restriction = match node.attr.get("loop_restriction") {
+            loop_restriction = match node.attr.get("maximum_repetition") {
                 Some(value) => {
                     value.as_i64().unwrap()
                 }

@@ -58,3 +58,31 @@ Simx 项目是指多个流文件，脚本，插件，项目配置组成的业务
 ### 处理器扩展
 
 ### 三方扩展
+
+```json
+
+{
+  "name": "while 循环",
+  "handler": "",
+  "downstream": [
+    "6"
+  ],
+  "redress_stream": [],
+  "tags": [
+    "Route",
+    "Loop"
+  ],
+  "attr": {
+    "expression": "1==1",
+    "interval": 0.2,
+    "parallel_endpoints": true,
+    "parallel_routes": false,
+    "maximum_repetition": 50,
+    "endpoints": [
+      "5",
+      "6"
+    ]
+  }
+}
+
+```

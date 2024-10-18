@@ -1,4 +1,4 @@
-use crate::handler::files::common::operation::{copy_dir, move_directory, remove_dir_all};
+use crate::handler::files::common::operation::{common_copy, common_move, common_remove};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::info;
@@ -97,7 +97,7 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
     let target_path = target_path.as_str().expect("target must be string");
 
 
-    match move_directory(source_path, target_path, true) {
+    match common_move(source_path, target_path, true) {
         Ok(_) => Ok(()),
         Err(err) => Err(err),
     }
@@ -118,7 +118,7 @@ pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let source_path: &Path = source_path.as_str().expect("source must be string").as_ref();
     let target_path: &Path = target_path.as_str().expect("target must be string").as_ref();
 
-    copy_dir(source_path, target_path).expect("Cannot cp dir");
+    common_copy(source_path, target_path).expect("Cannot cp dir");
     println!("handler not support yet.{:?},{:?}", node, flow_data);
     Ok(())
 }
@@ -128,7 +128,7 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
     match node.attr.get("path") {
         Some(path) => {
             let path = path.as_str().expect("path must be string");
-            match remove_dir_all(path.as_ref()) {
+            match common_remove(path.as_ref()) {
                 Ok(_) => Ok(()),
                 Err(err) => Err(err)
             }

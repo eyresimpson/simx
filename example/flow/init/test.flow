@@ -77,14 +77,15 @@
         }
       },
       "7": {
-        "name": "删除文件",
-        "handler": "simx.files.file.del",
+        "name": "移动文件",
+        "handler": "simx.files.file.mv",
         "downstream": [
           "8"
         ],
         "redress_stream": [],
         "attr": {
-          "path": "./script/aaa.test"
+          "source": "./script/a2.txt",
+          "target": "./script/a111.txt"
         }
       },
       "8": {

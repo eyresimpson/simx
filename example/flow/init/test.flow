@@ -66,12 +66,23 @@
         }
       },
       "6": {
-        "name": "打印信息2",
-        "handler": "simx.core.debug.print",
+        "name": "创建文件夹",
+        "handler": "simx.files.dir.create",
+        "downstream": [
+          "7"
+        ],
+        "redress_stream": [],
+        "attr": {
+          "path": "./helloworld"
+        }
+      },
+      "7": {
+        "name": "流等待",
+        "handler": "simx.core.flow.timeout",
         "downstream": [],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println 6"
+          "sec": 5.5
         }
       }
     }

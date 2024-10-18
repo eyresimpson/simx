@@ -20,7 +20,7 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
         match handler_path[1] {
             // 核心操作
             "core" =>
-                handle_core(node, flow_data),
+                handle_core(node, flow_data).await,
 
             // 文件系统
             "files" =>

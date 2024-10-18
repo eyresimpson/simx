@@ -106,11 +106,13 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
 
 // 复制目录到新位置
 pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    println!("handler not support yet.{:?},{:?}", node, flow_data);
     Ok(())
 }
 
 // 为目录授权（仅Linux）
 pub fn chmod_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    println!("handler not support yet.{:?},{:?}", node, flow_data);
     Ok(())
 }
 

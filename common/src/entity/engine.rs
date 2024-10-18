@@ -35,6 +35,10 @@ pub struct EngineConfig {
     #[serde(default = "default_flow_path")]
     pub flow_path: String,
 
+    // 扫描的流程目录
+    #[serde(default = "default_workspace_path")]
+    pub workspace_path: String,
+
     // 扫描的脚本目录
     #[serde(default = "default_script_path")]
     pub script_path: String,
@@ -90,6 +94,7 @@ impl Default for EngineConfig {
             run_init_flow: default_run_init_flow(),
             auto_refresh_local_data: default_auto_refresh_local_data(),
             flow_path: default_flow_path(),
+            workspace_path: default_workspace_path(),
             script_path: default_script_path(),
             ext_path: default_ext_path(),
             log_path: default_log_path(),
@@ -128,6 +133,10 @@ fn default_auto_refresh_local_data() -> bool {
 
 fn default_flow_path() -> String {
     "flow".to_string()
+}
+
+fn default_workspace_path() -> String {
+    "workspace".to_string()
 }
 
 fn default_script_path() -> String {

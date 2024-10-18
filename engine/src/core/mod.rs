@@ -4,3 +4,4 @@ mod environment;
 mod event;
 pub mod script;
 mod blueprint;
+pub mod expression;

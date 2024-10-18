@@ -10,15 +10,15 @@ pub fn handle_core_var(node: Node, flow_data: &mut FlowData) -> Result<(), NodeE
         // 创建/修改一个变量
         "set" => {
             // 判断用户也没有写进去变量数据，有可能编辑器没有拦截
-            if node.attr.get("var_name").is_some() && node.attr.get("var_value").is_some() {
-                let key = node.attr.get("var_name").unwrap().clone();
-                let key = key.as_str().expect("Cannot convert var_name to str").to_string();
-                let val = node.attr.get("var_value").unwrap().clone();
+            if node.attr.get("key").is_some() && node.attr.get("val").is_some() {
+                let key = node.attr.get("key").unwrap().clone();
+                let key = key.as_str().expect("Cannot convert key to str").to_string();
+                let val = node.attr.get("val").unwrap().clone();
                 flow_data.params.insert(key, val);
                 Ok(())
             } else {
                 warn("Cannot find variable name, Skip...");
-                Err(ParamNotFound("var_name".to_string()))
+                Err(ParamNotFound("key".to_string()))
             }
         }
         // 删除变量（使其失效）

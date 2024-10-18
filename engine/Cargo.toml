@@ -22,6 +22,10 @@ bincode = "2.0.0-rc.3"
 threadpool = "1.8.1"
 serde = { version = "1.0.209", features = ["derive"] }
 log = "0.4.22"
+# 用于计算表达式
+evalexpr = "11.3.0"
+# 用于正则表达式
+regex = "1"
 
 [build-dependencies]
 # Windows 下资源打包

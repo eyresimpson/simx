@@ -22,6 +22,8 @@ auto_refresh_local_data = true
 flow_path = "flow"
 # 扫描的脚本目录
 script_path = "script"
+# 项目路径
+project_path = "workspace"
 # 扫描的插件目录
 ext_path = "D:/Code/engine-handler/release"
 # 系统日志目录

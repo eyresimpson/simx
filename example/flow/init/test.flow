@@ -1,7 +1,7 @@
 {
   "version": "1",
   "name": "测试流",
-  "update_date": "2024-09-29",
+  "update_date": "2024-10-18",
   "create_date": "2024-09-27",
   "developer": "Noah Jones",
   "requirements": [
@@ -17,7 +17,7 @@
     }
   ],
   "blueprint": {
-    "parallel_endpoints": true,
+    "parallel_endpoints": false,
     "parallel_routes": false,
     "maximum_repetition": 30,
     "endpoints": [
@@ -28,7 +28,10 @@
         "name": "打印信息",
         "handler": "simx.core.debug.print",
         "downstream": [
-          "2"
+          {
+            "expr": "1==1",
+            "target": "2"
+          }
         ],
         "redress_stream": [],
         "attr": {
@@ -37,53 +40,38 @@
         }
       },
       "2": {
-        "name": "生成随机数",
-        "handler": "simx.random.getNum",
-        "downstream": [
-          "3"
-        ],
-        "redress_stream": [],
-        "attr": {
-          "text": "hello world in println"
-        }
-      },
-      "3": {
-        "name": "while",
-        "handler": "simx.core.route.while",
-        "downstream": [
-          "4"
-        ],
-        "redress_stream": [],
-        "tags": [
-          "Route"
-        ],
-        "attr": {
-          "expression": "1==1",
-          "interval": "3s",
-          "router": "[\"5\"]"
-        }
-      },
-      "4": {
-        "name": "if",
-        "handler": "simx.core.route.if",
+        "name": "设置变量",
+        "handler": "simx.core.var.set",
         "downstream": [
           "5"
         ],
         "redress_stream": [],
-        "tags": [
-          "Route"
-        ],
         "attr": {
-          "router": "[{\"target\": \"5\", \"expression\": \"1==2\"}]"
+          "key": "aaa",
+          "val": "1"
         }
       },
       "5": {
-        "name": "打印信息",
+        "name": "打印信息1",
+        "handler": "simx.core.debug.print",
+        "downstream": [
+          {
+            "expr": "1==${aaa}",
+            "target": "6"
+          }
+        ],
+        "redress_stream": [],
+        "attr": {
+          "text": "hello world in println 5"
+        }
+      },
+      "6": {
+        "name": "打印信息2",
         "handler": "simx.core.debug.print",
         "downstream": [],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println 5"
+          "text": "hello world in println 6"
         }
       }
     }

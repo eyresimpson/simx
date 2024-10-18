@@ -3,6 +3,7 @@ use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use serde_json::Value;
 use std::fs::{File, OpenOptions};
+use std::io::{Read, Write};
 use std::path::Path;
 use std::{fs, io};
 
@@ -14,11 +15,11 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
         // 写文件（字符串）
         "write_str" => write_str_file(node),
         // 写文件（二进制）
-        "write" => { Ok(()) }
+        "write" => write_bin_file(node, flow_data),
         // 读文件（字符串）
         "read_str" => read_str_file(node, flow_data),
         // 读文件（二进制）
-        "read" => { Ok(()) }
+        "read" => read_bin_file(node, flow_data),
         // 判断文件是否存在
         "exist" => exist_file(node, flow_data),
         // 移动文件
@@ -69,6 +70,33 @@ fn read_str_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
     }
 }
 
+// 读二进制
+fn read_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+    let content_label = match node.attr.get("content_label") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("content_label".to_string()))
+    };
+
+    let mut file = File::open(path).unwrap();
+    let mut buffer = Vec::new();
+    match file.read_to_end(&mut buffer) {
+        Ok(_) => {
+            flow_data.data.insert(content_label.to_string(), buffer);
+            Ok(())
+        }
+        Err(err) => {
+            Err(NodeError::FileReadError(err.to_string()))
+        }
+    }
+}
+
+
+// 读二进制
+
 fn make_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let path = match node.attr.get("path") {
         Some(path) => path.as_str().unwrap(),
@@ -83,6 +111,32 @@ fn make_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
         flow_data.nodes.insert(node.id.unwrap(), path.parse().unwrap());
         Ok(())
     }
+}
+
+fn write_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+
+    let content_label = match node.attr.get("content_label") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("content_label".to_string()))
+    };
+
+    let data = match flow_data.data.get(content_label) {
+        Some(data) => data,
+        None => return Err(NodeError::FileWriteError("content label not found".to_string()))
+    };
+
+    let mut file = File::create(path).unwrap();
+    match file.write_all(data) {
+        Ok(_) => {}
+        Err(_) => {
+            return Err(NodeError::FileWriteError("write file failed".to_string()))
+        }
+    }
+    Ok(())
 }
 
 fn touch_file(file_path: &str) -> Result<(), NodeError> {

@@ -77,24 +77,26 @@
         }
       },
       "7": {
-        "name": "复制文件",
-        "handler": "simx.files.file.read_str",
+        "name": "读二进制",
+        "handler": "simx.files.file.read",
         "downstream": [
           "8"
         ],
         "redress_stream": [],
         "attr": {
-          "path": "./script/a111.txt",
-          "content": "fuck....."
+          "path": "/Users/eyresimpson/Downloads/wave-7726187.jpg",
+          "content_label": "test"
         }
       },
       "8": {
-        "name": "流等待",
-        "handler": "simx.core.flow.timeout",
-        "downstream": [],
+        "name": "写二进制",
+        "handler": "simx.files.file.write",
+        "downstream": [
+        ],
         "redress_stream": [],
         "attr": {
-          "sec": 5.5
+          "path": "./script/a112.jpg",
+          "content_label": "test"
         }
       }
     }

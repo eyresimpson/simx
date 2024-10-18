@@ -78,14 +78,14 @@
       },
       "7": {
         "name": "复制文件",
-        "handler": "simx.files.file.cp",
+        "handler": "simx.files.file.read_str",
         "downstream": [
           "8"
         ],
         "redress_stream": [],
         "attr": {
-          "source": "./script/a111.txt",
-          "target": "./script/a111111.txt"
+          "path": "./script/a111.txt",
+          "content": "fuck....."
         }
       },
       "8": {

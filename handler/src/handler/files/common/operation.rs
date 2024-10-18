@@ -79,3 +79,15 @@ pub fn common_copy(source_path: &Path, target_path: &Path) -> io::Result<()> {
     }
     Ok(())
 }
+
+pub fn common_exist(path: &str) -> Result<bool, NodeError> {
+    let path = Path::new(&path);
+    // 检查目录是否存在
+    if metadata(path).is_ok() {
+        // 目录存在
+        Ok(true)
+    } else {
+        // 目录不存在
+        Ok(false)
+    }
+}

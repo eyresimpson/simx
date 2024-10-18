@@ -1,4 +1,4 @@
-use crate::handler::files::common::operation::{common_copy, common_move, common_remove};
+use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::logger::interface::info;
@@ -61,11 +61,9 @@ pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
     match node.attr.get("path") {
         Some(path) => {
             let path = path.as_str().expect("path must be string");
-            let path = Path::new(&path);
             // 检查目录是否存在
-            if metadata(path).is_ok() {
+            if common_exist(path).expect("Cannot check path exist") {
                 // 目录存在
-                // info(format!("Path {} is exist.", path.display()).as_str());
                 flow_data.nodes.insert(node.id.unwrap(), Value::from(true));
                 Ok(())
             } else {

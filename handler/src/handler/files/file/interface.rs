@@ -1,36 +1,70 @@
-use crate::handler::files::common::operation::{common_copy, common_move, common_remove};
+use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
+use serde_json::Value;
 use std::fs::{File, OpenOptions};
-use std::io;
 use std::path::Path;
+use std::{fs, io};
 
 pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[3] {
         // 创建文件
-        "create" => {
-            make_file(node, flow_data)
-        }
+        "create" => make_file(node, flow_data),
         // 写文件（字符串）
-        "write_str" => { Ok(()) }
+        "write_str" => write_str_file(node),
         // 写文件（二进制）
         "write" => { Ok(()) }
         // 读文件（字符串）
-        "read_str" => { Ok(()) }
+        "read_str" => read_str_file(node, flow_data),
         // 读文件（二进制）
         "read" => { Ok(()) }
         // 判断文件是否存在
-        "exist" => { Ok(()) }
+        "exist" => exist_file(node, flow_data),
         // 移动文件
         "mv" => mv_file(node),
         // 复制文件
         "cp" => cp_file(node),
         // 删除文件
         "del" => del_file(node),
-
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
+        }
+    }
+}
+
+fn write_str_file(node: Node) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+    let content = match node.attr.get("content") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("content".to_string()))
+    };
+
+    match fs::write(path, content) {
+        Ok(_) => {}
+        Err(err) => {
+            return Err(NodeError::FileWriteError(err.to_string()))
+        }
+    }
+    Ok(())
+}
+
+fn read_str_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+
+    match fs::read_to_string(path) {
+        Ok(content) => {
+            flow_data.nodes.insert(node.id.unwrap(), Value::from(content));
+            Ok(())
+        }
+        Err(err) => {
+            Err(NodeError::FileReadError(err.to_string()))
         }
     }
 }
@@ -132,4 +166,26 @@ fn cp_file(node: Node) -> Result<(), NodeError> {
 
     common_copy(source_path, target_path).expect("Cannot cp dir");
     Ok(())
+}
+
+fn exist_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    match node.attr.get("path") {
+        Some(path) => {
+            let path = path.as_str().expect("path must be string");
+            // 检查目录是否存在
+            if common_exist(path).expect("Cannot check path exist") {
+                // 目录存在
+                flow_data.nodes.insert(node.id.unwrap(), Value::from(true));
+                Ok(())
+            } else {
+                // 目录不存在
+                flow_data.nodes.insert(node.id.unwrap(), Value::from(false));
+                Ok(())
+            }
+        }
+        None => {
+            // 找不到参数
+            Err(NodeError::ParamNotFound("path".to_string()))
+        }
+    }
 }

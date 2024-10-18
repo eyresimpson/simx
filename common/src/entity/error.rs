@@ -55,7 +55,7 @@ pub enum NodeError {
     // 文件类型错误
     FileTypeError,
     // 文件读取错误
-    FileReadError,
+    FileReadError(String),
     // 文件写入错误
     FileWriteError(String),
     // 文件创建错误

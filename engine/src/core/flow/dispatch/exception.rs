@@ -30,7 +30,7 @@ pub fn node_expect_dispose(node_err: NodeError) -> bool {
         NodeError::PathOtherError(_) => {}
         NodeError::FileNotFound => {}
         NodeError::FileTypeError => {}
-        NodeError::FileReadError => {}
+        NodeError::FileReadError(_) => {}
         NodeError::FileWriteError(_) => {}
         NodeError::FileCreateError => {}
         NodeError::FileDeleteError => {}

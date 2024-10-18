@@ -1,6 +1,5 @@
 use crate::handler::core::debug::handle_core_debug;
 use crate::handler::core::flow::handle_core_flow;
-use crate::handler::core::route::handle_core_route;
 use crate::handler::core::variable::handle_core_var;
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
@@ -13,9 +12,6 @@ pub fn handle_core(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError
 
         "flow" =>
             handle_core_flow(node, flow_data),
-
-        "route" =>
-            handle_core_route(node, flow_data),
 
         "var" =>
             handle_core_var(node, flow_data),

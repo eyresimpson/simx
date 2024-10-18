@@ -1,9 +1,10 @@
+use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
 use engine_common::entity::error::NodeError;
 use engine_common::entity::flow::{FlowData, Node};
-use engine_common::logger::interface::{info, warn};
+use engine_common::logger::interface::info;
 use serde_json::Value;
 use std::fs;
-use std::fs::{metadata, rename};
+use std::fs::metadata;
 use std::path::Path;
 
 pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
@@ -17,8 +18,6 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
         "mv" => mv_dir(node),
         // 复制目录
         "cp" => cp_dir(node, flow_data),
-        // 目录授权
-        "chmod" => chmod_dir(node, flow_data),
         // 删除目录
         "del" => del_dir(node),
         _ => {
@@ -62,11 +61,9 @@ pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
     match node.attr.get("path") {
         Some(path) => {
             let path = path.as_str().expect("path must be string");
-            let path = Path::new(&path);
             // 检查目录是否存在
-            if metadata(path).is_ok() {
+            if common_exist(path).expect("Cannot check path exist") {
                 // 目录存在
-                // info(format!("Path {} is exist.", path.display()).as_str());
                 flow_data.nodes.insert(node.id.unwrap(), Value::from(true));
                 Ok(())
             } else {
@@ -98,7 +95,7 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
     let target_path = target_path.as_str().expect("target must be string");
 
 
-    match move_directory(source_path, target_path, true) {
+    match common_move(source_path, target_path, true) {
         Ok(_) => Ok(()),
         Err(err) => Err(err),
     }
@@ -106,11 +103,20 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
 
 // 复制目录到新位置
 pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    Ok(())
-}
+    let source_path = match node.attr.get("source") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("source".to_string())),
+    };
 
-// 为目录授权（仅Linux）
-pub fn chmod_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let target_path = match node.attr.get("target") {
+        Some(path) => path,
+        None => return Err(NodeError::ParamNotFound("target".to_string())),
+    };
+
+    let source_path: &Path = source_path.as_str().expect("source must be string").as_ref();
+    let target_path: &Path = target_path.as_str().expect("target must be string").as_ref();
+
+    common_copy(source_path, target_path).expect("Cannot cp dir");
     Ok(())
 }
 
@@ -119,7 +125,7 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
     match node.attr.get("path") {
         Some(path) => {
             let path = path.as_str().expect("path must be string");
-            match remove_dir_all(path.as_ref()) {
+            match common_remove(path.as_ref()) {
                 Ok(_) => Ok(()),
                 Err(err) => Err(err)
             }
@@ -129,48 +135,4 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
         }
     }
 
-}
-
-fn move_directory(source: &str, destination: &str, overwrite: bool) -> Result<(), NodeError> {
-    let source_path = Path::new(source);
-    let destination_path = Path::new(destination);
-
-    // 检查源目录是否存在
-    if !metadata(source_path).is_ok() {
-        return Err(NodeError::PathNotFound);
-    }
-
-    // 检查目标位置是否已存在
-    if metadata(destination_path).is_ok() {
-        if overwrite {
-            // 强制模式下删除目标位置的内容
-            match remove_dir_all(destination_path) {
-                Ok(_) => {}
-                Err(e) => { return Err(e) }
-            }
-        } else {
-            // 警告即可，无需退出
-            warn(format!("target dir {} exist, skip...", destination).as_str())
-        }
-    }
-
-    // 执行移动操作
-    match rename(source_path, destination_path) {
-        Ok(_) => Ok(()),
-        Err(e) => { Err(NodeError::PathMoveError(e.to_string())) }
-    }
-}
-
-// 用于递归删除目录
-fn remove_dir_all(path: &Path) -> Result<(), NodeError> {
-    if path.is_dir() {
-        for entry in fs::read_dir(path).unwrap() {
-            let entry = entry.unwrap();
-            remove_dir_all(&entry.path())?;
-        }
-    }
-    match fs::remove_dir(path) {
-        Ok(_) => Ok(()),
-        Err(_) => Err(NodeError::PathDeleteError)
-    }
 }

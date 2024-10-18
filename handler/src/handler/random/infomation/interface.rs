@@ -1,7 +1,7 @@
 use engine_common::entity::error::NodeError;
-use engine_common::entity::flow::{FlowData, Node};
+use engine_common::entity::flow::Node;
 
-pub fn handle_random_info(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+pub fn handle_random_info(node: Node) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
     match handler_path[3] {
         // 随机生成一个中文名称

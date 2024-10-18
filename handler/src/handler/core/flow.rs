@@ -3,7 +3,7 @@ use engine_common::entity::error::NodeError::{HandleNotFound, HandleRuntimeError
 use engine_common::entity::flow::{FlowData, Node};
 use engine_common::thread::flow::{exec_flow, exec_steps};
 
-pub fn handle_core_flow(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+pub async fn handle_core_flow(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
 
     match handler_path[3] {
@@ -21,7 +21,20 @@ pub fn handle_core_flow(node: Node, flow_data: &mut FlowData) -> Result<(), Node
                 }
                 None => Err(NodeError::ParamFormatError("flow_path is none".to_string()))
             }
-        }
+        },
+        // 流等待
+        "timeout" => {
+            // 等待一段时间
+            // tokio::
+            match node.attr.get("sec") {
+                Some(sec) => {
+                    tokio::time::sleep(std::time::Duration::from_secs_f64(sec.as_f64().unwrap())).await;
+                    // TODO: 等待流程执行完毕，并返回结果
+                    Ok(())
+                }
+                None => Err(NodeError::ParamFormatError("flow_id is none".to_string()))
+            }
+        },
         _ => {
             Err(HandleNotFound(node.handler))
         }

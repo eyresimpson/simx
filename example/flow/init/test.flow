@@ -66,12 +66,37 @@
         }
       },
       "6": {
-        "name": "打印信息2",
-        "handler": "simx.core.debug.print",
-        "downstream": [],
+        "name": "创建文件夹",
+        "handler": "simx.files.dir.create",
+        "downstream": [
+          "7"
+        ],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println 6"
+          "path": "./helloworld"
+        }
+      },
+      "7": {
+        "name": "读二进制",
+        "handler": "simx.files.file.read",
+        "downstream": [
+          "8"
+        ],
+        "redress_stream": [],
+        "attr": {
+          "path": "/Users/eyresimpson/Downloads/wave-7726187.jpg",
+          "content_label": "test"
+        }
+      },
+      "8": {
+        "name": "写二进制",
+        "handler": "simx.files.file.write",
+        "downstream": [
+        ],
+        "redress_stream": [],
+        "attr": {
+          "path": "./script/a112.jpg",
+          "content_label": "test"
         }
       }
     }

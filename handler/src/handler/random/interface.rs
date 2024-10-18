@@ -15,7 +15,7 @@ pub fn handle_random(node: Node, flow_data: &mut FlowData) -> Result<(), NodeErr
         // 随机生成一个日期
         "getDate" => { Ok(()) }
         // 随机用户信息生成
-        "info" => handle_random_info(node, flow_data),
+        "info" => handle_random_info(node),
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
         }

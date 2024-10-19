@@ -1,4 +1,3 @@
-use bincode::{Decode, Encode};
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -28,8 +27,6 @@ pub struct Flow {
 pub struct FlowRuntimeModel {
     //  流当前状态
     pub status: FlowStatus,
-    // 流日志
-    pub logs: Vec<NodeMessage>,
     // 当前节点
     pub current_node: Option<Node>,
     // 流运行时数据
@@ -84,7 +81,7 @@ pub struct Node {
 }
 
 
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum NodeTag {
     // 计算节点，具有大量计算负荷
     Compute,
@@ -110,24 +107,6 @@ pub enum NodeTag {
     Async,
     // IO密集型节点
     IO
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
-pub struct NodeMessage {
-    pub message: String,
-    pub data: Option<Vec<u8>>,
-    pub level: i32,
-    pub time: String,
-    pub node_id: String,
-    pub message_type: NodeMessageType,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug, Encode, Decode)]
-pub enum NodeMessageType {
-    Info,
-    Warning,
-    Error,
-    Debug,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

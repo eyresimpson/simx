@@ -17,7 +17,7 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
         // 移动目录
         "mv" => mv_dir(node),
         // 复制目录
-        "cp" => cp_dir(node, flow_data),
+        "cp" => cp_dir(node),
         // 删除目录
         "del" => del_dir(node),
         _ => {
@@ -102,7 +102,7 @@ pub fn mv_dir(node: Node) -> Result<(), NodeError> {
 }
 
 // 复制目录到新位置
-pub fn cp_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+pub fn cp_dir(node: Node) -> Result<(), NodeError> {
     let source_path = match node.attr.get("source") {
         Some(path) => path,
         None => return Err(NodeError::ParamNotFound("source".to_string())),

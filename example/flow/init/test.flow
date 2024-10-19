@@ -84,7 +84,7 @@
         ],
         "redress_stream": [],
         "attr": {
-          "path": "/Users/eyresimpson/Downloads/wave-7726187.jpg",
+          "path": "C:\\Users\\Tsos2\\Downloads\\simx-engine.exe",
           "content_label": "test"
         }
       },
@@ -95,7 +95,7 @@
         ],
         "redress_stream": [],
         "attr": {
-          "path": "./script/a112.jpg",
+          "path": "./tmp/simx-engine.exe",
           "content_label": "test"
         }
       }

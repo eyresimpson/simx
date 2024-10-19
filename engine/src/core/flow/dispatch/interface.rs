@@ -2,13 +2,13 @@ use crate::core::flow::controller::interface::check_require;
 use crate::core::flow::dispatch::common::redress_stream_dispatch;
 use crate::core::flow::dispatch::dispatch_general::dispatch_general;
 use crate::core::flow::dispatch::dispatch_loop::dispatch_loop;
-use crate::core::flow::dispatch::exception::flow_dispatch_err_handler;
 use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::error::{DispatchErr, NodeError};
 use engine_common::entity::flow::{Blueprint, Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
 use std::path::Path;
+use engine_common::exception::flow::flow_dispatch_err_handler;
 
 // 流调度执行器
 // 此方法会根据流文件的path，生成Flow运行时并调度执行
@@ -51,7 +51,6 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
     // 创建流运行时
     flow.runtime = Some(FlowRuntimeModel {
         status: FlowStatus::Starting,
-        logs: vec![],
         current_node: None,
         data: FlowData {
             basics: SystemFlowData {

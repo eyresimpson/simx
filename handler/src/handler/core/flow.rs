@@ -16,7 +16,7 @@ pub async fn handle_core_flow(node: Node, flow_data: &mut FlowData) -> Result<()
                     let path = path.as_str().expect("flow_path is not string");
                     match exec_flow(path.to_string()) {
                         Ok(_) => Ok(()),
-                        Err(e) => return Err(HandleRuntimeError(e))
+                        Err(e) => Err(HandleRuntimeError(e))
                     }
                 }
                 None => Err(NodeError::ParamFormatError("flow_path is none".to_string()))

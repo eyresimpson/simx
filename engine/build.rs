@@ -14,11 +14,11 @@ fn main() {
             // 设置版权信息
             .set("LegalCopyright", "Copyright © 2024 NJ Labs")
             // 设置公司名称
-            .set("CompanyName", "Noah Jones")
+            .set("CompanyName", "NJ Labs")
             // 设置产品版本
-            .set("ProductVersion", "0.1.1")
+            .set("ProductVersion", "0.1.2")
             // 设置文件版本
-            .set("FileVersion", "0.1.1");
+            .set("FileVersion", "0.1.2");
         // 编译资源
         res.compile().expect("Failed to compile resources");
     }

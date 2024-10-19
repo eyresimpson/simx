@@ -1,5 +1,5 @@
-use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::logger::interface::fail;
+use crate::entity::error::NodeError;
+use crate::logger::interface::fail;
 
 // 节点异常统一处理
 // 如果返回了false，将断开流的执行
@@ -58,12 +58,3 @@ pub fn node_expect_dispose(node_err: NodeError) -> bool {
     true
 }
 
-// 流调度错误统一处理器
-pub fn flow_dispatch_err_handler(err: DispatchErr) -> Result<(), DispatchErr> {
-    match err {
-        DispatchErr::FlowFailed(_) => { Ok(()) }
-        DispatchErr::RedressFailed => { Ok(()) }
-        DispatchErr::RunOverLimit => { Ok(()) }
-        _ => { Ok(()) }
-    }
-}

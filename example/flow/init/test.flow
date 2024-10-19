@@ -95,7 +95,7 @@
         ],
         "redress_stream": [],
         "attr": {
-          "path": "./script/simx-engine.exe",
+          "path": "./tmp/simx-engine.exe",
           "content_label": "test"
         }
       }

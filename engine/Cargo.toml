@@ -1,5 +1,5 @@
 [package]
-name = "simx-engine"
+name = "engine"
 version = "0.1.1"
 edition = "2021"
 build = "build.rs"
@@ -16,16 +16,6 @@ tokio = { version = "1.39.2", features = ["full"] }
 serde_json = "1.0.124"
 # 用于处理异步任务
 futures = "0.3.30"
-# 用于序列化和反序列化数据
-bincode = "2.0.0-rc.3"
-# 用于线程池
-threadpool = "1.8.1"
-serde = { version = "1.0.209", features = ["derive"] }
-log = "0.4.22"
-# 用于计算表达式
-evalexpr = "11.3.0"
-# 用于正则表达式
-regex = "1"
 
 [build-dependencies]
 # Windows 下资源打包

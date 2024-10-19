@@ -4,3 +4,4 @@ pub mod simx;
 pub mod ext;
 pub mod engine;
 pub mod error;
+pub mod exception;

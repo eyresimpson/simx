@@ -1,8 +1,11 @@
+use engine_common::entity::exception::dispatch::DispatchErr;
 use crate::core::flow::dispatch::common::{match_node_id, redress_stream_dispatch};
 use crate::core::flow::dispatch::interface::dispatch_nodes;
 use crate::core::flow::exec::node::exec_node;
-use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::entity::flow::{Blueprint, FlowData, Node};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::blueprint::Blueprint;
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 use engine_common::logger::interface::fail;
 
 pub async fn dispatch_general(blueprint: Blueprint, current_node: Node, mut data: &mut FlowData) -> Result<(), DispatchErr> {

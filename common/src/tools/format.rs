@@ -1,4 +1,4 @@
-use crate::entity::error::NodeError;
+use crate::entity::exception::node::NodeError;
 
 // 将Json转换为u8进行存储
 pub fn json_to_u8(json: String) -> Vec<u8> {

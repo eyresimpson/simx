@@ -1,8 +1,8 @@
 use crate::core::flow::exec::flow::exec_steps;
 use crate::core::flow::interface::exec_flow;
 use crate::core::script::interface::exec_script;
-use engine_common::entity::flow::SubFlowTransferData;
-use engine_common::entity::simx::SimxThreadSenderStringData;
+use engine_common::entity::flow::flow::SubFlowTransferData;
+use engine_common::entity::common::SimxThreadSenderStringData;
 use engine_common::logger::interface::warn;
 use engine_common::runtime::thread::set_engine_sender;
 use std::sync::mpsc;

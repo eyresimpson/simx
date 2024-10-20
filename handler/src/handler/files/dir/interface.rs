@@ -1,11 +1,12 @@
 use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
-use engine_common::entity::error::NodeError;
-use engine_common::entity::flow::{FlowData, Node};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::flow::{FlowData};
 use engine_common::logger::interface::info;
 use serde_json::Value;
 use std::fs;
 use std::fs::metadata;
 use std::path::Path;
+use engine_common::entity::flow::node::Node;
 
 pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -41,7 +42,7 @@ pub fn create_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError>
                 match fs::create_dir(path) {
                     Ok(_) => {
                         // 写到节点数据域
-                        flow_data.nodes.insert(node.id.unwrap(), Value::from(path.display().to_string()));
+                        flow_data.json.insert(node.id.unwrap(), Value::from(path.display().to_string()));
                         Ok(())
                     }
                     // 目录创建失败
@@ -64,11 +65,11 @@ pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
             // 检查目录是否存在
             if common_exist(path).expect("Cannot check path exist") {
                 // 目录存在
-                flow_data.nodes.insert(node.id.unwrap(), Value::from(true));
+                flow_data.json.insert(node.id.unwrap(), Value::from(true));
                 Ok(())
             } else {
                 // 目录不存在
-                flow_data.nodes.insert(node.id.unwrap(), Value::from(false));
+                flow_data.json.insert(node.id.unwrap(), Value::from(false));
                 Ok(())
             }
         }

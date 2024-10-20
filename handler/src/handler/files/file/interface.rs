@@ -1,11 +1,12 @@
-use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
-use engine_common::entity::error::NodeError;
-use engine_common::entity::flow::{FlowData, Node};
+use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove, read_str_file, write_str_file};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::flow::{FlowData};
 use serde_json::Value;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::Path;
-use std::{fs, io};
+use std::io;
+use engine_common::entity::flow::node::Node;
 
 pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -34,41 +35,23 @@ pub fn handle_files_file(node: Node, flow_data: &mut FlowData) -> Result<(), Nod
     }
 }
 
-fn write_str_file(node: Node) -> Result<(), NodeError> {
-    let path = match node.attr.get("path") {
-        Some(path) => path.as_str().unwrap(),
-        None => return Err(NodeError::ParamNotFound("path".to_string()))
-    };
-    let content = match node.attr.get("content") {
-        Some(path) => path.as_str().unwrap(),
-        None => return Err(NodeError::ParamNotFound("content".to_string()))
-    };
-
-    match fs::write(path, content) {
-        Ok(_) => {}
-        Err(err) => {
-            return Err(NodeError::FileWriteError(err.to_string()))
-        }
-    }
-    Ok(())
-}
-
-fn read_str_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+// 创建文件
+fn make_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let path = match node.attr.get("path") {
         Some(path) => path.as_str().unwrap(),
         None => return Err(NodeError::ParamNotFound("path".to_string()))
     };
 
-    match fs::read_to_string(path) {
-        Ok(content) => {
-            flow_data.nodes.insert(node.id.unwrap(), Value::from(content));
-            Ok(())
-        }
-        Err(err) => {
-            Err(NodeError::FileReadError(err.to_string()))
-        }
+    let result = touch_file(path);
+    if result.is_err() {
+        result
+    } else {
+        // 如果执行成功，就将路径写入到节点数据域
+        flow_data.json.insert(node.id.unwrap(), path.parse().unwrap());
+        Ok(())
     }
 }
+
 
 // 读二进制
 fn read_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
@@ -85,7 +68,7 @@ fn read_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
     let mut buffer = Vec::new();
     match file.read_to_end(&mut buffer) {
         Ok(_) => {
-            flow_data.data.insert(content_label.to_string(), buffer);
+            flow_data.binary.insert(content_label.to_string(), buffer);
             Ok(())
         }
         Err(err) => {
@@ -97,21 +80,6 @@ fn read_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
 
 // 读二进制
 
-fn make_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    let path = match node.attr.get("path") {
-        Some(path) => path.as_str().unwrap(),
-        None => return Err(NodeError::ParamNotFound("path".to_string()))
-    };
-
-    let result = touch_file(path);
-    if result.is_err() {
-        result
-    } else {
-        // 如果执行成功，就将路径写入到节点数据域
-        flow_data.nodes.insert(node.id.unwrap(), path.parse().unwrap());
-        Ok(())
-    }
-}
 
 fn write_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let path = match node.attr.get("path") {
@@ -124,7 +92,7 @@ fn write_bin_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError>
         None => return Err(NodeError::ParamNotFound("content_label".to_string()))
     };
 
-    let data = match flow_data.data.get(content_label) {
+    let data = match flow_data.binary.get(content_label) {
         Some(data) => data,
         None => return Err(NodeError::FileWriteError("content label not found".to_string()))
     };
@@ -229,11 +197,11 @@ fn exist_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
             // 检查目录是否存在
             if common_exist(path).expect("Cannot check path exist") {
                 // 目录存在
-                flow_data.nodes.insert(node.id.unwrap(), Value::from(true));
+                flow_data.json.insert(node.id.unwrap(), Value::from(true));
                 Ok(())
             } else {
                 // 目录不存在
-                flow_data.nodes.insert(node.id.unwrap(), Value::from(false));
+                flow_data.json.insert(node.id.unwrap(), Value::from(false));
                 Ok(())
             }
         }

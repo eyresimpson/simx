@@ -1,4 +1,4 @@
-use crate::entity::flow::Flow;
+use crate::entity::flow::flow::Flow;
 use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

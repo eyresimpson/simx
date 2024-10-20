@@ -4,7 +4,7 @@ use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 
-use crate::entity::ext::Extension;
+use crate::entity::extension::Extension;
 
 lazy_static! {
     static ref RUNTIME_EXTENSION: Mutex<HashMap<String, Extension>> = Mutex::new(HashMap::new());

@@ -12,6 +12,7 @@ use engine_common::entity::exception::dispatch::DispatchErr;
 use engine_common::entity::flow::blueprint::Blueprint;
 use engine_common::entity::flow::node::{Node, NodeTag};
 use engine_common::exception::flow::flow_dispatch_err_handler;
+use engine_common::tools::common::getUuid;
 
 // 流调度执行器
 // 此方法会根据流文件的path，生成Flow运行时并调度执行
@@ -50,20 +51,27 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
         }
     }
 
-    info(format!("flow {{ {} }} will be exec.", flow.name).as_str());
     // 创建流运行时
     flow.runtime = Some(FlowRuntimeModel {
         // status: FlowStatus::Starting,
+        uuid: getUuid(),
         current_node: None,
         data: FlowData {
+            // 系统数据表
             basics: SystemFlowData {
                 route: Default::default(),
+                logs: vec![],
             },
+            // 用户变量表
             params: Default::default(),
+            // 节点Json数据
             json: Default::default(),
+            // 节点二进制数据
             binary: Default::default(),
         },
     });
+
+    info(format!("flow {} :[{}] will be exec.", flow.name, flow.clone().runtime.unwrap().uuid).as_str());
 
     let runtime = flow.clone().runtime.unwrap();
     // 取入口节点群并尝试执行
@@ -81,7 +89,7 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
             }
         }
     }
-    success(format!("flow {{ {} }} has be exec success.", flow.name).as_str());
+    success(format!("flow {} :[{}] has be exec success.", flow.name, flow.runtime.unwrap().uuid).as_str());
     Ok(())
 }
 

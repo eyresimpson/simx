@@ -1,6 +1,7 @@
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
+use crate::entity::common::HistoryLog;
 use crate::entity::flow::blueprint::Blueprint;
 use crate::entity::flow::node::Node;
 
@@ -29,6 +30,8 @@ pub struct Flow {
 pub struct FlowRuntimeModel {
     // //  流当前状态
     // pub status: FlowStatus,
+    // 流的uuid
+    pub uuid: String,
     // 当前节点
     pub current_node: Option<Node>,
     // 流运行时数据
@@ -102,6 +105,8 @@ pub struct FlowData {
 pub struct SystemFlowData {
     // 路由数据，一般由逻辑节点控制，用于控制节点的跳转
     pub route: HashMap<String, Vec<Value>>,
+    // 日志数据
+    pub logs: Vec<HistoryLog>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

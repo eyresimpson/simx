@@ -1,5 +1,27 @@
-// 获取记录者，注意获取到的记录者是独特的，会向自己所在的日志文件中记录日志
-// 多个获取的记录者记录的文件路径是不一致的
-// pub fn invite_historian() {}
-// 流实例id_时间戳.his
-// f1_20240930120000001.his
+use crate::entity::common::HistoryLog;
+use crate::entity::exception::common::Level;
+use crate::entity::flow::flow::FlowData;
+
+// 节点日志
+pub fn log(log: HistoryLog, data: &mut FlowData) {
+    match log.level {
+        Level::NodeFail => {}
+        Level::NodeWarn => {}
+        Level::NodeInfo => {}
+        Level::NodeDebug => {}
+        Level::EngineFail => {}
+        Level::EngineWarn => {}
+        Level::EngineInfo => {}
+        Level::EngineDebug => {}
+        Level::ScriptInfo => {}
+        Level::ScriptWarn => {}
+        Level::ScriptFail => {}
+        Level::ScriptDebug => {}
+        Level::FlowInfo => {}
+        Level::FlowWarn => {}
+        Level::FlowFail => {}
+        Level::FlowDebug => {}
+        Level::None => {}
+    }
+    data.basics.logs.push(log);
+}

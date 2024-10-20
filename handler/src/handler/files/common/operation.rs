@@ -1,8 +1,11 @@
-use engine_common::entity::error::NodeError;
+use engine_common::entity::exception::node::NodeError;
 use engine_common::logger::interface::warn;
 use std::fs::{metadata, rename};
 use std::path::Path;
 use std::{fs, io};
+use serde_json::Value;
+use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::node::Node;
 
 // 用于移动文件或文件夹
 pub fn common_move(source: &str, target: &str, overwrite: bool) -> Result<(), NodeError> {
@@ -90,4 +93,40 @@ pub fn common_exist(path: &str) -> Result<bool, NodeError> {
         // 目录不存在
         Ok(false)
     }
+}
+
+pub fn read_str_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+
+    match fs::read_to_string(path) {
+        Ok(content) => {
+            flow_data.json.insert(node.id.unwrap(), Value::from(content));
+            Ok(())
+        }
+        Err(err) => {
+            Err(NodeError::FileReadError(err.to_string()))
+        }
+    }
+}
+
+pub fn write_str_file(node: Node) -> Result<(), NodeError> {
+    let path = match node.attr.get("path") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+    let content = match node.attr.get("content") {
+        Some(path) => path.as_str().unwrap(),
+        None => return Err(NodeError::ParamNotFound("content".to_string()))
+    };
+
+    match fs::write(path, content) {
+        Ok(_) => {}
+        Err(err) => {
+            return Err(NodeError::FileWriteError(err.to_string()))
+        }
+    }
+    Ok(())
 }

@@ -1,5 +1,5 @@
 use crate::core::flow::resolver::flow::resolver_flow;
-use engine_common::entity::flow::Flow;
+use engine_common::entity::flow::flow::Flow;
 use engine_common::logger::interface::warn;
 use std::path::Path;
 

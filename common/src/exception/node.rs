@@ -1,4 +1,4 @@
-use crate::entity::error::NodeError;
+use crate::entity::exception::node::NodeError;
 use crate::logger::interface::fail;
 
 // 节点异常统一处理
@@ -53,7 +53,8 @@ pub fn node_expect_dispose(node_err: NodeError) -> bool {
         NodeError::LoopLimitExceeded => {}
         NodeError::LoopError(_) => todo!(),
         NodeError::Redress(_) => {},
-        NodeError::ExpressionError(_) => todo!()
+        NodeError::ExpressionError(_) => todo!(),
+        NodeError::FormatConvertError(_) => {}
     }
     true
 }

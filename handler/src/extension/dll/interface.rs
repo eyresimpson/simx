@@ -1,4 +1,4 @@
-use engine_common::entity::ext::Extension;
+use engine_common::entity::extension::Extension;
 use libloader::libloading::{Library, Symbol};
 use std::path::Path;
 

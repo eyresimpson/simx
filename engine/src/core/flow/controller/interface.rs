@@ -1,6 +1,6 @@
 use crate::core::environment::interface::check;
 use crate::core::flow::dispatch::interface::dispatch_flow;
-use engine_common::entity::flow::Environment;
+use engine_common::entity::flow::flow::Environment;
 use engine_common::logger::interface::{success, warn};
 use std::path::Path;
 

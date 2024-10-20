@@ -1,8 +1,11 @@
-use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::entity::flow::{Blueprint, FlowData, Node};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::flow::FlowData;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::string::String;
+use engine_common::entity::exception::dispatch::DispatchErr;
+use engine_common::entity::flow::blueprint::Blueprint;
+use engine_common::entity::flow::node::Node;
 use engine_common::exception::node::node_expect_dispose;
 use engine_common::expr::interface::expr_eval_bool;
 use crate::core::flow::dispatch::interface::dispatch_nodes;
@@ -41,6 +44,7 @@ pub fn match_node_id(node_id: &Value, blueprint: &Blueprint, params: HashMap<Str
         tags: None,
         handler: "".to_string(),
         attr: Default::default(),
+        common: None,
         downstream: vec![],
         redress_stream: None,
     };

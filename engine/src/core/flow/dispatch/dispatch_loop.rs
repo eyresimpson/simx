@@ -1,7 +1,10 @@
+use engine_common::entity::exception::dispatch::DispatchErr;
 use crate::core::flow::dispatch::common::match_node_id;
 use crate::core::flow::dispatch::interface::dispatch_nodes;
-use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::entity::flow::{Blueprint, FlowData, Node};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::blueprint::Blueprint;
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 use engine_common::expr::interface::expr_eval_bool;
 use engine_common::logger::interface::{debug, fail};
 
@@ -53,7 +56,7 @@ pub async fn dispatch_loop(blueprint: Blueprint, node: Node, flow_data: &mut Flo
     // 取最大重试次数
     let loop_restriction: i64;
     // 首先判断node中有没有数据
-    match flow_data.nodes.get(&node_id) {
+    match flow_data.json.get(&node_id) {
         Some(value) => {
             loop_restriction = value.as_i64().unwrap();
         }

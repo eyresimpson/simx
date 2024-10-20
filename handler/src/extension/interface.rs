@@ -4,11 +4,12 @@ use crate::extension::dylib::interface::call_dylib_extension_init;
 use crate::extension::jar::interface::call_jar_extension_init;
 use crate::extension::so::interface::call_so_extension_init;
 use consts::OS;
-use engine_common::entity::ext::Extension;
-use engine_common::entity::flow::{FlowData, Node};
+use engine_common::entity::extension::Extension;
+use engine_common::entity::flow::flow::{FlowData};
 use engine_common::logger::interface::warn;
 use env::consts;
 use std::env;
+use engine_common::entity::flow::node::Node;
 
 // 分离方法调用，注意只能调用Rust编写的lib，如果需要调用其他应用程序的lib，使用invoke
 // simx项目中所有的内部库（比如http扩展）都是通过此方法调用

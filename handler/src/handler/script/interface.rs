@@ -1,5 +1,5 @@
-use engine_common::entity::error::NodeError;
-use engine_common::entity::flow::Node;
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::node::Node;
 use engine_common::thread::script::exec_script;
 
 pub fn handle_script(node: Node) -> Result<(), NodeError> {

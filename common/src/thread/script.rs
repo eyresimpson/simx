@@ -1,4 +1,4 @@
-use crate::entity::simx::SimxThreadSenderStringData;
+use crate::entity::common::SimxThreadSenderStringData;
 use crate::runtime::thread::get_engine_sender;
 
 pub fn exec_script(path: String) -> Result<(), String> {

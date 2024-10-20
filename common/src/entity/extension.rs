@@ -1,5 +1,6 @@
-use crate::entity::flow::{FlowData, Node};
+use crate::entity::flow::flow::{FlowData};
 use serde_derive::{Deserialize, Serialize};
+use crate::entity::flow::node::Node;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct FunctionParam {

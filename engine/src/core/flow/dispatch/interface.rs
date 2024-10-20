@@ -3,11 +3,14 @@ use crate::core::flow::dispatch::common::redress_stream_dispatch;
 use crate::core::flow::dispatch::dispatch_general::dispatch_general;
 use crate::core::flow::dispatch::dispatch_loop::dispatch_loop;
 use crate::core::flow::resolver::interface::flow_resolver;
-use engine_common::entity::error::{DispatchErr, NodeError};
-use engine_common::entity::flow::{Blueprint, Flow, FlowData, FlowRuntimeModel, FlowStatus, Node, NodeTag, SystemFlowData};
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::flow::{Flow, FlowData, FlowRuntimeModel, SystemFlowData};
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
 use std::path::Path;
+use engine_common::entity::exception::dispatch::DispatchErr;
+use engine_common::entity::flow::blueprint::Blueprint;
+use engine_common::entity::flow::node::{Node, NodeTag};
 use engine_common::exception::flow::flow_dispatch_err_handler;
 
 // 流调度执行器
@@ -50,15 +53,15 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
     info(format!("flow {{ {} }} will be exec.", flow.name).as_str());
     // 创建流运行时
     flow.runtime = Some(FlowRuntimeModel {
-        status: FlowStatus::Starting,
+        // status: FlowStatus::Starting,
         current_node: None,
         data: FlowData {
             basics: SystemFlowData {
                 route: Default::default(),
             },
             params: Default::default(),
-            nodes: Default::default(),
-            data: Default::default(),
+            json: Default::default(),
+            binary: Default::default(),
         },
     });
 

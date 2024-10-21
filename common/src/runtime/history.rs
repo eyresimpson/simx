@@ -1,7 +1,7 @@
 use crate::entity::common::HistoryLog;
 use crate::logger::interface::info;
 use crate::runtime::config::get_simx_config;
-use crate::tools::common::getCurrentTime;
+use crate::tools::common::get_timestamp;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::fs;
@@ -43,7 +43,7 @@ pub fn history_persistent(flow_id: String) {
         }
     }
     let json = serde_json::to_string(&history).expect("fix struct failed");
-    let mut file = File::create(path.join(getCurrentTime("%Y-%m-%d_%H-%M-%S_") + flow_id.as_str() + ".history")).unwrap();
+    let mut file = File::create(path.join(format!("{}_{}.history", get_timestamp(), flow_id.as_str()))).unwrap();
     match file.write_all(json.as_bytes()) {
         Ok(_) => {}
         Err(_) => panic!("Create log path failed..."),

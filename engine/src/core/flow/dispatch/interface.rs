@@ -14,7 +14,7 @@ use engine_common::exception::flow::flow_dispatch_err_handler;
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
 use engine_common::runtime::history::{history_persistent, log_history};
-use engine_common::tools::common::{getCurrentTime, getUuid};
+use engine_common::tools::common::{get_current_time, get_uuid};
 use std::path::Path;
 
 // 流调度执行器
@@ -54,7 +54,7 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
         }
     }
 
-    let uuid = getUuid();
+    let uuid = get_uuid();
 
     // 创建流运行时
     flow.runtime = Some(FlowRuntimeModel {
@@ -104,7 +104,7 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
 // 调度节点（蓝图）
 // 蓝图、首节点（从这个节点开始执行）、数据
 pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut FlowData) -> Result<(), DispatchErr> {
-    let node_uuid = getUuid();
+    let node_uuid = get_uuid();
     let node_handler = current_node.clone().handler;
     let blueprint_id = current_node.clone().id.unwrap();
     let flow_id = data.clone().basics.flow_id.clone();
@@ -166,7 +166,7 @@ fn node_common_handle(flow_id: String, node_id: String, handler: String, bp_id: 
         status,
         snapshot: data.clone(),
         message,
-        log_dt: getCurrentTime("%Y-%m-%d %H:%M:%S"),
+        log_dt: get_current_time("%Y-%m-%d %H:%M:%S%.9f"),
     };
 
     log_history(flow_id, history.to_owned());

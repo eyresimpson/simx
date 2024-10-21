@@ -1,6 +1,7 @@
 use crate::core::engine::engine::{run, serve};
 use crate::core::engine::thread::init_thread_monitor;
 use engine_common::logger::interface::{info, success};
+use engine_common::mui::interface::load_language_package;
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::engine::set_engine_info;
 use std::env;
@@ -37,6 +38,8 @@ async fn main() {
 
 // 初始化方法
 fn init() {
+    // 加载多语言包
+    load_language_package();
     info("Simx engine core init...");
     // 每次更新系统都记得修改这里
     let engine_version = "0.1.1";

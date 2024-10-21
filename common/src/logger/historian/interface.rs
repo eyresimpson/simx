@@ -1,9 +1,8 @@
 use crate::entity::common::HistoryLog;
 use crate::entity::exception::common::Level;
-use crate::entity::flow::flow::FlowData;
 
 // 节点日志
-pub fn log(log: HistoryLog, data: &mut FlowData) {
+pub fn history(log: HistoryLog) {
     match log.level {
         Level::NodeFail => {}
         Level::NodeWarn => {}
@@ -23,5 +22,4 @@ pub fn log(log: HistoryLog, data: &mut FlowData) {
         Level::FlowDebug => {}
         Level::None => {}
     }
-    data.basics.logs.push(log);
 }

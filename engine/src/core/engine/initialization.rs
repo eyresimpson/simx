@@ -4,8 +4,8 @@ use std::path::Path;
 use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
-use engine_common::entity::extension::Extension;
 use engine_common::entity::common::{SimxFlow, SimxScript};
+use engine_common::entity::extension::Extension;
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::set_extension_info;
@@ -117,7 +117,10 @@ pub fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
                     } else if traverse_type.eq("flow") {
                         load_flow_by_path(path.as_path());
                     } else if traverse_type.eq("script") {
-                        load_script_by_path(path.as_path());
+                        if path.is_file() && !path.extension().is_none() {
+                            println!("Script: {}", path.display());
+                            load_script_by_path(path.as_path());
+                        }
                     }
                 } else if path.is_dir() {
                     // 多级文件夹，继续遍历其中的文件和文件夹

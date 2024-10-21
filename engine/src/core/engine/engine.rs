@@ -13,6 +13,7 @@ use std::path::Path;
 pub async fn serve() {
     // 获取simx基础配置
     let simx_config = get_simx_config();
+
     // banner
     println!(" _______ _______ _______ ___ ___\n|     __|_     _|   |   |   |   |\n|__     |_|   |_|       |-     -|\n|_______|_______|__|_|__|___|___|", );
     info("Engine initializing...");

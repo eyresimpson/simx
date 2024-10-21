@@ -1,7 +1,7 @@
-use std::collections::HashMap;
+use crate::entity::exception::common::Level;
 use crate::entity::flow::flow::{Flow, FlowData};
 use serde_derive::{Deserialize, Serialize};
-use crate::entity::exception::common::Level;
+use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SimxFlow {
@@ -31,7 +31,6 @@ pub struct SimxThreadSenderStringData {
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct HistoryLog{
-    pub flow_id: Option<String>,
     pub node_id: Option<String>,
     pub flow_name: Option<String>,
     pub node_name: Option<String>,

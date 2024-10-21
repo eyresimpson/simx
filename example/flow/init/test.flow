@@ -57,49 +57,10 @@
       "5": {
         "name": "打印信息1",
         "handler": "simx.core.debug.print",
-        "downstream": [
-          {
-            "expr": "1==${aaa}",
-            "target": "6"
-          }
-        ],
+        "downstream": [],
         "redress_stream": [],
         "attr": {
           "text": "hello world in println 5"
-        }
-      },
-      "6": {
-        "name": "创建文件夹",
-        "handler": "simx.files.dir.create",
-        "downstream": [
-          "7"
-        ],
-        "redress_stream": [],
-        "attr": {
-          "path": "./helloworld"
-        }
-      },
-      "7": {
-        "name": "读二进制",
-        "handler": "simx.files.file.read",
-        "downstream": [
-          "8"
-        ],
-        "redress_stream": [],
-        "attr": {
-          "path": "C:\\Users\\Tsos2\\Downloads\\simx-engine.exe",
-          "content_label": "test"
-        }
-      },
-      "8": {
-        "name": "写二进制",
-        "handler": "simx.files.file.write",
-        "downstream": [
-        ],
-        "redress_stream": [],
-        "attr": {
-          "path": "./tmp/simx-engine.exe",
-          "content_label": "test"
         }
       }
     }

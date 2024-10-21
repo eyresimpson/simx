@@ -1,12 +1,12 @@
 use crate::handler::files::common::operation::{common_copy, common_exist, common_move, common_remove};
 use engine_common::entity::exception::node::NodeError;
-use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 use engine_common::logger::interface::info;
 use serde_json::Value;
 use std::fs;
 use std::fs::metadata;
 use std::path::Path;
-use engine_common::entity::flow::node::Node;
 
 pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -36,6 +36,7 @@ pub fn create_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError>
             // 检查目录是否存在
             if metadata(path).is_ok() {
                 info(format!("Path {} exist, skip...", path.display()).as_str());
+
                 Ok(())
             } else {
                 // 创建目录

@@ -1,6 +1,6 @@
-use std::collections::HashMap;
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Node {
@@ -35,6 +35,10 @@ pub struct NodeCommonAttr {
     pub retry_times: Option<i32>,
     // 重试间隔，单位：秒
     pub retry_interval: Option<f64>,
+    // 记录节点开始时历史日志
+    pub history_start: Option<bool>,
+    // 记录节点结束时历史日志
+    pub history_end: Option<bool>,
     // 日志等级
     pub log_level: Option<String>,
     // 节点描述

@@ -5,3 +5,4 @@ pub mod extension;
 pub mod config;
 pub mod common;
 pub mod thread;
+pub mod history;

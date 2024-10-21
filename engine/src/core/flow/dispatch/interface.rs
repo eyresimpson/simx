@@ -4,18 +4,17 @@ use crate::core::flow::dispatch::dispatch_general::dispatch_general;
 use crate::core::flow::dispatch::dispatch_loop::dispatch_loop;
 use crate::core::flow::resolver::interface::flow_resolver;
 use engine_common::entity::common::HistoryLog;
-use engine_common::entity::exception::common::Level;
+use engine_common::entity::exception::common::Status;
 use engine_common::entity::exception::dispatch::DispatchErr;
 use engine_common::entity::exception::node::NodeError;
 use engine_common::entity::flow::blueprint::Blueprint;
-use engine_common::entity::flow::flow::{Flow, FlowData, FlowRuntimeModel, HistoryState, SystemFlowData};
-use engine_common::entity::flow::node::{Node, NodeTag};
+use engine_common::entity::flow::flow::{Flow, FlowData, FlowRuntimeModel, SystemFlowData};
+use engine_common::entity::flow::node::{Node, NodeCommonAttr, NodeTag};
 use engine_common::exception::flow::flow_dispatch_err_handler;
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
 use engine_common::runtime::history::{history_persistent, log_history};
 use engine_common::tools::common::{getCurrentTime, getUuid};
-use std::collections::HashMap;
 use std::path::Path;
 
 // 流调度执行器
@@ -80,16 +79,6 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
 
     info(format!("flow {} :[{}] will be exec.", flow.name, uuid).as_str());
 
-    log_history(uuid.clone(), HistoryState::FlowStart, HistoryLog {
-        node_id: None,
-        flow_name: Some(flow.clone().name),
-        node_name: None,
-        level: Level::FlowInfo,
-        create_time: Some(getCurrentTime("%Y-%m-%d %H:%M:%S")),
-        snapshot: None,
-        message: "flow will be exec.".to_string(),
-    });
-
     let runtime = flow.clone().runtime.unwrap();
     // 取入口节点群并尝试执行
     let endpoints = flow.clone().blueprint.endpoints;
@@ -106,18 +95,9 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
             }
         }
     }
-    success(format!("flow {} :[{}] has be exec success.", flow.name, flow.clone().runtime.unwrap().data.basics.flow_id).as_str());
-    log_history(uuid, HistoryState::FlowEnd, HistoryLog {
-        node_id: None,
-        flow_name: Some(flow.clone().name),
-        node_name: None,
-        level: Level::FlowInfo,
-        create_time: Some(getCurrentTime("%Y-%m-%d %H:%M:%S")),
-        snapshot: None,
-        message: "flow has be exec success.".to_string(),
-    });
+    success(format!("flow {} :[{}] has be exec success.", flow.name, uuid.clone()).as_str());
     // 将历史日志进行持久化
-    history_persistent();
+    history_persistent(uuid);
     Ok(())
 }
 
@@ -125,8 +105,23 @@ pub async fn dispatch_flow(path: &Path) -> Result<(), DispatchErr> {
 // 蓝图、首节点（从这个节点开始执行）、数据
 pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut FlowData) -> Result<(), DispatchErr> {
     let node_uuid = getUuid();
+    let node_handler = current_node.clone().handler;
+    let blueprint_id = current_node.clone().id.unwrap();
+    let flow_id = data.clone().basics.flow_id.clone();
+    let log_data = match current_node.clone().common {
+        None => false,
+        Some(comm) => {
+            comm.log_data.unwrap_or_else(|| false)
+        }
+    };
+    let mut data_logger: Option<FlowData>;
+    if log_data {
+        data_logger = Some(data.clone())
+    } else {
+        data_logger = None;
+    }
     // 对通用配置进行操作
-    node_common_handle(data, "node will be exec.".to_string(), node_uuid.clone(), data.clone().basics.flow_name, HistoryState::NodeStart, None);
+    node_common_handle(flow_id.clone(), node_uuid.clone(), node_handler.clone(), blueprint_id.clone(), Status::Start, "node will be exec.".to_string(), data_logger.clone());
     // 当前节点的标签列表
     let tags = match current_node.tags {
         None => { Vec::new() }
@@ -141,17 +136,17 @@ pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut
     if !current_node.handler.is_empty() {
         // 作为普通节点进行调度
         let ret = dispatch_general(blueprint, current_node, data).await;
-        node_common_handle(data, "node will be exec.".to_string(), node_uuid.clone(), data.clone().basics.flow_name, HistoryState::NodeStart, None);
+        node_common_handle(flow_id.clone(), node_uuid.clone(), node_handler.clone(), blueprint_id.clone(), Status::End, "node exec successfully.".to_string(), data_logger);
         ret
     } else if is_loop {
         match Box::pin(dispatch_loop(blueprint.clone(), current_node.clone(), data)).await {
             Ok(_) => {
-                node_common_handle(data, "node will be exec.".to_string(), node_uuid.clone(), data.clone().basics.flow_name, HistoryState::NodeStart, None);
+                node_common_handle(flow_id.clone(), node_uuid.clone(), node_handler.clone(), blueprint_id.clone(), Status::End, "node exec successfully.".to_string(), data_logger);
                 Ok(())
             }
             Err(_) => {
                 fail("The implicated compensation mechanism is triggered".to_string().as_str());
-                node_common_handle(data, "node will be exec.".to_string(), node_uuid.clone(), data.clone().basics.flow_name, HistoryState::NodeStart, None);
+                node_common_handle(flow_id, node_uuid.clone(), node_handler.clone(), blueprint_id.clone(), Status::Fail, "The implicated compensation mechanism is triggered.".to_string(), data_logger);
                 // 执行当前节点的Redress_stream，如果节点报错，会依次执行之前所有节点的Redress_stream
                 return redress_stream_dispatch(NodeError::Redress("The implicated compensation mechanism is triggered".to_string()), &current_node, &blueprint, data).await;
             }
@@ -163,33 +158,16 @@ pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut
 }
 
 
-fn node_common_handle(data: &mut FlowData, message: String, node_id: String, flow_name: String, State: HistoryState, snapshot: Option<FlowData>) {
-    let mut history = &mut HistoryLog {
-        node_id: Some(node_id),
-        flow_name: Some(data.basics.flow_name.clone()),
-        node_name: Some(flow_name),
-        level: Level::NodeInfo,
-        create_time: Some(getCurrentTime("%Y-%m-%d %H:%M:%S")),
-        snapshot: None,
-        message: message,
+fn node_common_handle(flow_id: String, node_id: String, handler: String, bp_id: String, status: Status, message: String, data: Option<FlowData>) {
+    let history = &mut HistoryLog {
+        handler,
+        bp_id,
+        node_id,
+        status,
+        snapshot: data.clone(),
+        message,
+        log_dt: getCurrentTime("%Y-%m-%d %H:%M:%S"),
     };
-    // 开始记录日志
-    match snapshot {
-        None => {}
-        Some(flow_data) => {
-            history.snapshot = Some(HashMap::new());
-            match State {
-                HistoryState::NodeStart => {
-                    history.to_owned().snapshot.unwrap().insert("Start".to_string(), flow_data);
-                }
-                HistoryState::NodeEnd => {
-                    history.to_owned().snapshot.unwrap().insert("End".to_string(), flow_data);
-                }
-                _ => {
-                    history.to_owned().snapshot.unwrap().insert("Info".to_string(), flow_data);
-                }
-            }
-        }
-    }
-    log_history(data.basics.flow_id.clone(), State, history.to_owned());
+
+    log_history(flow_id, history.to_owned());
 }

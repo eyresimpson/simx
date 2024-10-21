@@ -8,13 +8,8 @@ allow_load_extension_config = true
 extensions_init_list = ["engine-handler", "engine_common"]
 auto_refresh_local_data = true
 ext_path = "ext"
-shell_log_level = "debug"
-file_log_level = "info"
-# 开启历史流日志（这个日志默认开启，但不会包含数据）
-# 日志数据需要使用 Glue 业务管理台查看（二进制数据）
-enable_history_log = true
-# 历史日志中包含数据（默认false，开启后可以在日志中记录节点对数据的一切处理，包括处理前、后的数据快照，此配置会占用大量的内存，并严重拖慢流运行速度，生成巨大的日志，仅在调试时开启）
-enable_data_in_history_log = false
+shell_log_level = "info"
+file_log_level = "none"
 
 missing_plugin_action = "warn"
 missing_default_handel_action = "warn"

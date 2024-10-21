@@ -9,12 +9,12 @@ pub async fn exec_fl_flow(path: &Path) {
     // 调度执行
     match dispatch_flow(path).await {
         Ok(_) => {
-            success(format!("Flow {:?} execution completed normally", path).as_str());
+            // success(format!("Flow {:?} execution completed normally", path).as_str());
             // 正常执行结束，退出
             return;
         }
-        Err(e) => {
-            warn(format!("Flow {:?} execution ended abnormally, more info: {:?}", path, e).as_str());
+        Err(_) => {
+            // warn(format!("Flow {:?} execution ended abnormally, more info: {:?}", path, e).as_str());
             // 暂时不处理，退出
             return;
         }

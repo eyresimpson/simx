@@ -39,7 +39,7 @@
         "redress_stream": [],
         "attr": {
           "text": 123,
-          "level": "info"
+          "level": "warn"
         }
       },
       "2": {

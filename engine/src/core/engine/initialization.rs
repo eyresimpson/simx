@@ -118,7 +118,6 @@ pub fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
                         load_flow_by_path(path.as_path());
                     } else if traverse_type.eq("script") {
                         if path.is_file() && !path.extension().is_none() {
-                            println!("Script: {}", path.display());
                             load_script_by_path(path.as_path());
                         }
                     }

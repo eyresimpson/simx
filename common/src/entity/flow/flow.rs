@@ -118,7 +118,7 @@ pub struct SubFlowTransferData {
 }
 
 // 历史日志步骤状态
-#[derive(Eq, Hash, PartialEq, Clone, Debug)]
+#[derive(Eq, Hash, PartialEq, Clone, Debug, Serialize, Deserialize)]
 pub enum HistoryState {
     FlowStart,
     NodeStart,

@@ -1,8 +1,8 @@
 use engine_common::entity::exception::node::NodeError;
-use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 use serde_json::Value;
 use std::fs;
-use engine_common::entity::flow::node::Node;
 
 pub fn handle_files_json(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -69,6 +69,16 @@ fn write_as_json(node: Node) -> Result<(), NodeError> {
 }
 
 fn get_path(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    if let Some(json) = flow_data.json.get(&node.id.unwrap()) {
+        let path = match node.attr.get("path") {
+            Some(path) => path.as_str().unwrap(),
+            None => return Err(NodeError::ParamNotFound("path".to_string()))
+        };
+        let value = json.pointer(path);
+        if let Some(value) = value {
+            flow_data.json.insert(node.id.unwrap(), value.clone());
+        }
+    }
     Ok(())
 }
 

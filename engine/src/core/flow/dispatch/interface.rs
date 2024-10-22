@@ -9,7 +9,7 @@ use engine_common::entity::exception::dispatch::DispatchErr;
 use engine_common::entity::exception::node::NodeError;
 use engine_common::entity::flow::blueprint::Blueprint;
 use engine_common::entity::flow::flow::{Flow, FlowData, FlowRuntimeModel, SystemFlowData};
-use engine_common::entity::flow::node::{Node, NodeCommonAttr, NodeTag};
+use engine_common::entity::flow::node::{Node, NodeTag};
 use engine_common::exception::flow::flow_dispatch_err_handler;
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::flow::{get_flow_runtime, set_flow_runtime};
@@ -114,7 +114,7 @@ pub async fn dispatch_nodes(blueprint: Blueprint, current_node: Node, data: &mut
             comm.log_data.unwrap_or_else(|| false)
         }
     };
-    let mut data_logger: Option<FlowData>;
+    let data_logger: Option<FlowData>;
     if log_data {
         data_logger = Some(data.clone())
     } else {

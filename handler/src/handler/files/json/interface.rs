@@ -69,19 +69,32 @@ fn write_as_json(node: Node) -> Result<(), NodeError> {
 }
 
 fn get_path(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    if let Some(json) = flow_data.json.get(&node.id.unwrap()) {
+    let node_id = node.id.unwrap();
+    if let Some(json) = flow_data.json.get(&node_id) {
         let path = match node.attr.get("path") {
             Some(path) => path.as_str().unwrap(),
             None => return Err(NodeError::ParamNotFound("path".to_string()))
         };
         let value = json.pointer(path);
         if let Some(value) = value {
-            flow_data.json.insert(node.id.unwrap(), value.clone());
+            flow_data.json.insert(node_id, value.clone());
         }
     }
     Ok(())
 }
 
+// 此功能需要优化，不好用 👎
 fn set_path(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    let new_value = match node.attr.get("value") {
+        Some(value) => value,
+        None => return Err(NodeError::ParamNotFound("value".to_string()))
+    };
+    let path = match node.attr.get("node_id") {
+        Some(value) => value,
+        None => return Err(NodeError::ParamNotFound("path".to_string()))
+    };
+
+    flow_data.json.insert(path.to_string(), new_value.clone());
+
     Ok(())
 }

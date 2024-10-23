@@ -1,8 +1,8 @@
 use crate::core::flow::exec::flow::exec_steps;
 use crate::core::flow::interface::exec_flow;
 use crate::core::script::interface::exec_script;
-use engine_common::entity::flow::flow::SubFlowTransferData;
 use engine_common::entity::common::SimxThreadSenderStringData;
+use engine_common::entity::flow::flow::SubFlowTransferData;
 use engine_common::logger::interface::warn;
 use engine_common::runtime::thread::set_engine_sender;
 use std::sync::mpsc;
@@ -53,7 +53,4 @@ pub fn init_thread_monitor() {
     });
 
     set_engine_sender("engine_sender", engine_sender);
-
-    // 给线程一些时间来处理消息
-    // thread::sleep(std::time::Duration::from_secs(1));
 }

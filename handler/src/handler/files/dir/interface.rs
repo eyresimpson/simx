@@ -29,8 +29,8 @@ pub fn handle_files_dir(node: Node, flow_data: &mut FlowData) -> Result<(), Node
 
 // 创建目录
 pub fn create_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    match node.attr.get("path") {
-        Some(path) => {
+    match node.get_attr("path") {
+        Ok(path) => {
             let path = path.as_str().expect("path must be string");
             let path = Path::new(&path);
             // 检查目录是否存在
@@ -51,17 +51,14 @@ pub fn create_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError>
                 }
             }
         }
-        None => {
-            // 找不到参数
-            Err(NodeError::ParamNotFound("path".to_string()))
-        }
+        Err(e) => Err(e)
     }
 }
 
 // 判断指定文件夹是否存在
 pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
-    match node.attr.get("path") {
-        Some(path) => {
+    match node.get_attr("path") {
+        Ok(path) => {
             let path = path.as_str().expect("path must be string");
             // 检查目录是否存在
             if common_exist(path).expect("Cannot check path exist") {
@@ -74,10 +71,7 @@ pub fn exist_dir(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> 
                 Ok(())
             }
         }
-        None => {
-            // 找不到参数
-            Err(NodeError::ParamNotFound("path".to_string()))
-        }
+        Err(e) => Err(e)
     }
 }
 
@@ -136,5 +130,4 @@ pub fn del_dir(node: Node) -> Result<(), NodeError> {
             Err(NodeError::ParamNotFound("path".to_string()))
         }
     }
-
 }

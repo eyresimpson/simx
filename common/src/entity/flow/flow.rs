@@ -66,7 +66,6 @@ pub struct FlowRuntimeModel {
 // }
 
 
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum EnvType {
     // 基本（引擎相关）
@@ -99,6 +98,34 @@ pub struct FlowData {
     pub json: HashMap<String, Value>,
     // 二进制数据区，节点可以在此处存放二进制的数据
     pub binary: HashMap<String, Vec<u8>>,
+}
+
+impl FlowData {
+    pub fn get_basic(&self) -> SystemFlowData {
+        self.basics.clone()
+    }
+    pub fn get_param(&self, key: &str) -> Option<&Value> {
+        self.params.get(key)
+    }
+
+    pub fn set_param(&mut self, key: &str, value: Value) {
+        self.params.insert(key.to_string(), value);
+    }
+    pub fn get_json(&self, key: &str) -> Option<&Value> {
+        self.json.get(key)
+    }
+
+    pub fn set_json(&mut self, key: &str, value: Value) {
+        self.json.insert(key.to_string(), value);
+    }
+
+    pub fn get_binary(&self, key: &str) -> Option<&Vec<u8>> {
+        self.binary.get(key)
+    }
+
+    pub fn set_binary(&mut self, key: &str, value: Vec<u8>) {
+        self.binary.insert(key.to_string(), value);
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]

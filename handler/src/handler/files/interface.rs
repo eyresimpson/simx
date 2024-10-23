@@ -1,9 +1,9 @@
 use crate::handler::files::dir::interface::handle_files_dir;
 use crate::handler::files::file::interface::handle_files_file;
-use engine_common::entity::exception::node::NodeError;
-use engine_common::entity::flow::flow::{FlowData};
-use engine_common::entity::flow::node::Node;
 use crate::handler::files::json::interface::handle_files_json;
+use engine_common::entity::exception::node::NodeError;
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 
 pub fn handle_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
     let handler_path: Vec<_> = node.handler.split(".").collect();
@@ -14,8 +14,6 @@ pub fn handle_file(node: Node, flow_data: &mut FlowData) -> Result<(), NodeError
         "file" => handle_files_file(node, flow_data),
         // Json文件处理
         "json" => handle_files_json(node, flow_data),
-        // Xml文件处理
-        "xml" => { Ok(()) }
         _ => {
             Err(NodeError::HandleNotFound(node.handler))
         }

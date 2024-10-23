@@ -9,3 +9,12 @@ members = [
     # 引擎主体
     "engine",
 ]
+
+[profile.release]
+# panic后让os清理
+# 可以节省一些可执行文件的占用空间
+panic = "abort"
+
+# 调试模式
+[profile.dev]
+panic = "unwind"

@@ -1,0 +1,13 @@
+{
+  "name": "simx-http",
+  "version": "0.0.1",
+  "engine": "0.2.0",
+  "author": "NJ Labs",
+  "keywords": [],
+  "dependencies": [],
+  "entry_lib": "http",
+  "init_func": "init_func",
+  "init_service": "init_service",
+  "func_lib": "func",
+  "service_lib": "service"
+}

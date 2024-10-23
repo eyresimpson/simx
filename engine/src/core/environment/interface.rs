@@ -31,7 +31,6 @@ pub fn check(requirements: Vec<Environment>) -> Result<(), String> {
             _ => {}
         }
     }
-    check_java_version();
     Ok(())
 }
 

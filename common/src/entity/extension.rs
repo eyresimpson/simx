@@ -1,6 +1,4 @@
-use crate::entity::flow::flow::{FlowData};
 use serde_derive::{Deserialize, Serialize};
-use crate::entity::flow::node::Node;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct FunctionParam {
@@ -42,12 +40,4 @@ pub struct Extension {
     pub entry_lib: String,
     pub entry_func: String,
     pub init_func: String,
-}
-
-// 与插件交流时传递的数据
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Transition {
-    pub version: i16,
-    pub node: Node,
-    pub flow_data: FlowData,
 }

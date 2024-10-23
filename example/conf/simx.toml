@@ -1,6 +1,6 @@
 [engine]
 run_init_script = false
-run_init_flow = true
+run_init_flow = false
 # 运行插件的初始化方法，一般不建议关闭
 run_init_extensions_func = true
 # 允许插件加载配置文件
@@ -21,7 +21,7 @@ missing_default_handel_action = "warn"
 instance_communication_type = "share-memory"
 # 引擎执行策略：
 # 对于项目而言，会无视此处的配置，默认就是阻塞等待
-# once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出
+# once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出，注意，项目会阻塞主进程
 # serve: 阻塞，执行完成或传入流程后阻塞，需要用户手动结束或通过线程/api结束
 run_strategy = "once"
 # 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true

@@ -1,3 +1,4 @@
+use crate::entity::exception::node::NodeError;
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -23,6 +24,22 @@ pub struct Node {
     pub downstream: Vec<Value>,
     // 补偿流id列表
     pub redress_stream: Option<Vec<String>>,
+}
+
+impl Node {
+    pub fn get_attr(&self, key: &str) -> Result<Value, NodeError> {
+        match self.attr.get(key) {
+            Some(value) => Ok(value.clone()),
+            None => Err(NodeError::ParamNotFound(key.to_string())),
+        }
+    }
+
+    pub fn has_tag(&self, tag: &NodeTag) -> bool {
+        match self.tags {
+            Some(ref tags) => tags.contains(tag),
+            None => false,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]

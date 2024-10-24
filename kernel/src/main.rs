@@ -1,4 +1,4 @@
-use crate::core::engine::engine::{run, serve};
+use crate::core::engine::kernel::{run, serve};
 use crate::core::engine::thread::init_thread_monitor;
 use engine_common::logger::interface::info;
 use engine_common::mui::interface::load_language_package;
@@ -9,8 +9,6 @@ use std::fs;
 use std::path::Path;
 
 mod core;
-mod tools;
-
 #[tokio::main]
 async fn main() {
     // 引擎运行前的准备和初始化动作

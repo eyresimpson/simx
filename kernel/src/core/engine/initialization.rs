@@ -4,6 +4,7 @@ use crate::core::script::interface::load_and_exec_default_script;
 use crate::core::workspace::interface::init_workspace;
 use engine_common::entity::common::{SimxFlow, SimxScript};
 use engine_common::entity::extension::Extension;
+use engine_common::extension::interface::load_extension;
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::set_extension_info;
@@ -136,6 +137,8 @@ pub fn load_extension_by_path(path: &Path) {
             extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
             // 将数据放到 runtime 配置中
             set_extension_info(extension.name.as_str(), extension.clone());
+            // 加载lib到内存
+            load_extension(extension);
         }
     }
 }

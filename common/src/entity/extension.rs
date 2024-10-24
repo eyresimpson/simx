@@ -1,4 +1,6 @@
+use libloading::Library;
 use serde_derive::{Deserialize, Serialize};
+use std::sync::Arc;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct FunctionParam {
@@ -39,4 +41,21 @@ pub struct Extension {
     pub destroy: String,
     pub handle_func: String,
     pub handle_service: String,
+}
+
+#[derive(Debug)]
+pub struct ExtensionLibrary {
+    pub win: Option<Arc<libloader::libloading::Library>>,
+    pub linux: Option<Arc<Library>>,
+    pub mac: Option<Arc<Library>>,
+}
+
+impl Clone for ExtensionLibrary {
+    fn clone(&self) -> Self {
+        ExtensionLibrary {
+            win: self.win.clone(),
+            linux: self.linux.clone(),
+            mac: self.mac.clone(),
+        }
+    }
 }

@@ -48,16 +48,12 @@ pub async fn serve() {
 
     // 检查配置中是否需要阻塞进程
     if simx_config.engine.run_strategy != "once" {
-        info("Engine is running, If you want to exit, press Ctrl + C");
+        info("Simx engine running, Press Ctrl + C Exit.");
         // 等待用户 ctrl + c 结束进程
         tokio::select! {
             _ = tokio::signal::ctrl_c() => {}
         }
     }
-
-    // 运行结束
-    // 如果是用户手动结束进程，不会执行到这里（只有系统主动结束此处才会执行）
-    info("Engine shutdown.");
 }
 
 /// 运行流

@@ -54,9 +54,7 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
             Err(NodeError::ExtNotFound(handler_path[0].to_string()))
         } else {
             // 调用方法
-            // TODO: 检查扩展返回的结果是否是执行成功
-            invoke_extension_func_common(extension.unwrap(), node, flow_data);
-            Ok(())
+            invoke_extension_func_common(extension.unwrap(), node, flow_data)
         }
     }
 }

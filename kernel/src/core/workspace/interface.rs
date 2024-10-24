@@ -30,7 +30,6 @@ pub fn init_workspace() {
 
 // 调起workspace
 pub fn load_workspace(path: PathBuf) {
-    println!("Handling workspace...{:?}", path);
     // 加载项目环境需求并判断是否满足需求
     let requirements: Vec<Environment> = vec![];
     match check(requirements) {

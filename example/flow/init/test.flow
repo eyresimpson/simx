@@ -26,7 +26,7 @@
     "routes": {
       "1": {
         "name": "打印信息",
-        "handler": "simx.core.debug.print",
+        "handler": "simx-http.http",
         "common": {
           
         },
@@ -60,7 +60,8 @@
         "downstream": [],
         "redress_stream": [],
         "attr": {
-          "text": "hello world in println 5"
+          "text": "hello world in println 5",
+          "level": "warn"
         }
       }
     }

@@ -1,4 +1,5 @@
-use crate::entity::extension::Extension;
+use crate::entity::exception::node::NodeError;
+use crate::entity::extension::{Extension, ExtensionLibrary};
 use crate::entity::flow::flow::FlowData;
 use crate::entity::flow::node::Node;
 use crate::extension::common::common::common_call_method;
@@ -7,10 +8,49 @@ use crate::extension::dylib::interface::call_dylib_extension_init;
 use crate::extension::jar::interface::call_jar_extension_init;
 use crate::extension::so::interface::call_so_extension_init;
 use crate::logger::interface::{info, warn};
+use crate::runtime::extension::set_extension_library;
+use libloader::libloading::Library as WinLibrary;
+use libloading::Library;
 use std::env::consts::OS;
+use std::path::Path;
+use std::sync::Arc;
 
 // 加载扩展
-pub fn load_extension(extension: Extension) {}
+pub fn load_extension(extension: Extension) {
+    let function_file = extension.path.as_ref().unwrap();
+    let os = OS.to_string().to_lowercase();
+    match os.as_str() {
+        "windows" => {
+            let path = Path::new(&function_file).join(extension.entry_lib + ".dll");
+            let lib = unsafe { WinLibrary::new(path.clone()) }.expect("Could not load dll");
+            set_extension_library(path.to_str().unwrap(), ExtensionLibrary {
+                win: Some(Arc::new(lib)),
+                linux: None,
+                mac: None,
+            });
+        }
+
+        "macos" => {
+            let path = Path::new(&function_file).join(extension.entry_lib + ".dylib");
+            let lib = unsafe { Library::new(path.clone()) }.expect("Could not load dylib");
+            set_extension_library(path.to_str().unwrap(), ExtensionLibrary {
+                win: None,
+                linux: None,
+                mac: Some(Arc::new(lib)),
+            });
+        }
+        // 默认直接当so加载
+        _ => {
+            let path = Path::new(&function_file).join(extension.entry_lib + ".so");
+            let lib = unsafe { Library::new(path.clone()) }.expect("Could not load so");
+            set_extension_library(path.to_str().unwrap(), ExtensionLibrary {
+                win: None,
+                linux: Some(Arc::new(lib)),
+                mac: None,
+            });
+        }
+    };
+}
 
 // 卸载扩展
 pub fn unload_extension(extension: Extension) {}
@@ -19,9 +59,26 @@ pub fn unload_extension(extension: Extension) {}
 pub fn check_extension(extension: Extension) {}
 
 // 调用rust编写的扩展（直接是结构体）
-pub fn invoke_extension_func_common(extension: Extension, node: Node, flow_data: &mut FlowData) -> FlowData {
+pub fn invoke_extension_func_common(extension: Extension, node: Node, flow_data: &mut FlowData) -> Result<(), NodeError> {
+    // 取方法所在插件文件名（相对于插件根目录）
+    let function_file = extension.path.as_ref().unwrap();
+    let os = OS.to_string().to_lowercase();
+    let lib_path = match os.as_str() {
+        "windows" => {
+            Path::new(&function_file).join(extension.entry_lib + ".dll")
+        }
+        "linux" => {
+            Path::new(&function_file).join(extension.entry_lib + ".so")
+        }
+        "macos" => {
+            Path::new(&function_file).join(extension.entry_lib + ".dylib")
+        }
+        _ => {
+            Path::new(&function_file).join(extension.entry_lib + ".so")
+        }
+    };
     common_call_method(
-        extension.entry_lib.as_str(),
+        lib_path.to_str().unwrap(),
         OS.to_string().to_lowercase().as_str(),
         extension.handle_func.as_str(),
         node,

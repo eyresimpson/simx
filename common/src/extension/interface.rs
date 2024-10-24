@@ -22,6 +22,7 @@ pub fn load_extension(extension: Extension) {
     match os.as_str() {
         "windows" => {
             let path = Path::new(&function_file).join(extension.entry_lib + ".dll");
+            println!("Load extension {:?}", path);
             let lib = unsafe { WinLibrary::new(path.clone()) }.expect("Could not load dll");
             set_extension_library(path.to_str().unwrap(), ExtensionLibrary {
                 win: Some(Arc::new(lib)),

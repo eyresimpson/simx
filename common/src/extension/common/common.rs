@@ -15,7 +15,7 @@ pub fn common_call_method(
     flow_data: &mut FlowData,
 ) -> Result<(), NodeError> {
     match os {
-        "win" => {
+        "windows" => {
             let lib = get_extension_library(path)?.win.unwrap();
             unsafe {
                 let func: WinSymbol<unsafe extern "C" fn(Node, &mut FlowData) -> Result<(), NodeError>> = lib.get(function_name.as_ref()).expect("Could not find function");

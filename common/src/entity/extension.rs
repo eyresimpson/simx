@@ -59,3 +59,11 @@ impl Clone for ExtensionLibrary {
         }
     }
 }
+
+pub enum ExtensionType {
+    Dll,
+    Dylib,
+    So,
+    Jar,
+    Py,
+}

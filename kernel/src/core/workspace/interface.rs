@@ -40,4 +40,5 @@ pub fn load_workspace(path: PathBuf) {
     }
     // 加载项目服务
     // 加载项目初始化脚本和流
+    println!("Load workspace: {}", path.display())
 }

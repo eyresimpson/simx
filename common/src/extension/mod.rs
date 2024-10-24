@@ -1,5 +1,5 @@
 pub mod interface;
-mod common;
+pub mod common;
 mod dll;
 mod dylib;
 mod jar;

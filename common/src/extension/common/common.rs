@@ -4,6 +4,8 @@ use crate::entity::flow::node::Node;
 use crate::runtime::extension::get_extension_library;
 use libloader::libloading::Symbol as WinSymbol;
 use libloading::Symbol;
+use std::env::consts::OS;
+use std::path::{Path, PathBuf};
 
 pub fn common_call_method(
     path: &str,
@@ -35,5 +37,24 @@ pub fn common_call_method(
             }
         }
         _ => panic!("Not support this platform"),
+    }
+}
+
+// 组装插件的真实路径
+pub fn get_extension_path(path: String, entry_lib: String) -> PathBuf {
+    let os = OS.to_string().to_lowercase();
+    match os.as_str() {
+        "windows" => {
+            Path::new(&path).join(entry_lib + ".dll")
+        }
+        "linux" => {
+            Path::new(&path).join(entry_lib + ".so")
+        }
+        "macos" => {
+            Path::new(&path).join(entry_lib + ".dylib")
+        }
+        _ => {
+            Path::new(&path).join(entry_lib + ".so")
+        }
     }
 }

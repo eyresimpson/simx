@@ -14,7 +14,6 @@ file_log_level = "none"
 missing_plugin_action = "warn"
 missing_default_handel_action = "warn"
 # 实例间通信方式
-# 这里其实一直很纠结，如果真的实现了共享内存，很难安全的进行使用，暂时搁置吧
 # share-memory: 使用共享内存（速度快，占用资源少，可执行部分控制操作）
 # rustful: 使用rustful接口通信（宿主必须作为serve运行，可执行所有控制操作）
 # id-file: 通过实例的描述文件通信（速度很慢，根据文件交换互相信息，不能执行控制操作）

@@ -1,5 +1,5 @@
 use engine_common::entity::exception::node::NodeError;
-use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::flow::FlowData;
 use engine_common::entity::flow::node::Node;
 use engine_common::logger::interface::debug;
 use engine_handler::handler::interface::root_handler;

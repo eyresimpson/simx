@@ -29,8 +29,6 @@ pub async fn engine_init() -> Result<String, String> {
     let result = reload_local("");
     if result.is_err() {
         fail("Cannot scan and load local resource")
-    } else {
-        success("Scan and load local resource done.");
     }
 
 
@@ -39,8 +37,6 @@ pub async fn engine_init() -> Result<String, String> {
         info("Default script running...");
         load_and_exec_default_script();
         success("Run init script done.");
-    } else {
-        info("Skip init script running.");
     }
 
     // 初始流
@@ -48,8 +44,6 @@ pub async fn engine_init() -> Result<String, String> {
         info("Default flow running...");
         load_and_exec_default_flow().await;
         success("Run init flow done.");
-    } else {
-        info("Skip init flow running.");
     }
 
     // 加载工作空间（项目集）

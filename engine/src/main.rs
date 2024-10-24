@@ -1,6 +1,6 @@
 use crate::core::engine::engine::{run, serve};
 use crate::core::engine::thread::init_thread_monitor;
-use engine_common::logger::interface::{info, success};
+use engine_common::logger::interface::info;
 use engine_common::mui::interface::load_language_package;
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::engine::set_engine_info;
@@ -40,7 +40,6 @@ async fn main() {
 fn init() {
     // 加载多语言包
     load_language_package();
-    info("Simx engine core init...");
     // 每次更新系统都记得修改这里
     let engine_version = "0.1.1";
     // 系统支持API的版本
@@ -57,7 +56,6 @@ fn init() {
         // 重建日志目录
         fs::create_dir(engine_conf.log_path.as_str()).expect("Engine cannot fix workspace, Please check your environment.");
     }
-    success("Simx engine core init done.");
 }
 
 // 这个是为了后续的内存池清理工作准备的地方，有时间补充一下吧...

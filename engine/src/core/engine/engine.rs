@@ -1,7 +1,7 @@
 use crate::core::engine::initialization::engine_init;
 use crate::core::flow::interface::exec_flow;
 use engine_common::extension::interface::call_extension_init;
-use engine_common::logger::interface::{fail, info, success};
+use engine_common::logger::interface::{fail, info};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::get_all_extension_info;
 use std::env;
@@ -13,11 +13,7 @@ use std::path::Path;
 pub async fn serve() {
     // 获取simx基础配置
     let simx_config = get_simx_config();
-
-    // banner
-    println!(" _______ _______ _______ ___ ___\n|     __|_     _|   |   |   |   |\n|__     |_|   |_|       |-     -|\n|_______|_______|__|_|__|___|___|", );
-    info("Engine initializing...");
-
+    
     // 执行系统初始化事件
     // 包括运行初始化脚本和初始化流
     let init_ret = engine_init().await;
@@ -25,9 +21,6 @@ pub async fn serve() {
         fail(init_ret.err().unwrap().as_str());
         return;
     }
-
-    // 系统启动完成
-    success("Engine initializing done.");
 
     let mut jobs = vec![];
 

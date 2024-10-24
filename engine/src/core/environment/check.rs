@@ -24,7 +24,7 @@ pub fn env_check() -> Result<String, String> {
 
     // 检查是否有 Python 环境
     if !check_python(env_config.python_path) {
-        warn("Cannot find python in your environment, check your configuration.");
+        warn("python not found.");
         set_runtime_info("env_python_status", "not-find");
     } else {
         set_runtime_info("env_python_status", "python3")

@@ -10,7 +10,6 @@ use std::thread;
 use tokio::runtime::Builder;
 
 pub fn init_thread_monitor() {
-    // 使用 tokio::runtime::Builder 创建一个自定义的运行时
     let rt = Builder::new_multi_thread()
         // 设置最大工作线程数为 4
         .worker_threads(4)

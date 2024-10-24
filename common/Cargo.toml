@@ -32,3 +32,8 @@ regex = "1"
 bincode = "2.0.0-rc.3"
 # uuid
 uuid = { version = "1.11.0", features = ["serde", "v4"] }
+
+# 加载dll
+libloader = "0.1.4"
+# 加载 so和dylib
+libloading = "0.8.5"

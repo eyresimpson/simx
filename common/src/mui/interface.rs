@@ -1,23 +1,22 @@
-use crate::runtime::config::get_simx_config;
 use serde_derive::{Deserialize, Serialize};
 
 // 获取语言
 pub fn get_language_str(tag: String) -> String {
-    let language = Language::Chinese;
-    println!("{}", tag);
-    match language {
-        Language::Chinese => println!("Chinese"),
-        Language::English => println!("English"),
-    }
+    // let language = Language::Chinese;
+    // println!("{}", tag);
+    // match language {
+    //     Language::Chinese => println!("Chinese"),
+    //     Language::English => println!("English"),
+    // }
     "sss".to_string()
 }
 
 // 加载多语言包到内存中（默认仅加载配置中指定的）
 pub fn load_language_package() {
-    match get_simx_config().engine.language {
-        Language::Chinese => println!("Chinese"),
-        Language::English => println!("English"),
-    }
+    // match get_simx_config().engine.language {
+    //     Language::Chinese => println!("Chinese"),
+    //     Language::English => println!("English"),
+    // }
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]

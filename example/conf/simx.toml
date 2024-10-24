@@ -21,9 +21,9 @@ missing_default_handel_action = "warn"
 instance_communication_type = "share-memory"
 # 引擎执行策略：
 # 对于项目而言，会无视此处的配置，默认就是阻塞等待
-# once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出，注意，项目会阻塞主进程
+# once: 默认策略，不会阻塞，执行完成默认流程或传入流程后直接退出，注意，此状态下，项目、插件的init都可能无法正常执行
 # serve: 阻塞，执行完成或传入流程后阻塞，需要用户手动结束或通过线程/api结束
-run_strategy = "once"
+run_strategy = "serve"
 # 蓝图多入口并行，如果蓝图有多个入口，并行执行，默认为true
 blueprint_multi_entry_parallel = true
 # 蓝图多下游并行，如果蓝图节点有多个下游，并行执行，默认为false

@@ -1,15 +1,17 @@
-use std::fs;
-use std::path::Path;
-
 use crate::core::environment::check::env_check;
 use crate::core::flow::interface::load_and_exec_default_flow;
 use crate::core::script::interface::load_and_exec_default_script;
 use crate::core::workspace::interface::init_workspace;
 use engine_common::entity::common::{SimxFlow, SimxScript};
+use engine_common::entity::extension::Extension;
 use engine_common::logger::interface::{fail, info, success, warn};
 use engine_common::runtime::config::get_simx_config;
+use engine_common::runtime::extension::set_extension_info;
 use engine_common::runtime::flow::set_flow_info;
 use engine_common::runtime::script::set_script_info;
+use serde_json::from_str;
+use std::fs;
+use std::path::Path;
 
 pub async fn engine_init() -> Result<String, String> {
     // 系统引擎配置
@@ -53,7 +55,7 @@ pub async fn engine_init() -> Result<String, String> {
     // 加载工作空间（项目集）
     info("Workspace initialization...");
     init_workspace();
-    
+
 
     // 返回成功信息
     Ok("Engine init success.".parse().unwrap())
@@ -131,17 +133,17 @@ pub fn reload_local_traverse_folder(folder_path: &Path, traverse_type: &str) {
 // 将指定路径下的插件信息加载到内存中
 pub fn load_extension_by_path(path: &Path) {
     // 判断插件类型
-    // if path.exists() {
-    //     if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
+    if path.exists() {
+        if path.file_name().unwrap().to_str().unwrap().eq("extension.json") {
             // 读取 JSON 文件
-    // let file_path = Path::new(path);
-    // let data = fs::read_to_string(file_path).expect("Unable to read file");
-    // let mut extension: Extension = from_str(&data).expect("JSON was not well-formatted");
-    // extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
+            let file_path = Path::new(path);
+            let data = fs::read_to_string(file_path).expect("Unable to read file");
+            let mut extension: Extension = from_str(&data).expect("JSON was not well-formatted");
+            extension.path = Some(file_path.parent().unwrap().to_str().unwrap().to_string());
             // 将数据放到 runtime 配置中
-    // set_extension_info(extension.name.as_str(), extension.clone());
-    // }
-    // }
+            set_extension_info(extension.name.as_str(), extension.clone());
+        }
+    }
 }
 
 // 将路径下的流程信息加载到内存中

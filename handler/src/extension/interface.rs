@@ -5,11 +5,11 @@ use crate::extension::jar::interface::call_jar_extension_init;
 use crate::extension::so::interface::call_so_extension_init;
 use consts::OS;
 use engine_common::entity::extension::Extension;
-use engine_common::entity::flow::flow::{FlowData};
-use engine_common::logger::interface::warn;
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
+use engine_common::logger::interface::{info, warn};
 use env::consts;
 use std::env;
-use engine_common::entity::flow::node::Node;
 
 // 分离方法调用，注意只能调用Rust编写的lib，如果需要调用其他应用程序的lib，使用invoke
 // simx项目中所有的内部库（比如http扩展）都是通过此方法调用
@@ -17,13 +17,14 @@ pub fn call(extension: Extension, node: Node, flow_data: &mut FlowData) -> FlowD
     common_call_method(
         extension.entry_lib.as_str(),
         OS.to_string().to_lowercase().as_str(),
-        extension.entry_func.as_str(),
+        extension.handle_func.as_str(),
         node,
         flow_data,
     )
 }
 
 pub fn call_init(extension: Extension) -> Result<(), String> {
+    info(format!("Try to call extension {} init", extension.name).as_str());
     let ext = extension.clone();
     ext.path.expect("Extension path is none");
     let file_name = ext.entry_lib;

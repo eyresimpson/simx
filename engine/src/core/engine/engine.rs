@@ -35,7 +35,7 @@ pub async fn serve() {
     let extensions = get_all_extension_info();
     // 遍历插件列表，调用init方法
     for extension in extensions {
-        if extension.init_func.is_empty() {
+        if extension.init.is_empty() {
             // 如果找不到初始化方法，则跳过插件的初始化（并不强制所有插件必须有初始化方法）
             continue;
         }

@@ -1,12 +1,11 @@
-use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::flow::FlowData;
+use engine_common::entity::flow::node::Node;
 use libloader::libloading::{Library as WinLibrary, Symbol as WinSymbol};
 use libloading::{Library, Symbol};
 use std::path::Path;
-use engine_common::entity::flow::node::Node;
 
 pub fn common_call_method(lib_path: &str, os: &str, function_name: &str, node: Node, flow_data: &mut FlowData) -> FlowData {
     // 取方法所在插件文件名（相对于插件根目录）
-    // let function_file = extension.path.as_ref().unwrap();
     let dylib_path = Path::new(lib_path);
 
     match os {

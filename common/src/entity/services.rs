@@ -11,6 +11,8 @@ pub struct Service {
     pub status: ServiceState,
     // 插件数据
     pub extension: Extension,
+    // 服务数据（json数据）
+    pub data: String,
 }
 
 pub struct ServiceState {
@@ -32,6 +34,7 @@ impl Service {
                 user_count: 0,
             },
             extension,
+            data: String::new(),
         }
     }
 

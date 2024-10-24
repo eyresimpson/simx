@@ -181,7 +181,7 @@ fn default_missing_default_handel_action() -> String {
 }
 
 fn default_run_strategy() -> String {
-    "once".to_string()
+    "serve".to_string()
 }
 fn default_blueprint_multi_entry_parallel() -> bool {
     true

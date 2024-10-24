@@ -1,4 +1,5 @@
 use engine_common::entity::extension::Extension;
+use engine_common::logger::interface::fail;
 use libloading::{Library, Symbol};
 use std::path::Path;
 
@@ -11,9 +12,11 @@ pub fn call_so_extension_init(extension: Extension) -> Result<(), String> {
     let lib = unsafe { Library::new(dylib_path) }.expect("Could not load dylib");
 
     unsafe {
-        let init: Symbol<unsafe extern "C" fn()> = lib.get("init".as_bytes()).expect("Could not find init function");
+        let init: Symbol<unsafe extern "C" fn() -> bool> = lib.get("init".as_bytes()).expect("Could not find init function");
         // 调用函数
-        init();
+        if !init() {
+            fail(format!("Call lib {} init failed ", extension.name).as_str())
+        }
     }
     Ok(())
 }

@@ -1,9 +1,9 @@
 use crate::core::engine::initialization::engine_init;
 use crate::core::flow::interface::exec_flow;
+use engine_common::extension::interface::call_extension_init;
 use engine_common::logger::interface::{fail, info, success};
 use engine_common::runtime::config::get_simx_config;
 use engine_common::runtime::extension::get_all_extension_info;
-use engine_handler::extension::interface::call_init;
 use std::env;
 use std::path::Path;
 
@@ -42,17 +42,15 @@ pub async fn serve() {
         // 调用插件的init方法
         // 注意，新线程中执行init，init的执行结果的顺序不能保证
         let job = tokio::spawn(async move {
-            call_init(extension).unwrap();
+            call_extension_init(extension).unwrap();
         });
         jobs.push(job);
     }
 
-    // 暂时放弃，是否阻塞线程应该由系统配置控制，而不是靠插件
-    // 这样可以让系统配置更准确的控制，避免歧义
-    // for job in jobs {
-    //     // 只要有一个线程没有退出，就阻塞引擎不退出
-    //     job.await.unwrap();
-    // }
+    for job in jobs {
+        // 只要有一个线程没有退出，就阻塞引擎不退出
+        job.await.unwrap();
+    }
 
 
     // 检查配置中是否需要阻塞进程

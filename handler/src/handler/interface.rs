@@ -1,12 +1,12 @@
-use crate::extension::interface::call;
 use crate::handler::core::interface::handle_core;
 use crate::handler::files::interface::handle_file;
 use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
 use crate::handler::script::interface::handle_script;
 use engine_common::entity::exception::node::NodeError;
-use engine_common::entity::flow::flow::{FlowData};
+use engine_common::entity::flow::flow::FlowData;
 use engine_common::entity::flow::node::Node;
+use engine_common::extension::interface::invoke_extension_func_common;
 use engine_common::logger::interface::{info, warn};
 use engine_common::runtime::extension::get_extension_info;
 use engine_common::thread::engine::reload_local;
@@ -59,7 +59,7 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
         } else {
             // 调用方法
             // TODO: 检查扩展返回的结果是否是执行成功
-            call(extension.unwrap(), node, flow_data);
+            invoke_extension_func_common(extension.unwrap(), node, flow_data);
             Ok(())
         }
     }

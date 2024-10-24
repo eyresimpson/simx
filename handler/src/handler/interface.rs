@@ -1,6 +1,5 @@
 use crate::handler::core::interface::handle_core;
 use crate::handler::files::interface::handle_file;
-use crate::handler::net::interface::handle_net;
 use crate::handler::os::interface::handle_os;
 use crate::handler::script::interface::handle_script;
 use engine_common::entity::exception::node::NodeError;
@@ -25,9 +24,6 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
             // 文件系统
             "files" =>
                 handle_file(node, flow_data),
-
-            // 网络系统
-            "net" => handle_net(node, flow_data).await,
 
             // 操作系统
             "os" =>
@@ -58,9 +54,7 @@ pub async fn root_handler(node: Node, flow_data: &mut FlowData) -> Result<(), No
             Err(NodeError::ExtNotFound(handler_path[0].to_string()))
         } else {
             // 调用方法
-            // TODO: 检查扩展返回的结果是否是执行成功
-            invoke_extension_func_common(extension.unwrap(), node, flow_data);
-            Ok(())
+            invoke_extension_func_common(extension.unwrap(), node, flow_data)
         }
     }
 }

@@ -7,12 +7,12 @@ members = [
     # 核心扩展插件，包含大量的引擎节点handle
     "handler",
     # 引擎主体
-    "engine",
+    "kernel",
 ]
 
 [profile.release]
 # panic后让os清理
-# 可以节省一些可执行文件的占用空间
+# 可以减少可执行文件的大小
 panic = "abort"
 
 # 调试模式

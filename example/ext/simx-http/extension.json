@@ -5,8 +5,17 @@
   "author": "NJ Labs",
   "dependencies": [],
   "entry_lib": "simx-http",
+  "libs": [],
   "init": "init",
   "destroy": "destroy",
   "handle_func": "handle_func",
-  "handle_service": "handle_service"
+  "handle_service": "handle_service",
+  "service": {
+    "entry": "",
+    "init": ""
+  },
+  "func": {
+    "entry": "",
+    "init": ""
+  }
 }

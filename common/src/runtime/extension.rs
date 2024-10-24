@@ -23,6 +23,11 @@ pub fn get_extension_info(key: &str) -> Option<Extension> {
     data.get(key).cloned()
 }
 
+pub fn remove_extension_info(key: &str) {
+    let mut data = RUNTIME_EXTENSION.lock().unwrap();
+    data.remove(key);
+}
+
 // 获取所有流的信息，以数组的形式
 pub fn get_all_extension_info() -> Vec<Extension> {
     let data = RUNTIME_EXTENSION.lock().unwrap();
@@ -38,4 +43,9 @@ pub fn set_extension_library(key: &str, value: ExtensionLibrary) {
 pub fn get_extension_library(key: &str) -> Result<ExtensionLibrary, NodeError> {
     let data = RUNTIME_LIBRARY.lock().unwrap();
     Ok(data.get(key).cloned().unwrap())
+}
+
+pub fn remove_extension_library(key: &str) {
+    let mut data = RUNTIME_LIBRARY.lock().unwrap();
+    data.remove(key);
 }
